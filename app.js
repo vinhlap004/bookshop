@@ -4,10 +4,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+/*
 //1.require mongoose
 var mongoose = require('mongoose');
 //2.connect
 mongoose.connect('mongodb://localhost/shop');
+*/
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

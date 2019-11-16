@@ -5,10 +5,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 //2.connect
-if (mongoose.connect('mongodb://localhost/shop')) {
-  console.log('connect to database');
-};
-
+if (mongoose.connect('mongodb+srv://linh796:linh796@cluster0-lbsr0.mongodb.net/bookshop?retryWrites=true&w=majority')){
+  console.log('connected to database\n');
+}
 
 //3.tạo Schema
 var productsSchema = new mongoose.Schema({
@@ -35,15 +34,6 @@ var publisherSchema = new mongoose.Schema({
 var products = mongoose.model('products', productsSchema);
 var categories = mongoose.model('categories', categoriesSchema);
 var publishers = mongoose.model('publishers', publisherSchema);
-
-
-/* GET home page. */
-// router.get('/index', function(req, res, next) {
-//   res.render('index');
-// });
-// router.get('/', function(req, res, next) {
-//   res.render('index');
-// });
 
 
 /* GET home page. */
