@@ -5,10 +5,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 //2.connect
-if (mongoose.connect('mongodb://localhost/shop')) {
-  console.log('connect to database');
-};
-
+if (mongoose.connect('mongodb+srv://linh796:linh796@cluster0-lbsr0.mongodb.net/bookshop?retryWrites=true&w=majority')){
+  console.log('connected to database\n');
+}
 
 //3.tạo Schema
 var productsSchema = new mongoose.Schema({
@@ -18,7 +17,7 @@ var productsSchema = new mongoose.Schema({
   categoriesID: String,
   publisherID: String,
   info: String,
-  img: String
+  img: [String]
 }, { collection: 'products' });
 
 var categoriesSchema = new mongoose.Schema({
@@ -38,15 +37,6 @@ var publishers = mongoose.model('publishers', publisherSchema);
 
 
 /* GET home page. */
-// router.get('/index', function(req, res, next) {
-//   res.render('index');
-// });
-// router.get('/', function(req, res, next) {
-//   res.render('index');
-// });
-
-
-/* GET home page. */
 router.get('/', function (req, res, next) {
   categories.find()
     .then(function (category) {
@@ -63,15 +53,29 @@ router.get('/', function (req, res, next) {
 router.get('/index', function (req, res, next) {
   categories.find()
     .then(function (category) {
-      products.find()
-        .then(function (product) {
-          res.render('index', { categories: category, items: product, publisher: publisher });
+      publishers.find()
+        .then(function (publisher) {
+          products.find()
+            .then(function (product) {
+          res.render('index', { categories: category, publish: publisher, items: product});
+            });        
         });
     });
 });
 
+//get product-detail
+router.get('/product-detail:idProduct', function (req, res, next) {
+  products.findById(req.params.idProduct, function (err, doc) {
+    if (err) {
+      console.log("Can't show item\n");
+      //return 404
+    } else {
+      res.render('product-detail', {item: doc});
+      console.log(doc.info);
+    }
+  })
+})
 
-/* end GET home page. */
 
 router.get('/login',function(req, res, next) {
   res.render('login');
@@ -85,9 +89,9 @@ router.get('/contact',function(req, res, next) {
 router.get('/order',function(req, res, next) {
   res.render('order');
 });
-router.get('/product-detail',function(req, res, next) {
-  res.render('product-detail');
-});
+// router.get('/product-detail', function (req, res, next) {
+//   res.render('product-detail');
+// });
 router.get('/shoping-cart',function(req, res, next) {
   res.render('shoping-cart');
 });
