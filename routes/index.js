@@ -17,7 +17,7 @@ var productsSchema = new mongoose.Schema({
   categoriesID: String,
   publisherID: String,
   info: String,
-  img: String
+  img: [String]
 }, { collection: 'products' });
 
 var categoriesSchema = new mongoose.Schema({
@@ -60,8 +60,19 @@ router.get('/index', function (req, res, next) {
     });
 });
 
+//get product-detail
+router.get('/product-detail:idProduct', function (req, res, next) {
+  products.findById(req.params.idProduct, function (err, doc) {
+    if (err) {
+      console.log("Can't show item\n");
+      //return 404
+    } else {
+      res.render('product-detail', {item: doc});
+      console.log(doc.info);
+    }
+  })
+})
 
-/* end GET home page. */
 
 router.get('/login',function(req, res, next) {
   res.render('login');
@@ -75,9 +86,9 @@ router.get('/contact',function(req, res, next) {
 router.get('/order',function(req, res, next) {
   res.render('order');
 });
-router.get('/product-detail',function(req, res, next) {
-  res.render('product-detail');
-});
+// router.get('/product-detail', function (req, res, next) {
+//   res.render('product-detail');
+// });
 router.get('/shoping-cart',function(req, res, next) {
   res.render('shoping-cart');
 });
