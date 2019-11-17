@@ -53,9 +53,12 @@ router.get('/', function (req, res, next) {
 router.get('/index', function (req, res, next) {
   categories.find()
     .then(function (category) {
-      products.find()
-        .then(function (product) {
-          res.render('index', { categories: category, items: product, publisher: publisher });
+      publishers.find()
+        .then(function (publisher) {
+          products.find()
+            .then(function (product) {
+          res.render('index', { categories: category, publish: publisher, items: product});
+            });        
         });
     });
 });
