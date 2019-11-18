@@ -44,7 +44,7 @@ router.get('/', function (req, res, next) {
         .then(function (publisher) {
           products.find()
             .then(function (product) {
-          res.render('index', { categories: category, publish: publisher, items: product});
+              res.render('index', { categories: category, publish: publisher, items: product});
             });        
         });
     });
