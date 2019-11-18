@@ -63,6 +63,17 @@ router.get('/index', function (req, res, next) {
     });
 });
 
+router.post('/show-quickly', function(req, res, next){
+  products.findById(req.body.idValue, function(err, doc){
+    if(err){
+      console.log("Can't find with this body\n");
+      //return 404
+    }else{
+      res.render('popup-page', {model: doc, layout: false});
+    }
+  })
+})
+
 //get product-detail
 router.get('/product-detail:idProduct', function (req, res, next) {
   products.findById(req.params.idProduct, function (err, doc) {
