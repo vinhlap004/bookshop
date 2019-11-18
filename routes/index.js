@@ -38,30 +38,80 @@ var publishers = mongoose.model('publishers', publisherSchema);
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  categories.find()
+  if(req.query.search){
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    categories.find()
     .then(function (category) {
       publishers.find()
-        .then(function (publisher) {
-          products.find()
-            .then(function (product) {
-              res.render('index', { categories: category, publish: publisher, items: product});
-            });        
-        });
+      .then(function (publisher) {
+        products.find({title: regex})
+        .then(function (product) {
+          var noMatched;
+          if(product.length < 1 )
+          {
+            noMatched = "Rất tiếc chúng tôi không thể tìm thấy " + regex + " bạn đang tìm!!! :( :( :( ";
+          }
+          res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
+        });        
+      });
     });
+  } else{
+    categories.find()
+    .then(function (category) {
+      publishers.find()
+      .then(function (publisher) {
+        products.find()
+        .then(function (product) {
+          res.render('index', { categories: category, publish: publisher, items: product});
+        });        
+      });
+    });
+  }
 });
 
 router.get('/index', function (req, res, next) {
-  categories.find()
+  if(req.query.search){
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    categories.find()
     .then(function (category) {
       publishers.find()
-        .then(function (publisher) {
-          products.find()
-            .then(function (product) {
-          res.render('index', { categories: category, publish: publisher, items: product});
-            });        
-        });
+      .then(function (publisher) {
+        products.find({title: regex})
+        .then(function (product) {
+          var noMatched;
+          if(product.length < 1 )
+          {
+            noMatched = "Rất tiếc chúng tôi không thể tìm thấy " + regex + " bạn đang tìm!!! :( :( :( ";
+          }
+          res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
+        });        
+      });
     });
-});
+  } else{
+    categories.find()
+    .then(function (category) {
+      publishers.find()
+      .then(function (publisher) {
+        products.find()
+        .then(function (product) {
+          res.render('index', { categories: category, publish: publisher, items: product});
+        });        
+      });
+    });
+  }
+
+}); 
+
+router.post('/show-quickly', function(req, res, next){
+  products.findById(req.body.idValue, function(err, doc){
+    if(err){
+      console.log("Can't find with this body\n");
+      //return 404
+    }else{
+      res.render('popup-page', {model: doc, layout: false});
+    }
+  })
+})
 
 //get product-detail
 router.get('/product-detail:idProduct', function (req, res, next) {
@@ -103,5 +153,9 @@ router.get('/forget-password',function(req, res, next) {
 });
 
 
+//escape DDoS attack
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
