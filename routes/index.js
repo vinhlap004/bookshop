@@ -71,7 +71,6 @@ router.get('/', function (req, res, next) {
   }
 });
 
-
 router.post('/show-quickly', function(req, res, next){
   products.findById(req.body.idValue, function(err, doc){
     if(err){
