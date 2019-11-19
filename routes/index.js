@@ -83,14 +83,14 @@ router.get('/show-quickly/', function(req, res, next){
 })
 
 //get product-detail
-router.get('/product-detail:idProduct', function (req, res, next) {
-  products.findById(req.params.idProduct, function (err, doc) {
+router.get('/product-detail:id', function (req, res, next) {
+  console.log(req.params.id);
+  products.findById(req.params.id, function (err, doc) {
     if (err) {
       console.log("Can't show item\n");
       //return 404
     } else {
       res.render('product-detail', {item: doc});
-      console.log(doc.info);
     }
   })
 })
