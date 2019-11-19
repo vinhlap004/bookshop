@@ -38,29 +38,37 @@ var publishers = mongoose.model('publishers', publisherSchema);
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  categories.find()
+  const temp = req.query.search;
+  if(req.query.search){
+    //escaoe DDOS
+    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
+    categories.find()
     .then(function (category) {
       publishers.find()
-        .then(function (publisher) {
-          products.find()
-            .then(function (product) {
-              res.render('index', { categories: category, publish: publisher, items: product});
-            });        
-        });
+      .then(function (publisher) {
+        products.find({title: regex}).sort('title')
+        .then(function (product) {
+          var noMatched;
+          if(product.length < 1)
+          {
+            noMatched = "Rất tiếc chúng tôi không thể tìm thấy \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
+          }
+          res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
+        });        
+      });
     });
-});
-
-router.get('/index', function (req, res, next) {
-  categories.find()
+  } else{
+    categories.find()
     .then(function (category) {
       publishers.find()
-        .then(function (publisher) {
-          products.find()
-            .then(function (product) {
+      .then(function (publisher) {
+        products.find().sort('title')
+        .then(function (product) {
           res.render('index', { categories: category, publish: publisher, items: product});
-            });        
-        });
+        });        
+      });
     });
+  }
 });
 
 router.post('/show-quickly', function(req, res, next){
@@ -114,5 +122,9 @@ router.get('/forget-password',function(req, res, next) {
 });
 
 
+//escape DDoS attack
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;
