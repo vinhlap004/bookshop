@@ -12,11 +12,13 @@ router.get('/search-title', controllerProduct.search_by_title);
 /* GET search by author. */
 router.get('/search-author', controllerProduct.search_by_author);
 
+
 /* GET show-quickly. */
 router.get('/show-quickly/', controllerProduct.show_quickly);
 
 /* GET product-detail. */
 router.get('/product-detail:id', controllerProduct.product_detail);
+
 
 
 router.get('/login',function(req, res, next) {
