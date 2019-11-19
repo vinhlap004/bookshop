@@ -38,7 +38,9 @@ var publishers = mongoose.model('publishers', publisherSchema);
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+  const temp = req.query.search;
   if(req.query.search){
+    //escaoe DDOS
     const regex = new RegExp(escapeRegex(req.query.search), 'gi');
     categories.find()
     .then(function (category) {
@@ -47,9 +49,9 @@ router.get('/', function (req, res, next) {
         products.find({title: regex})
         .then(function (product) {
           var noMatched;
-          if(product.length < 1 )
+          if(product.length < 1 || categories.length < 1 || publishers.length < 1)
           {
-            noMatched = "Rất tiếc chúng tôi không thể tìm thấy " + regex + " bạn đang tìm!!! :( :( :( ";
+            noMatched = "Rất tiếc chúng tôi không thể tìm thấy \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
           }
           res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
         });        
@@ -69,38 +71,6 @@ router.get('/', function (req, res, next) {
   }
 });
 
-router.get('/index', function (req, res, next) {
-  if(req.query.search){
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    categories.find()
-    .then(function (category) {
-      publishers.find()
-      .then(function (publisher) {
-        products.find({title: regex})
-        .then(function (product) {
-          var noMatched;
-          if(product.length < 1 )
-          {
-            noMatched = "Rất tiếc chúng tôi không thể tìm thấy " + regex + " bạn đang tìm!!! :( :( :( ";
-          }
-          res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
-        });        
-      });
-    });
-  } else{
-    categories.find()
-    .then(function (category) {
-      publishers.find()
-      .then(function (publisher) {
-        products.find()
-        .then(function (product) {
-          res.render('index', { categories: category, publish: publisher, items: product});
-        });        
-      });
-    });
-  }
-
-}); 
 
 router.post('/show-quickly', function(req, res, next){
   products.findById(req.body.idValue, function(err, doc){
