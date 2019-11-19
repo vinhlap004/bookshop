@@ -1,101 +1,22 @@
 var express = require('express');
 var router = express.Router();
 
-//1.require mongoose
-var mongoose = require('mongoose');
-
-//2.connect
-if (mongoose.connect('mongodb+srv://linh796:linh796@cluster0-lbsr0.mongodb.net/bookshop?retryWrites=true&w=majority')){
-  console.log('connected to database\n');
-}
-
-//3.tạo Schema
-var productsSchema = new mongoose.Schema({
-  title: String,
-  price: Number,
-  author: String,
-  categoriesID: String,
-  publisherID: String,
-  info: String,
-  img: [String]
-}, { collection: 'products' });
-
-var categoriesSchema = new mongoose.Schema({
-  categoriesID: String,
-  categories: String
-}, { collection: 'categories' });
-
-var publisherSchema = new mongoose.Schema({
-  publisherID: String,
-  publisher: String
-}, { collection: 'publishers' });
-
-//4.tạo model
-var products = mongoose.model('products', productsSchema);
-var categories = mongoose.model('categories', categoriesSchema);
-var publishers = mongoose.model('publishers', publisherSchema);
-
+const controllerProduct =require('../controllers/products.controller');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  const temp = req.query.search;
-  if(req.query.search){
-    //escaoe DDOS
-    const regex = new RegExp(escapeRegex(req.query.search), 'gi');
-    categories.find()
-    .then(function (category) {
-      publishers.find()
-      .then(function (publisher) {
-        products.find({title: regex}).sort('title')
-        .then(function (product) {
-          var noMatched;
-          if(product.length < 1)
-          {
-            noMatched = "Rất tiếc chúng tôi không thể tìm thấy \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
-          }
-          res.render('index', { categories: category, publish: publisher, items: product, noMatched: noMatched});
-        });        
-      });
-    });
-  } else{
-    categories.find()
-    .then(function (category) {
-      publishers.find()
-      .then(function (publisher) {
-        products.find().sort('title')
-        .then(function (product) {
-          res.render('index', { categories: category, publish: publisher, items: product});
-        });        
-      });
-    });
-  }
-});
+router.get('/', controllerProduct.index);
 
-router.get('/show-quickly/', function(req, res, next){
-  products.findById(req.query.idValue, function(err, doc){
-    if(err){
-      console.log("Can't find with this body\n");
-      //return 404
-    }else{
-      res.render('popup-page', {model: doc, layout: false});
-    }
-  })
-})
+/* GET search by title. */
+router.get('/search-title', controllerProduct.search_by_title);
 
-//get product-detail
-router.get('/product-detail:id', function (req, res, next) {
-  console.log(req.params.id);
-  products.findById(req.params.id, function (err, dataProduct) {
-    if (err) {
-      console.log("Can't show item\n");
-      //return 404
-    } else {
-      publishers.findOne({publisherID: dataProduct.publisherID}, function(err, dataPublisher){
-        res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
-      })
-    }
-  })
-})
+/* GET search by author. */
+router.get('/search-author', controllerProduct.search_by_author);
+
+/* GET show-quickly. */
+router.get('/show-quickly/', controllerProduct.show_quickly);
+
+/* GET product-detail. */
+router.get('/product-detail:id', controllerProduct.product_detail);
 
 
 router.get('/login',function(req, res, next) {
@@ -124,9 +45,5 @@ router.get('/forget-password',function(req, res, next) {
 });
 
 
-//escape DDoS attack
-function escapeRegex(text) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-};
 
 module.exports = router;
