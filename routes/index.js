@@ -49,7 +49,7 @@ router.get('/', function (req, res, next) {
         products.find({title: regex})
         .then(function (product) {
           var noMatched;
-          if(product.length < 1 || categories.length < 1 || publishers.length < 1)
+          if(product.length < 1)
           {
             noMatched = "Rất tiếc chúng tôi không thể tìm thấy \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
           }
