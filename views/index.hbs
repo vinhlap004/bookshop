@@ -56,29 +56,23 @@
 </section>
 
 <!-- Product -->
+
+
 <section class="bg0 p-t-23 p-b-140">
 	<div class="container">
 		<div class="p-b-10">
 			<h3 class="ltext-103 cl5">
 				Tổng quan sản phẩm
-			</h3>
+			</h3><br>
+			{{#if noMatched}}
+				<h3>
+					{{noMatched}}
+				</h3>
+			{{/if}}
 		</div>
 
 		<div class="flex-w flex-sb-m p-b-52">
-			<div class="flex-w flex-l-m filter-tope-group m-tb-10">
-				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 how-active1" data-filter="*">
-					Tất cả
-				</button>
-
-				<!-- hbs lọc theo categories -->
-				{{# each categories }}
-				<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-					data-filter=".{{this.categoriesID}}">{{this.categories}}</button>
-				{{/ each }}
-				<!-- end hbs lọc theo categories -->
-
-			</div>
-
+			
 			<div class="flex-w flex-c-m m-tb-10">
 				<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
 					<i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
@@ -95,14 +89,14 @@
 
 			<!-- Search product -->
 			<div class="dis-none panel-search w-full p-t-10 p-b-15">
-				<div class="bor8 dis-flex p-l-15">
+				<form action="/" metod = "GET" class="bor8 dis-flex p-l-15">
 					<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
 						<i class="zmdi zmdi-search"></i>
 					</button>
 
-					<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search-product"
-						placeholder="Search">
-				</div>
+					<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="search"
+						placeholder="Nhập tên sách cần tìm">
+				</form>
 			</div>
 
 			<!-- Filter -->
@@ -242,38 +236,22 @@
 						</ul>
 					</div>
 
-					<div class="filter-col4 p-b-27">
+					<!-- hbs lọc theo categories -->
+					<div class="filter-col4 p-b-27 ">
 						<div class="mtext-102 cl2 p-b-15">
-							Tags
+							Thể loại
 						</div>
-
-						<div class="flex-w p-t-4 m-r--5">
-							<a href="#"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Thờitrang
-							</a>
-
-							<a href="#"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Phongcách
-							</a>
-
-							<a href="#"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Áo
-							</a>
-
-							<a href="#"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Áokhoác
-							</a>
-
-							<a href="#"
-								class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-								Dạophố
-							</a>
+						<div class="flex-w p-t-4 m-r--5 filter-tope-group">
+						<button class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 "data-filter="*">Tất cả</button>
+						{{# each categories }}			
+							<button class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 "data-filter=".{{this.categoriesID}}">
+								{{this.categories}}
+							</button>
+						{{/ each }}
+							
 						</div>
 					</div>
+					<!-- end hbs lọc theo categories -->
 				</div>
 			</div>
 		</div>
@@ -301,7 +279,11 @@
 							</a>
 
 							<span class="stext-105 cl3">
+<<<<<<< HEAD
 								{{this.price}} ₫
+=======
+								{{this.price}}₫
+>>>>>>> 056b15bdfa8c46867d479ced852b0a0d4ee99072
 							</span>
 						</div>
 
