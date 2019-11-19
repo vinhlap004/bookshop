@@ -1732,13 +1732,13 @@ button.mfp-close {
 
 .btn-num-product-up,
 .btn-num-product-down {
-  width: 30px;
+  width: 35px;
   height: 100%;
   cursor: pointer;
 }
 
 .num-product {
-  width: calc(100% - 60px);
+  width: calc(100% - 70px);
   height: 100%;
   border-left: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
