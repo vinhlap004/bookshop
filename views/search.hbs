@@ -1,71 +1,18 @@
-<!-- Slider -->
-<section class="section-slide">
-	<div class="wrap-slick1">
-		<div class="slick1">
-			<div class="item-slick1" style="background-image: url(images/slide-01.jpg);">
-				<div class="container h-full">
-					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInDown" data-delay="0">
-							<span class="ltext-101 clwhite respon2">
-								Bộ sưu tập 
-							</span>
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="fadeInUp" data-delay="800">
-							<h2 class="ltext-201 clwhite p-t-19 p-b-43 respon1">
-								Nguyễn Nhật Ánh
-							</h2>
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="zoomIn" data-delay="1600">
-							<a href="/search-author?search_author=nguyễn+nhật+ánh"
-								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Vào xem ngay
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="item-slick1" style="background-image: url(images/slide-02.jpg);">
-				<div class="container h-full">
-					<div class="flex-col-l-m h-full p-t-100 p-b-30 respon5">
-						<div class="layer-slick1 animated visible-false" data-appear="rollIn" data-delay="0">
-							<span class="ltext-101 clwhite respon2">
-								Bộ sưu tập
-							</span>
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="lightSpeedIn" data-delay="800">
-							<h2 class="ltext-201 clwhite p-t-19 p-b-43 respon1">
-								Harry Potter
-							</h2>
-						</div>
-
-						<div class="layer-slick1 animated visible-false" data-appear="slideInUp" data-delay="1600">
-
-							<a href="/search-title?search_title=harry"
-
-								class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04">
-								Vào xem ngay
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
 <!-- Product -->
 
 
 <section class="bg0 p-t-23 p-b-140">
 	<div class="container">
 		<div class="p-b-10">
-			<h3 class="ltext-103 cl5">
-				Tổng quan sản phẩm
-			</h3>
+			{{#if noMatched}}
+				<h3 class="ltext-103 cl5">
+					{{noMatched}}
+				</h3>
+			{{else}}
+				<h3 class="ltext-103 cl5">
+					{{Matched}}
+				</h3>
+			{{/if}}
 		</div>
 
 		<div class="flex-w flex-sb-m p-b-52">
@@ -85,6 +32,9 @@
 			</div>
 
 			<!-- Search product -->
+			
+			<!-- Search product by title -->
+
 			<div class="dis-none panel-search w-full p-t-10 p-b-15">
 				<form action="/search-title" metod = "GET" class="bor8 dis-flex p-l-15">
 					<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
@@ -96,6 +46,8 @@
 				</form>
 			</div>
 
+			<!-- Search product by author -->
+
 			<div class="dis-none panel-search w-full p-t-10 p-b-15">
 				<form action="/search-author" metod = "GET" class="bor8 dis-flex p-l-15">
 					<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
@@ -106,7 +58,6 @@
 						placeholder="Nhập tên tác giả cần tìm">
 				</form>
 			</div>
-
 
 			<!-- Filter -->
 			<div class="dis-none panel-filter w-full p-t-10">
@@ -220,7 +171,7 @@
 							</a>
 
 							<span class="stext-105 cl3">
-								{{this.price}} ₫
+								{{this.price}}₫
 							</span>
 						</div>
 
