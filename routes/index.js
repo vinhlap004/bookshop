@@ -46,7 +46,7 @@ router.get('/', function (req, res, next) {
     .then(function (category) {
       publishers.find()
       .then(function (publisher) {
-        products.find({title: regex})
+        products.find({title: regex}).sort('title')
         .then(function (product) {
           var noMatched;
           if(product.length < 1)
@@ -62,7 +62,7 @@ router.get('/', function (req, res, next) {
     .then(function (category) {
       publishers.find()
       .then(function (publisher) {
-        products.find()
+        products.find().sort('title')
         .then(function (product) {
           res.render('index', { categories: category, publish: publisher, items: product});
         });        
