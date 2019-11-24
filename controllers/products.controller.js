@@ -2,16 +2,34 @@ const products =require('../model/products.model');
 const categories =require('../model/categories.model');
 const publishers =require('../model/publishers.model');
 
+var handlebars = require('hbs');
+handlebars.registerHelper("setVar", function(varName, varValue, options) {
+  options.data.root[varName] = varValue;
+});
+
 // module to render index or /
 module.exports.index = function (req, res, next) {
+	let check = req.query.sort;
 	categories.find()
 	.then(function (category) {
 		publishers.find()
 		.then(function (publisher) {
-			products.find().sort('title')
-			.then(function (product) {
-				res.render('index', { categories: category, publish: publisher, items: product});
-			});        
+			if (check === '1') {
+				products.find().sort('price')
+				.then(function (product) {
+					res.render('index', { categories: category, publish: publisher, items: product});
+				});      
+			} else if (check === '-1') {
+				products.find().sort([['price', -1]])
+				.then(function (product) {
+					res.render('index', { categories: category, publish: publisher, items: product});
+				}); 
+			} else {
+				products.find().sort('title')
+				.then(function (product) {
+					res.render('index', { categories: category, publish: publisher, items: product});
+				});        
+			}
 		});
 	});
 };
@@ -33,7 +51,7 @@ module.exports.search_by_title = function (req, res) {
 					noMatched = "Rất tiếc chúng tôi không thể tìm thấy tên sách \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
 				}
 				else{
-					Matched = "Các sách được tìm thấy theo tên \"" + temp + "\"";
+					Matched = "Có " + product.length + " cuốn sách được tìm thấy theo tên \"" + temp + "\"";
 				}
 				res.render('search', { categories: category, publish: publisher, items: product, noMatched: noMatched, Matched: Matched});
 			});        
