@@ -84,49 +84,40 @@
 
 					</div>
 
+
 					<div class="filter-col2 p-r-15 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
-							Giá
+							Sắp xếp
 						</div>
 
-						<ul>
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-									Tất cả
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04">
-									0 - 1 000 000₫
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04">
-									1 000 000 - 2 000 000₫
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04">
-									2 000 000 - 3 000 000₫
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04">
-									3 000 000 - 4 000 000₫
-								</a>
-							</li>
-
-							<li class="p-b-6">
-								<a href="#" class="filter-link stext-106 trans-04">
-									Trên 4 000 000₫
-								</a>
-							</li>
-						</ul>
+						<form class="d-inline-block" id="check">
+						<div class="form-check">
+							<label class="form-check-label" for="0">
+								<input type="radio" class="form-check-input" id="0" name="checkSort" value="0" onclick = "Send()">Sắp xếp theo tên
+							</label>
+						</div>
+						<div class="form-check">
+							<label class="form-check-label" for="1">
+								<input type="radio" class="form-check-input" id="1" name="checkSort" value="1" onclick = "Send()">Sắp xếp theo giá tăng dần
+							</label>
+						</div>						
+						<div class="form-check">
+							<label class="form-check-label" for="-1">
+								<input type="radio" class="form-check-input" id="-1" name="checkSort" value="-1" onclick = "Send()">Sắp xếp theo giá giảm dần
+							</label>
+						</div>						    
+						</form>
 					</div>
+
+
+					<script type="text/javascript">
+       					function Send(){
+       						var url = location.href;
+       						url += "&sort=" + encodeURIComponent(document.getElementsByName("checkSort").value);
+       						window.location.href = url;
+       					}
+    				</script>
+
 
 					<!-- hbs lọc theo categories -->
 					<div class="filter-col4 p-b-27 ">
