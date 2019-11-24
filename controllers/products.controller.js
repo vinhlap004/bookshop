@@ -78,16 +78,17 @@ module.exports.show_quickly = function(req, res, next){
 };
 
 module.exports.product_detail =function (req, res, next) {
-  console.log(req.params.id);
-  products.findById(req.params.id, function (err, dataProduct) {
+  products.findById(req.query.id, function (err, dataProduct) {
     if (err) {
       console.log("Can't show item\n");
-      //return 404
-    } else {
+      return res.sendStatus(500);
+    } else if(dataProduct.length>0) {
       publishers.findOne({publisherID: dataProduct.publisherID}, function(err, dataPublisher){
         res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
       })
-    }
+    }else{
+		return res.sendStatus(404);
+	}
   })
 };
 

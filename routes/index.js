@@ -17,7 +17,7 @@ router.get('/search-author', controllerProduct.search_by_author);
 router.get('/show-quickly/', controllerProduct.show_quickly);
 
 /* GET product-detail. */
-router.get('/product-detail:id', controllerProduct.product_detail);
+router.get('/product-detail', controllerProduct.product_detail);
 
 
 
