@@ -4,14 +4,26 @@ const publishers =require('../model/publishers.model');
 
 // module to render index or /
 module.exports.index = function (req, res, next) {
+	const products_per_page = 5;
+	var page;
+	if(!req.query.page){
+		page = 0;
+	}else{
+		page = req.query.page;
+	}
 	categories.find()
 	.then(function (category) {
 		publishers.find()
 		.then(function (publisher) {
-			products.find().sort('title')
-			.then(function (product) {
-				res.render('index', { categories: category, publish: publisher, items: product});
-			});        
+			var query = products.find().sort('title');
+			query.then(function(total){
+				const totalProduct = total.length;
+				query.skip(page*products_per_page)
+				.limit(products_per_page)
+				.then(function (product) {
+					res.render('index', { categories: category, publish: publisher, items: product, total: totalProduct});
+				});   
+			})			     
 		});
 	});
 };

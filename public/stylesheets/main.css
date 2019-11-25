@@ -3328,7 +3328,7 @@ a.active-tab{
   margin: 10px 0;
   padding: 20px;
 }
-.page-number a li{
+#page-number a li{
   display: inline-block;
   height: 40px;
   width: 40px;
@@ -3336,18 +3336,19 @@ a.active-tab{
   text-align: center;
   line-height: 40px;
 }
-.page-number a:last-child li{
+#page-number a:last-child li{
   margin-right: 0;
 }
 
-.page-number a{
+#page-number a{
   color: #000;
 }
-.page-number a:hover li{
+#page-number a:hover li{
   background-color: #6774d5;
   color: #fff;
+  cursor: pointer;
 }
-.page-active{
+li.page-active{
   background-color: #b74207;
   color: #fff;
 }
