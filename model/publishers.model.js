@@ -1,8 +1,9 @@
+require('dotenv').config()
 //1.require mongoose
 var mongoose = require('mongoose');
 
 //2.connect
-if (mongoose.connect('mongodb+srv://linh796:linh796@cluster0-lbsr0.mongodb.net/bookshop?retryWrites=true&w=majority')){
+if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
 	console.log('connected to database\n');
 }
 
