@@ -9,7 +9,7 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 
 // module to render index or /
 module.exports.index = function(req, res, next) {
-	const products_per_page = 5;
+	const products_per_page = 8;
 	var page;
 	if(!req.query.page){
 		page = 0;
@@ -55,25 +55,37 @@ module.exports.search_by_title = function (req, res) {
 	const temp = req.query.search_title;
 	//escape DDOS
 	const regex = new RegExp(escapeRegex(req.query.search_title), 'gi');
+	const products_per_page = 8;
+	var page;
+	if(!req.query.page){
+		page = 0;
+	}else{
+		page = req.query.page;
+	}
 	categories.find()
-	.then(function (category) {
-		publishers.find()
-		.then(function (publisher) {
-			products.find({title: regex}).sort('title')
-			.then(function (product) {
-				var noMatched, Matched;
-				if(product.length < 1)
-				{
-					noMatched = "Rất tiếc chúng tôi không thể tìm thấy tên sách \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
-				}
-				else{
-					Matched = "Có " + product.length + " cuốn sách được tìm thấy theo tên \"" + temp + "\"";
-				}
-				res.render('search', { categories: category, publish: publisher, items: product, noMatched: noMatched, Matched: Matched});
-			});        
-		});
-	});
-};
+		.then(function (category) {
+			publishers.find()
+				.then(function (publisher) {
+					var query = products.find({ title: regex }).sort('title');
+					query.then(function (total) {
+						const totalProduct = total.length;
+						query.skip(page * products_per_page)
+							.limit(products_per_page)
+							.then(function (product) {
+								var noMatched, Matched;
+								if (product.length < 1) {
+									noMatched = "Rất tiếc chúng tôi không thể tìm thấy tên sách \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
+								}
+								else {
+									Matched = "Có " + totalProduct + " cuốn sách được tìm thấy theo tên \"" + temp + "\"";
+								}
+								res.render('search', { categories: category, publish: publisher, items: product, noMatched: noMatched, Matched: Matched, total : totalProduct });
+							});
+					});
+				});
+		})
+	}
+
 
 // module to search by author
 module.exports.search_by_author = function (req, res) {
