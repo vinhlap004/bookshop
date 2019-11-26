@@ -6,11 +6,9 @@ const controllerProduct =require('../controllers/products.controller');
 /* GET home page. */
 router.get('/', controllerProduct.index);
 
-/* GET search by title. */
-router.get('/search-title', controllerProduct.search_by_title);
 
-/* GET search by author. */
-router.get('/search-author', controllerProduct.search_by_author);
+/* GET search. */
+router.get('/search', controllerProduct.search);
 
 
 /* GET show-quickly. */

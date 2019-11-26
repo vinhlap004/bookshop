@@ -8,109 +8,93 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 });
 
 // module to render index or /
-module.exports.index = function(req, res, next) {
+module.exports.index = async function(req, res, next) {
 	const products_per_page = 8;
-	var page;
-	if(!req.query.page){
+	let page;
+	//get page
+	if(!req.query.page)
 		page = 0;
-	}else{
+	else
 		page = req.query.page;
-	}
-	let check = req.query.sort;
-	categories.find()
-	.then(function (category) {
-		publishers.find()
-		.then(function (publisher) {
-			var query = products.find().sort('title');
-			query.then(function(total){
-				const totalProduct = total.length;
-				query.skip(page*products_per_page)
-				.limit(products_per_page)
-				.then(function (product) {
-					res.render('index', { categories: category, publish: publisher, items: product, total: totalProduct});
-				});   
-			})			     
-			/*if (check === '1') {
-				products.find().sort('price')
-				.then(function (product) {
-					res.render('index', { categories: category, publish: publisher, items: product});
-				});      
-			} else if (check === '-1') {
-				products.find().sort([['price', -1]])
-				.then(function (product) {
-					res.render('index', { categories: category, publish: publisher, items: product});
-				}); 
-			} else {
-				products.find().sort('title')
-				.then(function (product) {
-					res.render('index', { categories: category, publish: publisher, items: product});
-				});        
-			}*/
-		});
+
+	//get order sort
+	let sortBy; 
+	if(req.query.sort == "title" || req.query.sort == null)
+		sortBy = {"title" : 1};
+	else if(req.query.sort == "asc-price")
+		sortBy = {"price" : 1};
+	else
+		sortBy = {"price" : -1};
+	
+	//query
+	
+	const [category, publisher, totalProduct, product] =
+		await Promise.all([categories.find(),
+		publishers.find(),
+		products.find().sort(sortBy).count(),
+		products.find().sort(sortBy).skip(page * products_per_page).limit(products_per_page)]);
+
+	res.render('index', {
+		categories: category,
+		publish: publisher,
+		items: product,
+		total: totalProduct
 	});
+	     
 };
 
 // module to search by title
-module.exports.search_by_title = function (req, res) {
-	const temp = req.query.search_title;
+module.exports.search = async function (req, res) {
+	const temp = req.query.keyword;
 	//escape DDOS
-	const regex = new RegExp(escapeRegex(req.query.search_title), 'gi');
+	const regex = new RegExp(escapeRegex(temp), 'gi');
+	let total = 0;
+	
 	const products_per_page = 8;
-	var page;
-	if(!req.query.page){
+	let page;
+	//get page
+	if(!req.query.page)
 		page = 0;
-	}else{
+	else
 		page = req.query.page;
-	}
-	categories.find()
-		.then(function (category) {
-			publishers.find()
-				.then(function (publisher) {
-					var query = products.find({ title: regex }).sort('title');
-					query.then(function (total) {
-						const totalProduct = total.length;
-						query.skip(page * products_per_page)
-							.limit(products_per_page)
-							.then(function (product) {
-								var noMatched, Matched;
-								if (product.length < 1) {
-									noMatched = "Rất tiếc chúng tôi không thể tìm thấy tên sách \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
-								}
-								else {
-									Matched = "Có " + totalProduct + " cuốn sách được tìm thấy theo tên \"" + temp + "\"";
-								}
-								res.render('search', { categories: category, publish: publisher, items: product, noMatched: noMatched, Matched: Matched, total : totalProduct });
-							});
-					});
-				});
-		})
-	}
 
-
-// module to search by author
-module.exports.search_by_author = function (req, res) {
-	const temp = req.query.search_author;
-	//escape DDOS
-	const regex = new RegExp(escapeRegex(req.query.search_author), 'gi');
-	categories.find()
-	.then(function (category) {
-		publishers.find()
-		.then(function (publisher) {
-			products.find({author: regex}).sort('author')
-			.then(function (product) {
-				var noMatched, Matched;
-				if(product.length < 1)
-				{
-					noMatched = "Rất tiếc chúng tôi không thể tìm thấy sách theo tác giả \"" + temp + "\" bạn đang tìm!!! :( :( :( ";
-				}
-				else{
-					Matched = "Các sách tìm thấy được theo tên tác giả \"" + temp + "\"";
-				}
-				res.render('search', { categories: category, publish: publisher, items: product, noMatched: noMatched, Matched: Matched});
-			});        
-		});
+	//get order sort
+	let sortBy; 
+	if(req.query.sort == "title" || req.query.sort == null)
+		sortBy = {"title" : 1};
+	else if(req.query.sort == "asc-price")
+		sortBy = {"price" : 1};
+	else
+		sortBy = {"price" : -1};
+	
+	//query
+	
+	const [category, publisher, totalProduct, product] =
+		await Promise.all([categories.find(),
+		publishers.find(),
+		products.find({ $or: [{title: regex}, {author: regex}]}).sort(sortBy).count(),
+		products.find({ $or: [{title: regex}, {author: regex}]}).sort(sortBy)
+				.skip(page * products_per_page)
+				.limit(products_per_page)]);
+	
+	let noMatched, Matched;			
+	if (product.length < 1) {
+		noMatched = "Không tìm thấy sách nào. Hãy thử với từ khóa khác!";
+	}
+	else {
+		Matched = totalProduct + " kết quả cho từ khóa: <b>" + temp + "</b>";
+	}
+	res.render('search', {
+		categories: category,
+		publish: publisher,
+		items: product,
+		noMatched: noMatched,
+		Matched: Matched,
+		total: totalProduct
 	});
-};
+
+}
+
 
 module.exports.show_quickly = function(req, res, next){
   products.findById(req.query.idValue, function(err, doc){

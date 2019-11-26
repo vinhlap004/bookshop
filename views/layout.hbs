@@ -556,6 +556,7 @@
 		});
 
 	</script>
+	<!--Pagination=============================-->
 	<script>
 		$(document).ready(function () {
 			//number products
@@ -636,8 +637,8 @@
 				window.location.href = url;
 			});
 
-		})
-		function updateQueryStringParameter(uri, key, value) {
+			//update query string
+			function updateQueryStringParameter(uri, key, value) {
 				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
 				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
 				if (uri.match(re)) {
@@ -647,7 +648,37 @@
 					return uri + separator + key + "=" + value;
 				}
 			}
+		})
+			
+		
+	</script>
+	<!--Sort====================================-->
+	<script>
+		$(document).ready(function () {
+			$('#sort-by-title').on('click', sort);
+			$("#sort-by-asc-price").on('click', sort);
+			$("#sort-by-desc-price").on('click', sort);
 
+			//sort function
+			function sort() {
+				const param = $(this).attr("name");
+				let currentURL = window.location.href;
+				let url = updateQueryStringParameter(currentURL, 'sort', param);
+				window.location.href = url;
+			}
+			function updateQueryStringParameter(uri, key, value) {
+				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+				if (uri.match(re)) {
+					return uri.replace(re, '$1' + key + "=" + value + '$2');
+				}
+				else {
+					return uri + separator + key + "=" + value;
+				}
+			}
+		})
+		
+		
 	</script>
 </body>
 
