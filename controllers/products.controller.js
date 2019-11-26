@@ -115,14 +115,12 @@ module.exports.product_detail =function (req, res, next) {
   products.findById(req.query.id, function (err, dataProduct) {
     if (err) {
       console.log("Can't show item\n");
-      return res.sendStatus(500);
-    } else if(dataProduct.length>0) {
+      res.sendStatus(500);
+    } else {
       publishers.findOne({publisherID: dataProduct.publisherID}, function(err, dataPublisher){
-        res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
+		res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
       })
-    }else{
-		return res.sendStatus(404);
-	}
+    }
   })
 };
 
