@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const controllerProduct =require('../controllers/products.controller');
-const controllerUser =require('../controllers/user.controller');
+const controllerUser = require('../controllers/user.controller');
 
 /* GET home page. */
 router.get('/', controllerProduct.index);
@@ -51,7 +51,5 @@ router.get('/about',function(req, res, next) {
 router.get('/forget-password',function(req, res, next) {
   res.render('forget-password');
 });
-
-
 
 module.exports = router;

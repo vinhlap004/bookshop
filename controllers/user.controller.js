@@ -1,4 +1,5 @@
 const users = require('../model/user.model');
+const bcrypt = require('bcrypt');
 
 var handlebars = require('hbs');
 handlebars.registerHelper("setVar", function(varName, varValue, options) {
@@ -32,23 +33,49 @@ module.exports.register = async function(req, res, next) {
       res.render('register',{errors,username,password,confirmpassword,name,email,phonenumber});
     }
     else{
-      users.findOne({email : email})
+      users.findOne({username : username})
       .then(users=>{
         if(users){
           //user exists
           errors.push({msg:'Tên đăng nhập đã tồn tại!!'});
           res.render('register',{errors, username,password,confirmpassword,name,email,phonenumber});
         }
+        else{
+          const newuser = new users ({
+            username,
+            password,
+            name,
+            email,
+            phonenumber
+          });
+          console.log(users);
+          //console.log(newuser);
+          // Hash password
+          bcrypt.genSalt(10,(err,salt)=>
+          bcrypt.hash(newuser.password,salt,(err,hash)=>{
+            if(err) throw err;
+            // set password to hash
+            newuser.password= hash;
+            //save user
+            console.log(newuser);
+            newuser.save()
+            .then(users => {
+              res.redirect('/login');
+            })
+            .catch(err=>console.log(err));
+          }))
+          // newuser.save()
+          // res.render('login');
+        }
       });
     }
-      const newuser = new users ({
-        username,
-        password,
-        name,
-        email,
-        phonenumber
-      });
-      //console.log(newuser);
-      newuser.save()
-      res.render('login');
+}
+
+module.exports.login = async function(req, res, next) {
+    passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  })(req, res, next);
+
 }
