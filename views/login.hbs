@@ -16,10 +16,10 @@
 
 	<!-- Shoping Cart -->
 
-    <form class="form-signin">
+    <form class="form-signin" action="/login" method="POST">
         <h4 class="txt-center">Đăng nhập</h4>
-        <input type="text" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
-        <input type="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
+        <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
+        <input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
         <div class="check">
             <div>
                 <label>
@@ -36,10 +36,11 @@
             </div>
         </div>        
         <div class="row">
-            <a href="index" class="col">
+            <input type="submit" name="" class="btn-login" value="Đăng Nhập">
+            {{!-- <a href="index" class="col">
                 <div class="btn-login">
                     Đăng nhập
                 </div>
-            </a>
+            </a> --}}
         </div>
     </form>
