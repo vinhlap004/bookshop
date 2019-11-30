@@ -1,7 +1,7 @@
 require('dotenv').config()
 //1.require mongoose
 var mongoose = require('mongoose');
-const products =require('../model/user.model');
+
 //2.connect
 if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
 	console.log('connected to database\n');

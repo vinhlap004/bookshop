@@ -17,6 +17,8 @@
 
 	<form class="form-register" action="/register" method="POST">
 		<h4 class="txt-center">Đăng ký</h4>
+
+		{{!-- get error --}}
 		{{# each errors}}
 			<div class="alert alert-warning alert-dismissible fade show" role="alert">
   			<span>{{this.msg}}</span>
@@ -25,12 +27,13 @@
   			</button>
 			</div>
 		{{/ each}}
-		<input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
-		<input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
-		<input type="password" name="confirmpasword" class="form-control" placeholder="Xác nhận mật khẩu" autocomplete="off">
-		<input type="text" name="name" class="form-control" placeholder="Họ tên" autocomplete="off">
-		<input type="email" name="email" class="form-control" placeholder="Email" autocomplete="off">
-		<input type="number" name="phonenumber" class="form-control" placeholder="Điện thoại" autocomplete="off">
+
+		<input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off" value="{{username}}">
+		<input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off" value="{{password}}" >
+		<input type="password" name="confirmpassword" class="form-control" placeholder="Xác nhận mật khẩu" autocomplete="off" value="{{confirmpassword}}">
+		<input type="text" name="name" class="form-control" placeholder="Họ tên" autocomplete="off" value="{{name}}">
+		<input type="email" name="email" class="form-control" placeholder="Email" autocomplete="off" value="{{email}}">
+		<input type="number" name="phonenumber" class="form-control" placeholder="Điện thoại" autocomplete="off" value="{{phonenumber}}">
 		<div class="check">
 			<div>
 				<label>
