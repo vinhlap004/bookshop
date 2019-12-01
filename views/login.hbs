@@ -18,8 +18,8 @@
 
     <form class="form-signin" action="/login" method="POST">
         <h4 class="txt-center">Đăng nhập</h4>
-        <input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
-        <input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
+        <input type="text" id="username" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
+        <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
         <div class="check">
             <div>
                 <label>
@@ -36,11 +36,6 @@
             </div>
         </div>        
         <div class="row">
-            <input type="submit" name="" class="btn-login" value="Đăng Nhập">
-            {{!-- <a href="index" class="col">
-                <div class="btn-login">
-                    Đăng nhập
-                </div>
-            </a> --}}
+            <input type="submit" class="btn-login" value="Đăng Nhập">
         </div>
     </form>

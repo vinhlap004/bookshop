@@ -7,7 +7,6 @@ const controllerUser = require('../controllers/user.controller');
 /* GET home page. */
 router.get('/', controllerProduct.index);
 
-
 /* GET search. */
 router.get('/search', controllerProduct.search);
 
@@ -22,13 +21,11 @@ router.get('/contact',function(req, res, next) {
   res.render('contact');
 });
 
-// router.get('/login',function(req, res, next) {
-//   res.render('login');
-// });
-
 router.get('/login',function(req, res, next) {
   res.render('login');
 });
+
+router.post('/login',controllerUser.login);
 
 router.get('/register',function(req, res, next) {
   res.render('register');
@@ -39,9 +36,9 @@ router.post('/register',controllerUser.register);
 router.get('/order',function(req, res, next) {
   res.render('order');
 });
-// router.get('/product-detail', function (req, res, next) {
-//   res.render('product-detail');
-// });
+router.get('/product-detail', function (req, res, next) {
+  res.render('product-detail');
+});
 router.get('/shoping-cart',function(req, res, next) {
   res.render('shoping-cart');
 });

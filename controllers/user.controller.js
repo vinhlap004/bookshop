@@ -1,5 +1,6 @@
 const users = require('../model/user.model');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 
 var handlebars = require('hbs');
 handlebars.registerHelper("setVar", function(varName, varValue, options) {
@@ -48,7 +49,6 @@ module.exports.register = async function(req, res, next) {
             email,
             phonenumber
           });
-          console.log(users);
           //console.log(newuser);
           // Hash password
           bcrypt.genSalt(10,(err,salt)=>
@@ -75,7 +75,12 @@ module.exports.login = async function(req, res, next) {
     passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
-    failureFlash: true
   })(req, res, next);
+}
 
+// Logout
+
+module.exports.logout = async function(req, res, next) {
+  req.logout();
+  res.redirect('/users/login');
 }
