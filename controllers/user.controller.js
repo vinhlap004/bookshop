@@ -9,12 +9,12 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 
 // module to render register or /
 module.exports.register = async function(req, res) {
-    // get username, password, confirmpassword,name,email,phonenumber in register form
-    const{username, password, confirmpassword,name,email,phonenumber}=req.body;
+    // get username, password, confirmpassword,name,phonenumber in register form
+    const{username, password, confirmpassword,name,phonenumber}=req.body;
     let errors=[];
-    //console.log(username,password,confirmpassword,name,email,phonenumber);
+    //console.log(username,password,confirmpassword,name,phonenumber);
     // check required fields
-    if(!username || !password || !confirmpassword || !name || !email || !phonenumber ){
+    if(!username || !password || !confirmpassword || !name || !phonenumber ){
         errors.push({msg:'Bạn nhập thiếu thông tin!!'});
     }
     
@@ -24,20 +24,19 @@ module.exports.register = async function(req, res) {
     }
 
     // check pass length
-    if(password.length<6 && !password){
+    if(!password || password.length < 6){
       errors.push({msg:'Chiều dài mật khẩu phải lớn hơn 6 kí tự'});
     }
 
     if(errors.length > 0)
     {
-      res.render('register',{errors,username,password,confirmpassword,name,email,phonenumber});
+      res.render('register',{errors,username,password,confirmpassword,name,phonenumber});
     }
     else{
       const newuser = new users ({
         username,
         password,
         name,
-        email,
         phonenumber
       });
 
@@ -46,7 +45,7 @@ module.exports.register = async function(req, res) {
         if(users){
           //user exists
           errors.push({msg:'Tên đăng nhập đã tồn tại!!'});
-          res.render('register',{errors, username,password,confirmpassword,name,email,phonenumber});
+          res.render('register',{errors, username,password,confirmpassword,name,phonenumber});
         }
         else{
           // Hash password
@@ -60,7 +59,7 @@ module.exports.register = async function(req, res) {
               newuser.save()
               .then(users => {
                 req.flash('success_msg', 'Bạn đăng kí tài khoản thành công! Hãy đăng nhập');
-                res.redirect('/login');
+                res.render('login',{username,password});
               })
               .catch(err=>console.log(err));
             });
