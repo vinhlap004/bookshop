@@ -1,7 +1,7 @@
 const products =require('../model/products.model');
 const categories =require('../model/categories.model');
 const publishers =require('../model/publishers.model');
-
+const comments = require('../model/comment.model')
 var handlebars = require('hbs');
 handlebars.registerHelper("setVar", function(varName, varValue, options) {
   options.data.root[varName] = varValue;
@@ -122,18 +122,13 @@ module.exports.show_quickly = function(req, res, next){
   })
 };
 
-module.exports.product_detail =function (req, res, next) {
-  products.findById(req.query.id, function (err, dataProduct) {
-    if (err) {
-      console.log("Can't show item\n");
-	  //res.sendStatus(500);
-	  next(err);
-    } else {
-      publishers.findOne({publisherID: dataProduct.publisherID}, function(err, dataPublisher){
-		res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
-      })
-    }
-  })
+module.exports.product_detail = async function (req, res, next) {
+  const dataProduct = await products.findById(req.query.id);
+  const [dataPublisher, dataComment] = await Promise.all([
+		publishers.findOne({publisherID: dataProduct.publisherID}),
+		comments.find({'_id': { $in: dataProduct.comments}})
+  ]);
+  res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher, comment: dataComment});
 };
 
 

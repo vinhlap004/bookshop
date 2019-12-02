@@ -15,26 +15,31 @@
 
 	<!-- Shoping Cart -->
 
-	<form class="form-register" action="/register" method="POST">
+	<form class="form-register" method="POST" action="/register">
 		<h4 class="txt-center">Đăng ký</h4>
 
 		{{!-- get error --}}
 		{{#if errors}}
 		{{# each errors}}
-			<div class="alert alert-warning alert-dismissible fade show" role="alert">
-  			<span>{{this.msg}}</span>
-  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-   			 <span aria-hidden="true">&times;</span>
-  			</button>
+			<div class="alert alert-warning alert-dismissible fade show err-server" role="alert">
+				<span>{{this.msg}}</span>
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
 			</div>
 		{{/ each}}
 		{{/if}}
-
-		<input type="email" name="username" class="form-control" placeholder="Email" autocomplete="off" value="{{username}}">
-		<input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off" value="{{password}}" >
-		<input type="password" name="confirmpassword" class="form-control" placeholder="Xác nhận mật khẩu" autocomplete="off" value="{{confirmpassword}}">
-		<input type="text" name="name" class="form-control" placeholder="Họ tên" autocomplete="off" value="{{name}}">
-		<input type="number" name="phonenumber" class="form-control" placeholder="Điện thoại" autocomplete="off" value="{{phonenumber}}">
+		<div class="alert alert-warning alert-dismissible fade show dis-none err-register" role="alert">
+			<span class="err-info"></span>
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<input type="email" name="username" class="form-control" onfocus="hideError()" placeholder="Email" autocomplete="off" value="{{username}}">
+		<input type="password" name="password" class="form-control" onfocus="hideError()" placeholder="Mật khẩu" autocomplete="off" value="{{password}}" >
+		<input type="password" name="confirmpassword" class="form-control" onfocus="hideError()" placeholder="Xác nhận mật khẩu" autocomplete="off" value="{{confirmpassword}}">
+		<input type="text" name="name" class="form-control" placeholder="Họ tên" onfocus="hideError()" autocomplete="off" value="{{name}}">
+		<input type="number" name="phonenumber" class="form-control" onfocus="hideError()" placeholder="Điện thoại" autocomplete="off" value="{{phonenumber}}">
 		<div class="check">
 			<div>
 				<label>
@@ -51,7 +56,7 @@
 			</div>
 		</div>
 		<div class="row">
-			<input type="submit" class="btn-login" value="Đăng ký">
+			<input type="submit" class="btn-register" value="Đăng ký">
 			{{!-- <a href="index" class="col">
 				<div class="btn-register">
 					Đăng ký
@@ -59,3 +64,54 @@
 			</a> --}}
 		</div>
 	</form>
+
+	<script>
+		$(document).ready(function(){
+			$('.btn-register').on('click submit', validateInput);
+			
+			function validateInput(){
+				//miss info
+				let email = $('input[name="username"]').val(),
+					password = $('input[name="password"]').val(),
+					confirmpassword = $('input[name="confirmpassword"]').val(),
+					name = $('input[name="name"]').val(),
+					phonenumber = $('input[name="phonenumber"]').val(),
+					check = $('.checkbox:checked');
+				if(!email || !password || !confirmpassword || !name || !phonenumber){
+					showError("Vui lòng nhập đủ thông tin");
+					return false;
+				}
+				if(password.length <6){
+					showError("Password phải dài hơn 6 ký tự");
+					return false;
+				}
+				if(password != confirmpassword){
+					showError("Password nhập lại không đúng");
+					return false;
+				}
+				if(name.indexOf(' ') < 0){
+					showError("Nhập tên đầy đủ");
+					return false;
+				}
+				if(parseInt(phonenumber)<=0 || isNaN(parseInt(phonenumber)) || phonenumber.length != 10){
+					showError("Số điện thoại không đúng");
+					return false;
+				}
+				if(check.length==0){
+					showError("Đọc điều khoản chưa?");
+					return false;
+				}
+			}
+
+			function showError(text){
+				$('.err-info').text(text);
+				$('.err-register').removeClass('dis-none').addClass('show-err');
+				$('.err-server').addClass('dis-none');
+			}
+			
+		})
+		function hideError() {
+			$('.err-register').removeClass('show-err').addClass('dis-none');
+			$('.err-server').addClass('dis-none');
+		}
+	</script>
