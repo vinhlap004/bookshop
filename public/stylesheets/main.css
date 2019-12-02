@@ -1686,6 +1686,7 @@ button.mfp-close {
 .filter-col2 {width: 27%;}
 .filter-col3 {width: 26%;}
 .filter-col4 {width: 20%;}
+.filter-col-5 {width: 29%;}
 
 /*---------------------------------------------*/
 .filter-link {
@@ -3348,7 +3349,7 @@ a.active-tab{
   color: #fff;
   cursor: pointer;
 }
-li.page-active{
+li.page-active, div.sort-active{
   background-color: #b74207;
   color: #fff;
 }
