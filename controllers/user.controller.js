@@ -59,7 +59,7 @@ module.exports.register = async function(req, res) {
               //console.log(newuser);
               newuser.save()
               .then(users => {
-                req.flash('success_msg', 'Bạn đăng kí tài khoản thành công!! Hãy đăng nhập');
+                req.flash('success_msg', 'Bạn đăng kí tài khoản thành công! Hãy đăng nhập');
                 res.redirect('/login');
               })
               .catch(err=>console.log(err));

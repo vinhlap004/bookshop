@@ -1,4 +1,3 @@
-require('dotenv').config()
 //1.require mongoose
 var mongoose = require('mongoose');
 
