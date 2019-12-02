@@ -1770,6 +1770,8 @@ input.num-product::-webkit-inner-spin-button {
   text-align: center;
   font-size: 18px;
   margin-top: 20px;
+  margin: auto;
+  width: 93%;
 }
 .btn-purchase:hover, .btn-login:hover, .btn-register:hover{
   background-color: #555;

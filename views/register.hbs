@@ -15,14 +15,27 @@
 
 	<!-- Shoping Cart -->
 
-	<form class="form-register">
+	<form class="form-register" action="/register" method="POST">
 		<h4 class="txt-center">Đăng ký</h4>
-		<input type="text" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
-		<input type="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
-		<input type="password" class="form-control" placeholder="Xác nhận mật khẩu" autocomplete="off">
-		<input type="text" class="form-control" placeholder="Họ tên" autocomplete="off">
-		<input type="email" class="form-control" placeholder="Email" autocomplete="off">
-		<input type="number" class="form-control" placeholder="Điện thoại" autocomplete="off">
+
+		{{!-- get error --}}
+		{{#if errors}}
+		{{# each errors}}
+			<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  			<span>{{this.msg}}</span>
+  			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+   			 <span aria-hidden="true">&times;</span>
+  			</button>
+			</div>
+		{{/ each}}
+		{{/if}}
+
+		<input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off" value="{{username}}">
+		<input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off" value="{{password}}" >
+		<input type="password" name="confirmpassword" class="form-control" placeholder="Xác nhận mật khẩu" autocomplete="off" value="{{confirmpassword}}">
+		<input type="text" name="name" class="form-control" placeholder="Họ tên" autocomplete="off" value="{{name}}">
+		<input type="email" name="email" class="form-control" placeholder="Email" autocomplete="off" value="{{email}}">
+		<input type="number" name="phonenumber" class="form-control" placeholder="Điện thoại" autocomplete="off" value="{{phonenumber}}">
 		<div class="check">
 			<div>
 				<label>
@@ -39,10 +52,11 @@
 			</div>
 		</div>
 		<div class="row">
-			<a href="index" class="col">
+			<input type="submit" class="btn-login" value="Đăng ký">
+			{{!-- <a href="index" class="col">
 				<div class="btn-register">
 					Đăng ký
 				</div>
-			</a>
+			</a> --}}
 		</div>
 	</form>
