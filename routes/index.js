@@ -27,6 +27,8 @@ router.get('/login',function(req, res, next) {
 
 router.post('/login',controllerUser.login);
 
+router.get('/logout',controllerUser.logout);
+
 router.get('/register',function(req, res, next) {
   res.render('register');
 });

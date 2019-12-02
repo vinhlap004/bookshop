@@ -19,6 +19,7 @@
 		<h4 class="txt-center">Đăng ký</h4>
 
 		{{!-- get error --}}
+		{{#if errors}}
 		{{# each errors}}
 			<div class="alert alert-warning alert-dismissible fade show" role="alert">
   			<span>{{this.msg}}</span>
@@ -27,6 +28,7 @@
   			</button>
 			</div>
 		{{/ each}}
+		{{/if}}
 
 		<input type="text" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off" value="{{username}}">
 		<input type="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off" value="{{password}}" >

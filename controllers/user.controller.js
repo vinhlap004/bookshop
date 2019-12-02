@@ -8,12 +8,11 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 });
 
 // module to render register or /
-module.exports.register = async function(req, res, next) {
+module.exports.register = async function(req, res) {
     // get username, password, confirmpassword,name,email,phonenumber in register form
     const{username, password, confirmpassword,name,email,phonenumber}=req.body;
     let errors=[];
-
-    console.log(username,password,confirmpassword,name,email,phonenumber);
+    //console.log(username,password,confirmpassword,name,email,phonenumber);
     // check required fields
     if(!username || !password || !confirmpassword || !name || !email || !phonenumber ){
         errors.push({msg:'Bạn nhập thiếu thông tin!!'});
@@ -28,12 +27,20 @@ module.exports.register = async function(req, res, next) {
     if(password.length<6 && !password){
       errors.push({msg:'Chiều dài mật khẩu phải lớn hơn 6 kí tự'});
     }
-    
+
     if(errors.length > 0)
     {
       res.render('register',{errors,username,password,confirmpassword,name,email,phonenumber});
     }
     else{
+      const newuser = new users ({
+        username,
+        password,
+        name,
+        email,
+        phonenumber
+      });
+
       users.findOne({username : username})
       .then(users=>{
         if(users){
@@ -42,39 +49,36 @@ module.exports.register = async function(req, res, next) {
           res.render('register',{errors, username,password,confirmpassword,name,email,phonenumber});
         }
         else{
-          const newuser = new users ({
-            username,
-            password,
-            name,
-            email,
-            phonenumber
+          // Hash password
+          bcrypt.genSalt(10,(err,salt)=>{
+            bcrypt.hash(newuser.password,salt,(err,hash)=>{
+              if(err) throw err;
+              // set password to hash
+              newuser.password= hash;
+              //save user
+              //console.log(newuser);
+              newuser.save()
+              .then(users => {
+                req.flash('success_msg', 'Bạn đăng kí tài khoản thành công!! Hãy đăng nhập');
+                res.redirect('/login');
+              })
+              .catch(err=>console.log(err));
+            });
           });
           //console.log(newuser);
-          // Hash password
-          bcrypt.genSalt(10,(err,salt)=>
-          bcrypt.hash(newuser.password,salt,(err,hash)=>{
-            if(err) throw err;
-            // set password to hash
-            newuser.password= hash;
-            //save user
-            console.log(newuser);
-            newuser.save()
-            .then(users => {
-              res.redirect('/login');
-            })
-            .catch(err=>console.log(err));
-          }))
-          // newuser.save()
-          // res.render('login');
+          //newuser.save()
+          //res.render('login');
         }
-      });
+      }).catch(err=>console.log(err));
     }
 }
 
+//login
 module.exports.login = async function(req, res, next) {
     passport.authenticate('local', {
     successRedirect: '/',
     failureRedirect: '/login',
+    failureFlash: true
   })(req, res, next);
 }
 
@@ -82,5 +86,6 @@ module.exports.login = async function(req, res, next) {
 
 module.exports.logout = async function(req, res, next) {
   req.logout();
-  res.redirect('/users/login');
+  req.flash('success_msg', 'Bạn đã đăng xuất');
+  res.redirect('/login');
 }

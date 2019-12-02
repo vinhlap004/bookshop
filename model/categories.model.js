@@ -3,9 +3,9 @@ require('dotenv').config()
 var mongoose = require('mongoose');
 
 //2.connect
-if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
-	console.log('connected to database\n');
-}
+// if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
+// 	console.log('connected to database\n');
+// }
 
 //3.tạo Schema
 var categoriesSchema = new mongoose.Schema({

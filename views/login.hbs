@@ -18,6 +18,47 @@
 
     <form class="form-signin" action="/login" method="POST">
         <h4 class="txt-center">Đăng nhập</h4>
+
+        
+            <!-- success msg -->
+             <!-- if success msg exists -->
+              {{#if success_msg}}
+            <!-- show success msg -->
+                  <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span>{{success_msg}}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>         
+              {{/if}}
+            <!-- end success msg -->
+
+
+            <!-- error msg -->
+            <!-- if err exists -->
+              {{#if error_msg }}
+            <!-- show error_msg  -->
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span>{{error_msg}}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              {{/if}}
+            <!-- end error msg -->
+
+            <!-- error -->
+             <!-- if err exists -->
+              {{#if error }}
+            <!-- show error  -->
+                  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <span>{{error}}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              {{/if}}
+            <!-- end error -->
         <input type="text" id="username" name="username" class="form-control" placeholder="Tên đăng nhập" autocomplete="off">
         <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" autocomplete="off">
         <div class="check">
