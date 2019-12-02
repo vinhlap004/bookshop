@@ -663,6 +663,17 @@
 	<!--Sort====================================-->
 	<script>
 		$(document).ready(function () {
+			//check sort by
+			let searchParams = new URLSearchParams(window.location.search);
+			const sortBy = searchParams.get('sort');
+			if(sortBy=="asc-price")
+				$('#sort-by-asc-price').parent().addClass('sort-active');
+			else if(sort=="desc-price")
+				$("#sort-by-desc-price").parent().addClass('sort-active');
+			else
+				$('#sort-by-title').parent().addClass('sort-active');
+
+
 			$('#sort-by-title').on('click', sort);
 			$("#sort-by-asc-price").on('click', sort);
 			$("#sort-by-desc-price").on('click', sort);

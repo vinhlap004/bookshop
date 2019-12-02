@@ -3562,6 +3562,10 @@ iframe {border: none;}
 	flex-direction: row-reverse;
 }
 
+.pad-10{
+	padding: 10px;
+}
+
 .flex-col-l,
 .flex-col-r,
 .flex-col-c,
