@@ -3351,7 +3351,32 @@ a.active-tab{
   color: #fff;
   cursor: pointer;
 }
-li.page-active, div.sort-active{
-  background-color: #b74207;
+li.page-active{
+  background-color: #586eff;
   color: #fff;
+}
+.btn-cus{
+  background-color: #586eff;
+  color: #fff;
+}
+.txt-err{
+  color: #b74207;
+  display: none;
+}
+.show-err{
+  display: block;
+}
+
+@media (max-width: 375px) {
+  .menu-bar {flex-direction: column;}
+  .filter-and-sort { flex-direction: row; align-items: flex-start;}
+  .search-and-result {align-items: flex-start; flex-direction: row-reverse;}
+}
+div.sort-active{
+  border-bottom: 1px solid #000;
+  color: #000;
+}
+#total-product{
+  color: #000;
+  font-weight: bold;
 }

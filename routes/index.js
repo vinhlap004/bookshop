@@ -17,6 +17,7 @@ router.get('/show-quickly/', controllerProduct.show_quickly);
 /* GET product-detail. */
 router.get('/product-detail', controllerProduct.product_detail);
 
+
 router.get('/contact',function(req, res, next) {
   res.render('contact');
 });

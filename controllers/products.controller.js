@@ -26,13 +26,22 @@ module.exports.index = async function(req, res, next) {
 	else
 		sortBy = {"price" : -1};
 	
+	//get filter
+	let minPrice = req.query.minPrice,
+		maxPrice = req.query.maxPrice;
+	if (minPrice==null){
+		minPrice = 0;
+		maxPrice = 1000000;
+	}
+
 	//query
 	
 	const [category, publisher, totalProduct, product] =
 		await Promise.all([categories.find(),
 		publishers.find(),
-		products.find().sort(sortBy).count(),
-		products.find().sort(sortBy).skip(page * products_per_page).limit(products_per_page)]);
+		products.find({price: {$gt: minPrice, $lt : maxPrice}}).sort(sortBy).count(),
+		products.find({price: {$gt: minPrice, $lt : maxPrice}}).sort(sortBy)
+				.skip(page * products_per_page).limit(products_per_page)]);
 
 	res.render('index', {
 		categories: category,
@@ -48,8 +57,6 @@ module.exports.search = async function (req, res) {
 	const temp = req.query.keyword;
 	//escape DDOS
 	const regex = new RegExp(escapeRegex(temp), 'gi');
-	let total = 0;
-	
 	const products_per_page = 8;
 	let page;
 	//get page
@@ -67,13 +74,21 @@ module.exports.search = async function (req, res) {
 	else
 		sortBy = {"price" : -1};
 	
+	//get filter
+	let minPrice = req.query.minPrice,
+		maxPrice = req.query.maxPrice;
+	if (minPrice==null){
+		minPrice = 0;
+		maxPrice = 1000000;
+	}
+
 	//query
 	
 	const [category, publisher, totalProduct, product] =
 		await Promise.all([categories.find(),
 		publishers.find(),
-		products.find({ $or: [{title: regex}, {author: regex}]}).sort(sortBy).count(),
-		products.find({ $or: [{title: regex}, {author: regex}]}).sort(sortBy)
+		products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}}).sort(sortBy).count(),
+		products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}}).sort(sortBy)
 				.skip(page * products_per_page)
 				.limit(products_per_page)]);
 	
@@ -100,7 +115,7 @@ module.exports.show_quickly = function(req, res, next){
   products.findById(req.query.idValue, function(err, doc){
     if(err){
       console.log("Can't find with this body\n");
-      //return 404
+      next(err);
     }else{
       res.render('popup-page', {model: doc, layout: false});
     }
@@ -111,7 +126,8 @@ module.exports.product_detail =function (req, res, next) {
   products.findById(req.query.id, function (err, dataProduct) {
     if (err) {
       console.log("Can't show item\n");
-      res.sendStatus(500);
+	  //res.sendStatus(500);
+	  next(err);
     } else {
       publishers.findOne({publisherID: dataProduct.publisherID}, function(err, dataPublisher){
 		res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher});
@@ -119,6 +135,8 @@ module.exports.product_detail =function (req, res, next) {
     }
   })
 };
+
+
 
 //escape DDoS attack
 function escapeRegex(text) {

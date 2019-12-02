@@ -66,26 +66,21 @@
 				Tổng quan sản phẩm
 			</h3>
 		</div>
-		<div class="flex-sb m-tb-10">
-			<div class="filter-and-sort flex-b">
-				<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
-					<i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
-					<i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
-					Lọc
-				</div>
-				<div class="flex-c-m sort stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 pad-10">
-					<a class="stext-106 cl6  bor3 trans-04 m-tb-5" id="sort-by-title" name="title">
-						Theo tên
+		<div class="flex-sb m-tb-10 menu-bar">
+			<div class="flex-b filter-and-sort">
+				<div class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 pad-5 flex-c-m">
+					<a class="stext-106 cl6  bor3 m-tb-5" id="sort-by-title" name="title">
+						A-Z
 					</a>
 				</div>
-				<div class="flex-c-m sort stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4  pad-10">
-					<a class="stext-106 cl6 bor3 trans-04 m-tb-5" id="sort-by-asc-price" name="asc-price">
-						Theo giá tăng dần
+				<div class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 pad-5 flex-c-m">
+					<a class="stext-106 cl6 bor3 m-tb-5" id="sort-by-asc-price" name="asc-price">
+						Thấp-Cao
 					</a>
 				</div>
-				<div class="flex-c-m sort stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-tb-4 pad-10">
-					<a class="stext-106 cl6  bor3 trans-04 m-tb-5" id="sort-by-desc-price" name="desc-price">
-						Theo giá giảm dần
+				<div class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 pad-5 flex-c-m">
+					<a class="stext-106 cl6  bor3 m-tb-5" id="sort-by-desc-price" name="desc-price">
+						Cao-Thấp
 					</a>
 				</div>
 			</div>
@@ -94,8 +89,13 @@
 					<span id="begin-product"></span>
 					<span>&ensp;-&ensp;</span>
 					<span id="end-product"></span>
-					<span>&ensp;trong tổng số&ensp;</span>
+					<span>&ensp;/&ensp;</span>
 					<span id="total-product">{{total}}</span>
+				</div>
+				<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
+					<i class="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"></i>
+					<i class="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"></i>
+					Lọc
 				</div>
 				<div class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-search">
 					<i class="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"></i>
@@ -112,7 +112,6 @@
 					<button class="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
 						<i class="zmdi zmdi-search"></i>
 					</button>
-
 					<input class="mtext-107 cl2 size-114 plh2 p-r-15" type="text" name="keyword"
 						placeholder="Nhập từ khóa cần tìm">
 				</form>
@@ -121,7 +120,7 @@
 
 			<!-- Filter -->
 			<div class="dis-none panel-filter w-full p-t-10">
-				<div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
+				<div class="flex-sb wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
 					<div class="filter-col1 p-r-15 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
 							Nhà xuất bản
@@ -141,10 +140,7 @@
 
 						</ul>
 						<!-- end hbs lọc theo publisher -->
-
-					</div>
-
-					
+					</div>					
 					<!-- hbs lọc theo categories -->
 					<div class="filter-col1 p-b-27 ">
 						<div class="mtext-102 cl2 p-b-15">
@@ -156,24 +152,26 @@
 							<button class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 "data-filter=".{{this.categoriesID}}">
 								{{this.categories}}
 							</button>
-						{{/ each }}
-							
+						{{/ each }}							
 						</div>
 					</div>
 					<div class="filter-col1 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
 							Khoảng giá
 						</div>
-						<form action="/filter" method="GET">
+						<form>
 							<div class="form-group">
 								<label>Từ</label>
-								<input type="number" class="form-control" placeholder="₫ Từ" name="min-price"></input>
+								<input type="number" class="form-control" value="0" placeholder="Trên 0₫" name="minPrice"></input>
 							</div>
 							<div class="form-group">
 								<label>Đến</label>
-								<input type="number" class="form-control" placeholder="₫ Đến" name="max-price"></input>
+								<input type="number" class="form-control" value="100000" placeholder="Dưới 1 000 000₫" name="maxPrice"></input>
 							</div>
-							<button type="submit">Lọc</button>
+							<label id="txt-err-price" class="txt-err">Điền khoảng giá phù hợp</label>
+							<button id="filter-by-price" type="button" class="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 btn-cus">
+								Áp dụng
+							</button>
 						</form>
 					</div>
 					<!-- end hbs lọc theo categories -->
