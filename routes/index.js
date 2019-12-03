@@ -39,9 +39,7 @@ router.post('/register',controllerUser.register);
 router.get('/order',function(req, res, next) {
   res.render('order');
 });
-router.get('/product-detail', function (req, res, next) {
-  res.render('product-detail');
-});
+
 router.get('/shoping-cart',function(req, res, next) {
   res.render('shoping-cart');
 });
