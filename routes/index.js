@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 const controllerProduct =require('../controllers/products.controller');
-const controllerUser = require('../controllers/user.controller');
 
 /* GET home page. */
 router.get('/', controllerProduct.index);
@@ -21,20 +20,6 @@ router.get('/product-detail', controllerProduct.product_detail);
 router.get('/contact',function(req, res, next) {
   res.render('contact');
 });
-
-router.get('/login',function(req, res, next) {
-  res.render('login');
-});
-
-router.post('/login',controllerUser.login);
-
-router.get('/logout',controllerUser.logout);
-
-router.get('/register',function(req, res, next) {
-  res.render('register');
-});
-
-router.post('/register',controllerUser.register);
 
 router.get('/order',function(req, res, next) {
   res.render('order');
