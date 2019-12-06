@@ -77,17 +77,17 @@
 
 
 						<!-- hbs lọc theo publisher -->
-						<ul class="filter-tope-group m-tb-10">
-							{{# each publish }}
-							<li class="p-b-6">
-								<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-									data-filter=".{{this.publisherID}}">
-									{{this.publisher}}
-								</button>
-							</li>
+						<form class="filter-tope-group m-tb-10" id="filter-by-publisher">
+							{{#each publish }}
+							<label>
+								<input type="checkbox" name="{{this.publisherID}}"
+									class="filter-by-publisher p-b-6 stext-106 cl6 hov1 bor3 trans-04 m-r-10 m-tb-5">
+								{{this.publisher}}
+								</input>
+							</label>
 							{{/each}}
 
-						</ul>
+						</form>
 						<!-- end hbs lọc theo publisher -->
 					</div>					
 					<!-- hbs lọc theo categories -->

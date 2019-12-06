@@ -3383,3 +3383,6 @@ div.sort-active{
 #provision{
   color: #b74207;
 }
+.filter-by-publisher{
+  display: inline;
+}
