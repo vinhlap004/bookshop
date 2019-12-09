@@ -3331,7 +3331,7 @@ a.active-tab{
   margin: 10px 0;
   padding: 20px;
 }
-#page-number a li{
+#page-number a li, #comment-page-number a li{
   display: inline-block;
   height: 40px;
   width: 40px;
@@ -3339,14 +3339,14 @@ a.active-tab{
   text-align: center;
   line-height: 40px;
 }
-#page-number a:last-child li{
+#page-number a:last-child li, #comment-page-number a:last-child li{
   margin-right: 0;
 }
 
-#page-number a{
+#page-number a, #comment-page-number a{
   color: #000;
 }
-#page-number a:hover li{
+#page-number a:hover li, #comment-page-number a:hover li{
   background-color: #6774d5;
   color: #fff;
   cursor: pointer;
@@ -3383,6 +3383,9 @@ div.sort-active{
 #provision{
   color: #b74207;
 }
-.filter-by-publisher{
+.filter-by-publisher, .filter-by-category{
   display: inline;
+}
+.txt-orange{
+  color: #b74207;
 }

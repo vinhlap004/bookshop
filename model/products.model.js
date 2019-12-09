@@ -11,7 +11,7 @@ var productsSchema = new mongoose.Schema({
   title: String,
   price: Number,
   author: String,
-  categoriesID: String,
+  categoriesID: [String],
   publisherID: String,
   info: String,
   img: [String],

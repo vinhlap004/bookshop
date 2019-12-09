@@ -445,6 +445,7 @@
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<!--===============================================================================================-->
 	<script src="vendor/select2/select2.min.js"></script>
+	<script src="https://www.jsviews.com/download/jsrender.min.js"></script>
 	<script>
 		$(".js-select2").each(function () {
 			$(this).select2({
@@ -547,7 +548,7 @@
 		$(document).ready(function () {
 			$('.btn-show-quickly').click(function () {
 				const id = $(this).attr('id');
-				$.get("/show-quickly/", { idValue: id }, function (data, status) {
+				$.get("/show-quickly", { idValue: id }, function (data, status) {
 					$('#popUp').html(data);
 					//action for arrow
 					//run after render popup
@@ -689,13 +690,33 @@
 			}
 		})		
 	</script>
-
+	<!--Filter=========================-->
 	<script>
-		//filter
 		$(document).ready(function () {
-			$('#filter-by-price').on('click', filterByPrice);
-
-			function filterByPrice(){
+			$('#filter-by-price').on('click', filter);
+			let searchParams = new URLSearchParams(window.location.search);
+			const publisher = searchParams.getAll('publisher');
+			const category = searchParams.getAll('category');
+			const sort = searchParams.get('sort');
+			let preMinPrice = searchParams.get('minPrice');
+			let preMaxPrice = searchParams.get('maxPrice'); 
+			
+			if (publisher!=null){
+				for(i = 0; i<publisher.length; i++){
+					$('input.filter-by-publisher[name=' + publisher[i]+']').attr("checked", "checked");
+				}
+			}
+			if (category!=null){
+				for(i = 0;i < category.length; i++)
+					$('input.filter-by-category[name=' + category[i]+']').attr("checked", "checked");
+			}
+			if (preMaxPrice!=null){
+				$('input[name="minPrice"]').val(preMinPrice);
+				$('input[name="maxPrice"]').val(preMaxPrice);
+			}
+				
+			//event when check on checkbox
+			function filter(){
 				let minPrice = parseInt($('input[name="minPrice"]').val());
 				let maxPrice = parseInt($('input[name="maxPrice"]').val());
 				//check min price, if false -> clear input
@@ -715,14 +736,26 @@
 				}
 				//update url
 				
-				let currentURL = window.location.href;
-				let url = updateQueryStringParameter(currentURL, 'minPrice', minPrice);
-				url = updateQueryStringParameter(url, 'maxPrice', maxPrice);
-				url = updateQueryStringParameter(url, 'page', 0);
-				window.location.href = url;
-			
-			}
 
+				let indexURL = "/"
+				//update price to url
+				let url = appendQueryStringParameter(indexURL, 'minPrice', minPrice);
+				url = appendQueryStringParameter(url, 'maxPrice', maxPrice);
+
+				//update publishers
+				$('input.filter-by-publisher:checkbox:checked').each(function(){
+					url = appendQueryStringParameter(url, 'publisher', $(this).attr('name'));
+				})
+				
+				//update categories tp url
+				$('input.filter-by-category:checkbox:checked').each(function(){
+					url = appendQueryStringParameter(url, 'category', $(this).attr('name'));
+				})
+				//update sort
+				if (sort != null)
+					url = appendQueryStringParameter(url, 'sort', sort);
+				window.location.href = url;
+			}
 
 			function updateQueryStringParameter(uri, key, value) {
 				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -734,52 +767,13 @@
 					return uri + separator + key + "=" + value;
 				}
 			}
-		})
-	</script>
-
-	<script>
-		//filter bay publisher
-		$(document).ready(function(){
-			//add checked attribute for input field gotten from uri
-			let searchParams = new URLSearchParams(window.location.search);
-			const publisher = searchParams.getAll('publisher');
-			if (publisher!=null){
-				for(i = 0; i<publisher.length; i++){
-					$('input.filter-by-publisher[name=' + publisher[i]+']').attr("checked", "checked");
-				}
-			}
-				
-			//event when check on checkbox
-			$('form#filter-by-publisher :checkbox').on('change', filerByPublisher);
-
-			function filerByPublisher(){
-				//append parameter to uri
-				const currentURL = window.location.href;
-				let url = updateQueryStringParameter(currentURL, 'publisher', $(this).attr('name'));
-				url = resetPage(url, 'page', 0);
-				window.location.href = url;
-			}
-			function updateQueryStringParameter(uri, key, value) {
-				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+			function appendQueryStringParameter(uri, key, value) {
 				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
 				return uri + separator + key + "=" + value;
 				
 			}
-			function resetPage(uri, key, value) {
-				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-				if (uri.match(re)) {
-					return uri.replace(re, '$1' + key + "=" + value + '$2');
-				}
-				else {
-					return uri + separator + key + "=" + value;
-				}
-			}
 		})
-		
-		
 	</script>
-
 </body>
 
 </html>

@@ -77,7 +77,7 @@
 
 
 						<!-- hbs lọc theo publisher -->
-						<form class="filter-tope-group m-tb-10" id="filter-by-publisher">
+						<form class="filter-tope-group m-tb-10" id="filter-by-publisher" autocomplete="off">
 							{{#each publish }}
 							<label>
 								<input type="checkbox" name="{{this.publisherID}}"
@@ -95,18 +95,20 @@
 						<div class="mtext-102 cl2 p-b-15">
 							Thể loại
 						</div>
-						<div class="flex-w p-t-4 m-r--5 filter-tope-group">
-						<button class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 "data-filter="*">Tất cả</button>
-						{{# each categories }}			
-							<button class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5 "data-filter=".{{this.categoriesID}}">
-								{{this.categories}}
-							</button>
-						{{/ each }}							
-						</div>
+						<form class="filter-tope-group m-tb-10" id="filter-by-publisher" autocomplete="off">
+							{{#each publish}}
+							<label>
+								<input type="checkbox" name="{{this.publisherID}}" 
+									class="filter-by-category p-b-6 stext-106 cl6 hov1 bor3 trans-04 m-r-10 m-tb-5">
+								{{this.publisher}}
+								</input>
+							</label>
+							{{/each}}
+						</form>
 					</div>
 					<div class="filter-col1 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
-							Khoảng giá
+							Khoảng giá <span class ="txt-orange">(*)</span>
 						</div>
 						<form>
 							<div class="form-group">
@@ -150,7 +152,7 @@
 								{{this.title}}
 							</a>
 
-							<span class="stext-105 cl3">
+							<span class="stext-105 cl3 txt-err show-err">
 								{{this.price}}₫
 							</span>
 						</div>

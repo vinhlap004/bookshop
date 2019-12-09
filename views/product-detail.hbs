@@ -135,7 +135,7 @@
 					</li>
 
 					<li class="nav-item p-b-10">
-						<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Đánh giá ({{comment.length}})</a>
+						<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Đánh giá (<span id="total-comments">{{totalComment}}</span>)</a>
 					</li>
 				</ul>
 
@@ -218,6 +218,7 @@
 							<div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
 								<div class="p-b-30 m-lr-15-sm">
 									<!-- Each comment -->
+									<div id="comments">
 									{{#each comment}}
 									<div class="flex-w flex-t p-b-68">
 										<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
@@ -241,33 +242,14 @@
 										</div>
 									</div>
 									{{/each}}
-									
+									</div>
 
 									<!-- Add review -->
-									
-										<h5 class="mtext-108 cl2 p-b-7">
-											Thêm đánh giá
-										</h5>
+									<h5 class="mtext-108 cl2 p-b-7">
+										Thêm đánh giá
+									</h5>
 									{{#if isAuthenticated}}
-										<p class="stext-102 cl6">
-											Địa chỉ email của bạn sẽ không hiển thị công khai
-										</p>
 									<form class="w-full" id="form-comment">
-										<div class="flex-w flex-m p-t-50 p-b-23">
-											<span class="stext-102 cl3 m-r-16">
-												Đánh giá của bạn
-											</span>
-
-											<span class="wrap-rating fs-18 cl11 pointer">
-												<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-												<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-												<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-												<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-												<i class="item-rating pointer zmdi zmdi-star-outline"></i>
-												<input class="dis-none" type="number" name="rating">
-											</span>
-										</div>
-
 										<div class="row p-b-25">
 											<div class="col-12 p-b-5">
 												<label class="stext-102 cl3" for="review">Nội dung đánh giá</label>
@@ -275,14 +257,18 @@
 													id="review" name="review" placeholder="Nhập đánh giá của bạn..."></textarea>
 											</div>
 										</div>
-										
-										<input id="post-comment" type="button" value="Gui" class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10"></input>
+										<input id="post-comment" type="button" value="Gửi" class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10"></input>
 									</form>
+
 									{{else}}
 										<p class="stext-102 cl6">
 											<a href="/login">Đăng nhập</a> để thêm đánh giá
 										</p>
 									{{/if}}
+									<div class="flex-c-m flex-w w-full p-t-45">
+										<ul id="comment-page-number">
+										</ul>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -622,4 +608,91 @@
 			window.location.reload();
 		}
 	})
+</script>
+
+<script>
+	$(document).ready(function () {
+			//number products
+			const comments_per_page = 3;
+			const total_comments = parseInt($('#total-comments').text());
+			let searchParam = new URLSearchParams(window.location.search)
+			const productID = searchParam.get('id');
+			if(total_comments==0){
+				$('#comment-page-number').css('display', 'none');
+				return;
+			}
+
+
+			//page number
+			let page = 1;
+			let max_page = parseInt(total_comments / comments_per_page);
+			if (total_comments % comments_per_page != 0)
+				max_page += 1;
+			if ((page - 2 >= 1) && (page + 2 <= max_page)) {
+				for (var i = page - 2; i <= page + 2; i++)
+					$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+			} else if ((page - 2 < 1) && (max_page >= 5)) {
+				for (var i = 1; i <= 5; i++)
+					$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+			} else if ((max_page >= 5) && (page + 2 > max_page)) {
+				for (var i = max_page - 4; i <= max_page; i++)
+					$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+			} else {
+				for (var i = 1; i <= max_page; i++)
+					$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+			}
+
+			const arrayPageComment = $('.page-comment-number');
+			const firts_number = parseInt($('.page-comment-number').eq(0).text());
+			const index_active = page - firts_number;
+			$('.page-comment-number').eq(index_active).addClass("page-active");
+			//$('#comment-page-number').append("<a class='last-page-comment'><li>&gt;&gt;</li></a>");
+
+			//click on page number
+
+			//
+
+			$('.page-comment-number').on('click', function () {
+				if (page == parseInt($(this).text()))
+					return false;
+				//remove active page
+				$('li.page-active').removeClass('page-active');
+				page = parseInt($(this).text()) - 1;
+				$("html, body").animate({ scrollTop: 700 }, 300);
+				$.get("/page-comment", {
+					pageComment: page,
+					productID: productID
+					}, function(data, status){
+						$('#comments').html(data);
+				});	
+				
+				if (max_page > 5){
+					let j = 4;
+					if(page + 1 + 2 >= max_page){
+						for(let i = max_page; i>max_page-5; i--){
+							$('.page-comment-number').eq(j).text(i);
+							j--;
+						}
+					}else if (page + 1 - 2 <= 1)
+						for(let i = 1; i<=5; i++){
+							$('.page-comment-number').eq(i-1).text(i);
+						}
+					else {
+						for(let i = page + 1 - 2; i <= page + 1 + 2; i++){
+							$('.page-comment-number').eq(i-1).text(i);
+						}
+					}
+				}
+				//add active page
+				
+				for(let i = 0; i<arrayPageComment.length; i++){
+					if(parseInt(arrayPageComment.eq(i).text())==page+1){
+						arrayPageComment.eq(i).addClass('page-active');
+						break;
+					}
+				}
+				page++;
+			});
+
+		})
 </script>

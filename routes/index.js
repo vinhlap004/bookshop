@@ -11,13 +11,15 @@ router.get('/search', controllerProduct.search);
 
 
 /* GET show-quickly. */
-router.get('/show-quickly/', controllerProduct.show_quickly);
+router.get('/show-quickly', controllerProduct.show_quickly);
 
 /* GET product-detail. */
 router.get('/product-detail', controllerProduct.product_detail);
 
 //POST comment in product-detail
 router.post('/product-detail', controllerProduct.post_comment);
+
+router.get('/page-comment', controllerProduct.get_comment);
 
 router.get('/contact',function(req, res, next) {
   res.render('contact');
