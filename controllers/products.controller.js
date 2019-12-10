@@ -94,6 +94,7 @@ module.exports.search = async function (req, res) {
 		minPrice = 0;
 		maxPrice = 1000000;
 	}
+	
 
 	//get filer by publisher
 	let publisherID = req.query.publisher;
