@@ -4,38 +4,37 @@ const mongoose = require('mongoose');
 const bcrypt= require('bcrypt');
 
 // load user model
-const user= require('../model/user.model');
+const users= require('../model/user.model');
 
-module.exports = function(passport){
+module.exports = async function(passport){
     passport.use(
-        new LocalTrategy({usernameField : 'username'},(username,password,done)=>{
-            user.findOne({username:username})
-            .then(user=>{
-                if(!user){
-                    return done(null,false, {message : 'Tài khoản chưa được đăng kí!!'});
+        new LocalTrategy({usernameField : 'email'},async (email,password,done)=>{
+            const user = await users.findEmail(email);
+            if (!user)
+                return done(null,false, {message : 'Tài khoản chưa được đăng kí!!'});
+            bcrypt.compare(password, user.password, (err, isMatch) => {
+                if (err) throw err;
+                if (isMatch) {
+                    return done(null, user);
+                } else {
+                    return done(null, false, { message: 'Mật khẩu không đúng!!' });
                 }
-
-                //match password
-                bcrypt.compare(password,user.password,(err,isMatch)=>{
-                    if(err) throw err;
-                    if(isMatch){
-                        return done(null,user);
-                    }else{
-                        return done(null,false,{message :'Mật khẩu không đúng!!'});
-                    }                   
-                });
-
-            })
-            .catch(err=> console.log(err));
+            }).catch(err=> console.log(err));
         })
     );
-    passport.serializeUser((user, done)=> {
-        done(null, user.id);
+    passport.serializeUser((users, done)=> {
+        done(null, users.id);
       });
       
-    passport.deserializeUser((id, done)=> {
-        user.findById(id, function(err, user) {
-          done(err, user);
-        });
+    passport.deserializeUser(async (id, done) => {
+        try {
+            let user = await users.getUserByID(id);
+            if (!user) {
+                return done(new Error('user not found'));
+            }
+            done(null, user);
+        } catch (e) {
+            done(e);
+        }
     });
 }

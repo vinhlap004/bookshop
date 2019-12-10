@@ -19,5 +19,27 @@ var productsSchema = new mongoose.Schema({
 }, { collection: 'products' });
 
 //4.tạo model
-var products = mongoose.model('products', productsSchema);
-module.exports = products;
+const products = mongoose.model('products', productsSchema);
+
+module.exports.getTotalProduct = function(minPrice, maxPrice, publisherID, categoriesID, regex){
+    if (regex == null)
+      return products.find({price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
+                      .count();
+      return products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
+}
+module.exports.getProductByAttr = function(minPrice, maxPrice, publisherID, categoriesID, regex){
+  if (regex == null)
+    return products.find({price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
+  return products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
+}
+module.exports.sortProduct = function(productObject, sortBy){
+  return productObject.sort(sortBy);
+}
+module.exports.getProductAtPage = function(productObject, page, products_per_page){
+  return productObject.skip(page*products_per_page).limit(products_per_page);
+}
+module.exports.getProductByID = function(id){
+  return products.findById(id);
+}
+
+

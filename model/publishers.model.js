@@ -1,17 +1,22 @@
 //1.require mongoose
-var mongoose = require('mongoose');
-
-//2.connect
-// if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
-// 	console.log('connected to database\n');
-// }
+const mongoose = require('mongoose');
 
 //3.tạo Schema
-var publisherSchema = new mongoose.Schema({
+const publisherSchema = new mongoose.Schema({
   publisherID: String,
   publisher: String
 }, { collection: 'publishers' });
 
 //4.tạo model
-var publishers = mongoose.model('publishers', publisherSchema);
+const publishers = mongoose.model('publishers', publisherSchema);
 module.exports = publishers;
+
+module.exports.getAllPublishers = function(){
+  return publishers.find();
+}
+module.exports.getPublisherByID = function(id){
+  return publishers.findById(id);
+}
+module.exports.getPublisherByName = function(name){
+  return publishers.find({publisherID: name});
+}

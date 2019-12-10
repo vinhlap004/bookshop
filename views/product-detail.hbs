@@ -646,12 +646,6 @@
 			const firts_number = parseInt($('.page-comment-number').eq(0).text());
 			const index_active = page - firts_number;
 			$('.page-comment-number').eq(index_active).addClass("page-active");
-			//$('#comment-page-number').append("<a class='last-page-comment'><li>&gt;&gt;</li></a>");
-
-			//click on page number
-
-			//
-
 			$('.page-comment-number').on('click', function () {
 				if (page == parseInt($(this).text()))
 					return false;

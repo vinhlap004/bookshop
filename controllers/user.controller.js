@@ -9,12 +9,12 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 
 // module to render register or /
 module.exports.register = async function(req, res) {
-    // get username, password, confirmpassword,name,phonenumber in register form
-    const{username, password, confirmpassword,name,phonenumber}=req.body;
+    // get email, password, confirmpassword,name,phonenumber in register form
+    const{email, password, confirmpassword,name,phonenumber}=req.body;
     let errors=[];
-    //console.log(username,password,confirmpassword,name,phonenumber);
+    //console.log(email,password,confirmpassword,name,phonenumber);
     // check required fields
-    if(!username || !password || !confirmpassword || !name || !phonenumber ){
+    if(!email || !password || !confirmpassword || !name || !phonenumber ){
         errors.push({msg:'Bạn nhập thiếu thông tin!!'});
     }
     
@@ -30,47 +30,35 @@ module.exports.register = async function(req, res) {
 
     if(errors.length > 0)
     {
-      res.render('register',{errors,username,password,confirmpassword,name,phonenumber});
+      res.render('register',{errors,email,password,confirmpassword,name,phonenumber});
     }
     else{
-      const newuser = new users ({
-        username,
-        password,
-        name,
-        phonenumber
-      });
-
-      users.findOne({username : username})
-      .then(users=>{
-        if(users){
-          //user exists
-          errors.push({msg:'Tên đăng nhập đã tồn tại!!'});
-          res.render('register',{errors, username,password,confirmpassword,name,phonenumber});
-        }
-        else{
-          // Hash password
-          bcrypt.genSalt(10,(err,salt)=>{
-            bcrypt.hash(newuser.password,salt,(err,hash)=>{
-              if(err) throw err;
-              // set password to hash
-              newuser.password= hash;
-              //save user
-              //console.log(newuser);
-              newuser.save()
-              .then(users => {
-                req.flash('success_msg', 'Bạn đăng kí tài khoản thành công! Hãy đăng nhập');
-                res.render('login',{username,password});
-              })
-              .catch(err=>console.log(err));
-            });
+      const newuser = users.createUser(email, password, name, phonenumber);
+      const user = await users.findEmail(email);
+      //user exists
+      if (user){
+        errors.push({ msg: 'Tên đăng nhập đã tồn tại!!' });
+        res.render('register', { errors, email, password, confirmpassword, name, phonenumber });
+      }else{
+        bcrypt.genSalt(10,(err,salt)=>{
+          bcrypt.hash(newuser.password,salt,(err,hash)=>{
+            if(err) throw err;
+            // set password to hash
+            newuser.password= hash;
+            //save user
+            //console.log(newuser);
+            newuser.save()
+            .then(users => {
+              req.flash('success_msg', 'Bạn đăng kí tài khoản thành công! Hãy đăng nhập');
+              res.render('login',{email,password});
+            })
+            .catch(err=>console.log(err));
           });
-          //console.log(newuser);
-          //newuser.save()
-          //res.render('login');
-        }
-      }).catch(err=>console.log(err));
+        });
+      }
     }
-}
+  }
+
 
 //login
 module.exports.login = async function(req, res, next) {
