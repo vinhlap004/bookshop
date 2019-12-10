@@ -26,6 +26,7 @@ module.exports.getTotalProduct = function(minPrice, maxPrice, publisherID, categ
       return products.find({price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
                       .count();
       return products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
+                      .count();
 }
 module.exports.getProductByAttr = function(minPrice, maxPrice, publisherID, categoriesID, regex){
   if (regex == null)

@@ -113,7 +113,8 @@ module.exports.search = async function (req, res) {
 		products.getTotalProduct(minPrice, maxPrice, publisherID, categoriesID, regex),
 		products.getProductAtPage(
 			products.sortProduct(
-				products.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID, regex), sortBy
+				products.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID, regex)
+				, sortBy
 			), page, products_per_page
 		)
 		]);

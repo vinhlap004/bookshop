@@ -4,17 +4,18 @@
 <section class="bg0 p-t-23 p-b-140">
 	<div class="container">
 		<div class="p-b-10">
-			{{#if noMatched}}
+			{{#if total}}
 				<h3 class="ltext-102 cl5">
-					{{{noMatched}}}
+					{{{Matched}}}
 				</h3>
 			{{else}}
 				<h3 class="ltext-102 cl5">
-					{{{Matched}}}
+					{{{noMatched}}}
 				</h3>
 			{{/if}}
 		</div>
 
+		<!--=====Sort -->
 		<div class="flex-sb m-tb-10 menu-bar">
 			<div class="flex-b filter-and-sort">
 				<div class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5 pad-5 flex-c-m">
@@ -53,6 +54,7 @@
 				</div>
 			</div>
 		</div>
+		<!--====Search and filter -->
 		<div class="flex-w flex-sb-m p-b-52">
 
 			<!-- Search product -->
@@ -78,7 +80,7 @@
 
 						<!-- hbs lọc theo publisher -->
 						<form class="filter-tope-group m-tb-10" id="filter-by-publisher" autocomplete="off">
-							{{#each publish }}
+							{{#each publish}}
 							<label>
 								<input type="checkbox" name="{{this.publisherID}}"
 									class="filter-by-publisher p-b-6 stext-106 cl6 hov1 bor3 trans-04 m-r-10 m-tb-5">
@@ -95,12 +97,12 @@
 						<div class="mtext-102 cl2 p-b-15">
 							Thể loại
 						</div>
-						<form class="filter-tope-group m-tb-10" id="filter-by-publisher" autocomplete="off">
-							{{#each publish}}
+						<form class="filter-tope-group m-tb-10" id="filter-by-categories" autocomplete="off"> 
+							{{#each categories}}
 							<label>
-								<input type="checkbox" name="{{this.publisherID}}" 
+								<input type="checkbox" name="{{this.categoriesID}}"
 									class="filter-by-category p-b-6 stext-106 cl6 hov1 bor3 trans-04 m-r-10 m-tb-5">
-								{{this.publisher}}
+								{{this.categories}}
 								</input>
 							</label>
 							{{/each}}
@@ -108,7 +110,7 @@
 					</div>
 					<div class="filter-col1 p-b-27">
 						<div class="mtext-102 cl2 p-b-15">
-							Khoảng giá <span class ="txt-orange">(*)</span>
+							Khoảng giá <span class = "txt-orange">(*)</span>
 						</div>
 						<form>
 							<div class="form-group">
@@ -133,7 +135,7 @@
 		<div class="row isotope-grid">
 
 			<!-- hbs hiễn thị sản phẩm -->
-			{{# each items }}
+			{{#each items}}
 			<div class="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item {{{this.categoriesID}}} {{{this.publisherID}}}">
 				<!-- Block2 -->
 				<div class="block2">
