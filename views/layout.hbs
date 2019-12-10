@@ -694,6 +694,7 @@
 	<script>
 		$(document).ready(function () {
 			$('#filter-by-price').on('click', filter);
+
 			let searchParams = new URLSearchParams(window.location.search);
 			const publisher = searchParams.getAll('publisher');
 			const category = searchParams.getAll('category');
@@ -737,9 +738,8 @@
 				}
 				//update url
 				
-
 				let currentURL = "/";
-				let url;
+				let url = "/";
 				//update price to url
 				if (keyword != null){
 					currentURL = "search?"

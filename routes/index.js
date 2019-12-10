@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const controllerProduct =require('../controllers/products.controller');
+const controllerComment = require('../controllers/comments.controller');
 
 /* GET home page. */
 router.get('/', controllerProduct.index);
@@ -17,9 +18,9 @@ router.get('/show-quickly', controllerProduct.show_quickly);
 router.get('/product-detail', controllerProduct.product_detail);
 
 //POST comment in product-detail
-router.post('/product-detail', controllerProduct.post_comment);
+router.post('/product-detail', controllerComment.post_comment);
 
-router.get('/page-comment', controllerProduct.get_comment);
+router.get('/page-comment', controllerComment.get_comment);
 
 router.get('/contact',function(req, res, next) {
   res.render('contact');

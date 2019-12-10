@@ -159,35 +159,7 @@ module.exports.product_detail = async function (req, res, next) {
   res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher, comment: dataComment, totalComment: totalComment});
 };
 
-module.exports.post_comment = async function(req, res, next){
-	//get info
-	const content = req.body.content;
-	const date = req.body.date;
-	const user = await users.getUserByID(req.user._id);
-	const email = user.email;
 
-	//create new comment
-	const newComment = await comments.createComment(email, date, content);
-	const product = await products.getProductByID(req.query.id);
-	const commentID = newComment._id;
-	await comments.saveComment(product, commentID);
-	res.status(200);
-}
-
-module.exports.get_comment = async function(req, res, next){
-	const commentsPerPage = 3;
-	const pageComment = req.query.pageComment,
-			productID = req.query.productID;
-
-	const product = await products.getProductByID(productID);
-	const listComments = product.comments;
-	const comment = await comments.getCommentAtPage(
-		comments.getCommentByIDInArray(listComments), 
-		pageComment, 
-		commentsPerPage
-	);
-	res.render('comment', {comment: comment, layout: false});
-}
 
 //escape DDoS attack
 function escapeRegex(text) {

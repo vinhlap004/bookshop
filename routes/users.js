@@ -7,17 +7,13 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/login',function(req, res, next) {
-  res.render('login');
-});
+router.get('/login', controllerUser.getLogin); 
 
 router.post('/login',controllerUser.login);
 
 router.get('/logout',controllerUser.logout);
 
-router.get('/register',function(req, res, next) {
-  res.render('register');
-});
+router.get('/register',controllerUser.getRegister);
 
 router.post('/register',controllerUser.register);
 
