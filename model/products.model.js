@@ -22,13 +22,17 @@ var productsSchema = new mongoose.Schema({
 const products = mongoose.model('products', productsSchema);
 
 module.exports.getTotalProduct = function(minPrice, maxPrice, publisherID, categoriesID, regex){
-    if (regex == null)
-      return products.find({price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
-                      .count();
-      return products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
-                      .count();
+  minPrice = minPrice -1;
+  maxPrice = maxPrice +1;
+  if (regex == null)
+    return products.find({ price: { $gt: minPrice, $lt: maxPrice }, publisherID: { $in: publisherID }, categoriesID: { $in: categoriesID } })
+                    .count();
+    return products.find({ $or: [{ title: regex }, { author: regex }], price: { $gt: minPrice, $lt: maxPrice }, publisherID: { $in: publisherID }, categoriesID: { $in: categoriesID } })
+                   .count();
 }
 module.exports.getProductByAttr = function(minPrice, maxPrice, publisherID, categoriesID, regex){
+  minPrice = minPrice -1;
+  maxPrice = maxPrice +1;
   if (regex == null)
     return products.find({price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})
   return products.find({ $or: [{title: regex}, {author: regex}], price: {$gt: minPrice, $lt : maxPrice}, publisherID: {$in: publisherID}, categoriesID: {$in: categoriesID}})

@@ -700,7 +700,8 @@
 			const sort = searchParams.get('sort');
 			let preMinPrice = searchParams.get('minPrice');
 			let preMaxPrice = searchParams.get('maxPrice'); 
-			
+			const keyword = searchParams.get('keyword');
+
 			if (publisher!=null){
 				for(i = 0; i<publisher.length; i++){
 					$('input.filter-by-publisher[name=' + publisher[i]+']').attr("checked", "checked");
@@ -737,9 +738,14 @@
 				//update url
 				
 
-				let indexURL = "/"
+				let currentURL = "/";
+				let url;
 				//update price to url
-				let url = appendQueryStringParameter(indexURL, 'minPrice', minPrice);
+				if (keyword != null){
+					currentURL = "search?"
+					url = appendQueryStringParameter(currentURL, 'keyword', keyword);
+				}
+				url = appendQueryStringParameter(url, 'minPrice', minPrice);
 				url = appendQueryStringParameter(url, 'maxPrice', maxPrice);
 
 				//update publishers
@@ -754,6 +760,9 @@
 				//update sort
 				if (sort != null)
 					url = appendQueryStringParameter(url, 'sort', sort);
+
+				//update keyword
+				
 				window.location.href = url;
 			}
 
