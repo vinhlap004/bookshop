@@ -18,5 +18,5 @@ module.exports.getPublisherByID = function(id){
   return publishers.findById(id);
 }
 module.exports.getPublisherByName = function(name){
-  return publishers.find({publisherID: name});
+  return publishers.findOne({publisherID: name});
 }

@@ -155,6 +155,7 @@ module.exports.product_detail = async function (req, res, next) {
 		)
   ]);
   const totalComment = await comments.getTotalComment(dataProduct.comments);
+ 
   res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher, comment: dataComment, totalComment: totalComment});
 };
 
