@@ -19,15 +19,13 @@
 		<h4 class="txt-center">Đăng ký</h4>
 
 		{{!-- get error --}}
-		{{#if errors}}
-		{{# each errors}}
+		{{#if message}}
 			<div class="alert alert-warning alert-dismissible fade show err-server" role="alert">
-				<span>{{this.msg}}</span>
+				<span>{{message}}</span>
 				<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-		{{/ each}}
 		{{/if}}
 		<div class="alert alert-warning alert-dismissible fade show dis-none err-register" role="alert">
 			<span class="err-info"></span>

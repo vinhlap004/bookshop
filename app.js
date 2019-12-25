@@ -8,6 +8,8 @@ const localStratery= require('passport-local').Strategy;
 var session = require('express-session');
 var flash = require('connect-flash');
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
+
 require('dotenv').config()
 
 var indexRouter = require('./routes/index');
@@ -22,7 +24,7 @@ mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: t
 
 
 // passport
-require('./config/passport')(passport);
+require('./config/passport');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,11 +46,15 @@ app.use(
 );
 
 // Passport middleware
+app.use(flash());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : false}))
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(function(req,res,next){
     res.locals.isAuthenticated = req.isAuthenticated();
+    res.locals.session = req.session;
     next();
 });
 
@@ -57,13 +63,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Connect flash
-app.use(flash());
-
 // Global variables
 app.use(function(req, res, next) {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
   res.locals.error = req.flash('error');
   next();
 });

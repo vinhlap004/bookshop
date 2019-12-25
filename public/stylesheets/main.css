@@ -3389,3 +3389,10 @@ div.sort-active{
 .txt-orange{
   color: #b74207;
 }
+#price{
+  color: red;
+    border-bottom: 3px solid red;
+    padding-bottom: 15px;
+		font-family: "Arial Rounded MT"!important;
+		font-weight: 600;
+}

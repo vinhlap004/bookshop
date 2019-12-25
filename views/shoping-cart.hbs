@@ -26,71 +26,46 @@
 					<li class="col-md-2">Tổng cộng</li>
 					<li class="col-md-2">Thao tác</li>
 				</ul>
+				<!--each item in cart-->
+				{{#each session.cart.items}}
 				<ul class="row-shopping-cart row">
 					<li class="col-md-2">
 						<div class="how-itemcart1">
-							<img src="images/item-cart-04.jpg" alt="IMG">
+							<img src="{{this.im}}" alt="IMG">
 						</div>
 					</li>
-					<li class="col-md-2">Áo khoác nam nữ đỏ</li>
-					<li class="col-md-2">720 000₫</li>
+					<li class="col-md-2">{{title}}</li>
+					<li class="col-md-2">{{price}}₫</li>
 					<li class="col-md-2">
 						<div class="wrap-num-product flex-w">
 							<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 								<i class="fs-16 zmdi zmdi-minus"></i>
 							</div>
 							<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1"
-								value="1">
+								value="{{quantity}}">
 							<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 								<i class="fs-16 zmdi zmdi-plus"></i>
 							</div>
 						</div>
 					</li>
-					<li class="col-md-2">720 000₫</li>
+					<li class="col-md-2 totalPriceOfProduct">₫</li>
 					<li class="col-md-2">
 						<a href="#" class="del-product">
 							Xóa
 						</a>
 					</li>
 				</ul>
-				<ul class="row-shopping-cart row">
-					<li class="col-md-2">
-						<div class="how-itemcart1">
-							<img src="images/item-cart-05.jpg" alt="IMG">
-						</div>
-					</li>
-					<li class="col-md-2">Áo khoác nam mỏng</li>
-					<li class="col-md-2">320 000₫</li>
-					<li class="col-md-2">
-						<div class="wrap-num-product flex-w">
-							<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-								<i class="fs-16 zmdi zmdi-minus"></i>
-							</div>
-							<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product2"
-								value="1">
-
-							<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-								<i class="fs-16 zmdi zmdi-plus"></i>
-							</div>
-						</div>
-					</li>
-					<li class="col-md-2">320 000₫</li>
-					<li class="col-md-2">
-						<a href="#" class="del-product">
-							Xóa
-						</a>
-					</li>
-				</ul>
+				{{/each}}
 			</div>
-
+			<!--info payment!-->
 			<div class="shipping-info col-md-4">
 				<h4>Thông tin thanh toán</h4>
 				<form>
 					<div class="form-group">
-						<input id="so1" type="text" class="form-control" placeholder="Tên" autocomplete="off">
+						<input id="so1" type="text" class="form-control" placeholder="Tên" autocomplete="off" value="{{user.name}}">
 					</div>
 					<div class="form-group">
-						<input id="so2" type="text" class="form-control" placeholder="Điện thoại" autocomplete="off">
+						<input id="so2" type="text" class="form-control" placeholder="Điện thoại" autocomplete="off" value="{{user.phonenumber}}">
 					</div>
 					<div class="form-group">
 						<select class="form-control" id="exampleFormControlSelect1">
@@ -102,7 +77,7 @@
 						</select>
 					</div>
 					<div class="form-group">
-						<input id="address" type="text" class="form-control" placeholder="Địa chỉ" autocomplete="off">
+						<input id="address" type="text" class="form-control" placeholder="Địa chỉ" autocomplete="off" value="{{user.address}}">
 					</div>
 				</form>
 				<div class="row form-group coupon">
@@ -118,7 +93,7 @@
 				</div>
 				<div class="row">
 					<span class="total">Tổng:</span>
-					<span class="price"><b>1 144 000₫</b></span>
+					<span class="price" id="totalPrice"><b>₫</b></span>
 				</div>
 				<div class="row">
 					<a href="#" class="col">

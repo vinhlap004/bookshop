@@ -141,6 +141,7 @@ module.exports.search = async function (req, res) {
 module.exports.show_quickly = async function(req, res, next){
 	//need add try catch
 	const product = await products.getProductByID(req.query.idValue);
+	
 	res.render('popup-page', {model: product, layout: false});
 };
 

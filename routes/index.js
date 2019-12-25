@@ -3,6 +3,7 @@ var router = express.Router();
 
 const controllerProduct =require('../controllers/products.controller');
 const controllerComment = require('../controllers/comments.controller');
+const controllerCart = require('../controllers/cart.controller');
 
 /* GET home page. */
 router.get('/', controllerProduct.index);
@@ -21,6 +22,9 @@ router.get('/product-detail', controllerProduct.product_detail);
 router.post('/product-detail', controllerComment.post_comment);
 
 router.get('/page-comment', controllerComment.get_comment);
+
+//add to cart
+router.post('/add-to-cart', controllerCart.add_to_cart);
 
 router.get('/contact',function(req, res, next) {
   res.render('contact');
