@@ -18,7 +18,9 @@ module.exports.login = function(req, res, next) {
         if (err) { return next(err); }
         if (req.session.cart){
           //replace cart in user's database
-          carts.update(req.session.cart, user.id);
+          
+          req.session.cart = await carts.update(req.session.cart, user.id);
+          
           }else{
           //move add from database to session
           req.session.cart = await carts.get(user.id);

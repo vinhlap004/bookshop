@@ -11,7 +11,7 @@
         linkElement: '.animsition-link',
         loading: true,
         loadingParentElement: 'html',
-        loadingClass: 'animsition-loading-1',
+        loadingClass: 'animsition-loading-2',
         loadingInner: '<div class="loader05"></div>',
         timeout: false,
         timeoutCountdown: 5000,
@@ -214,19 +214,33 @@
     [ +/- num product ]*/
     $('.btn-num-product-down').on('click', function(){
         var numProduct = Number($(this).next().val());
-        if(numProduct > 0) $(this).next().val(numProduct - 1);
+        if(numProduct == 1 )
+            return false;
+        $(this).next().val(numProduct - 1);
+        //change total of product
+        const total = $(this).parent().parent().next().text().slice(0, -2);
+       
+        const price = $(this).parent().parent().prev().text().slice(0, -2);
+        $(this).parent().parent().next().text(total-price + ' ₫');
+        const totalPrice = $('#totalPrice').text().slice(0, -2);
+        $('#totalPrice').text(totalPrice-price + ' ₫');
     });
 
     $('.btn-num-product-up').on('click', function(){
         var numProduct = Number($(this).prev().val());
         $(this).prev().val(numProduct + 1);
+        const total = parseInt($(this).parent().parent().next().text().slice(0, -2));
+        const price = parseInt($(this).parent().parent().prev().text().slice(0, -2));
+        $(this).parent().parent().next().text(total+price + ' ₫');
+        const totalPrice = parseInt($('#totalPrice').text().slice(0, -2));
+        $('#totalPrice').text(totalPrice + price + ' ₫');
     });
 
     /*==================================================================
     [ Rating ]*/
     $('.wrap-rating').each(function(){
         var item = $(this).find('.item-rating');
-        var rated = -1;
+        var rated = -2;
         var input = $(this).find('input');
         $(input).val(0);
 

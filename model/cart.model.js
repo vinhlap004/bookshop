@@ -4,7 +4,12 @@ const mongoose = require('mongoose');
 
 const cartSchema = new mongoose.Schema({
     userID: String,
-    items: [Object],
+    items: [
+        {
+            productID: String,
+            quantity: Number
+        }
+    ],
     totalQuantity: Number,
     totalPrice: Number
 }, {collection: 'carts'});
@@ -34,19 +39,63 @@ module.exports.add = async function(Cart, idProduct){
 }
 
 module.exports.update = async function(cart, userID){
-    await carts.remove({userID: userID});
-    let arrayItems = [];
-    const totalQuantity = cart.totalQuantity, totalPrice = cart.totalPrice;
-    for (const proID in cart.items){
-        arrayItems.push({productID: proID, quantity: cart.items[proID].quantity})
+    
+    const cartModel = await carts.findOne({userID: userID});
+    if (cartModel){
+        for(const index in cartModel.items){
+            let isExistProduct = false;
+            const productID = cartModel.items[index].productID;
+            for (const itemKey in cart.items){
+                if(productID==itemKey){
+                    cart.items[itemKey].quantity += parseInt(cartModel.items[index].quantity);
+                    isExistProduct = true;
+                    break;
+                }
+            }
+            if (!isExistProduct){
+                const product = await ProductModel.getProductByID(productID);
+                cart.items[productID] = {
+                    title: product.title,
+                    img: product.img[0],
+                    price: product.price,
+                    quantity: cartModel.items[index].quantity
+                }
+            }
+        }
+        
+        //edit total quantity + total price
+        cart.totalQuantity = 0;
+        cart.totalPrice = 0;
+        let arrayItems = []
+        for (const itemKey in cart.items){
+            cart.totalQuantity = parseInt(cart.totalQuantity) + 1;
+            cart.totalPrice += parseInt(cart.items[itemKey].price) * parseInt(cart.items[itemKey].quantity);
+            arrayItems.push({productID: itemKey, quantity: cart.items[itemKey].quantity});
+        }
+        const newCart = new carts({
+            userID: userID,
+            items: arrayItems,
+            totalPrice: cart.totalPrice,
+            totalQuantity: cart.totalQuantity
+        })
+        await carts.remove({userID: userID})
+        await newCart.save();
+        return cart;
+    }else{
+        let arrayItems = [];
+        const totalQuantity = cart.totalQuantity, totalPrice = cart.totalPrice;
+        for (const proID in cart.items) {
+            arrayItems.push({ productID: proID, quantity: cart.items[proID].quantity })
+        }
+        const newCart = new carts({
+            userID: userID,
+            items: arrayItems,
+            totalQuantity: totalQuantity,
+            totalPrice: totalPrice
+        })
+        return newCart.save();
     }
-    const newCart = new carts({
-        userID: userID,
-        items : arrayItems,
-        totalQuantity: totalQuantity,
-        totalPrice: totalPrice
-    })
-    await newCart.save();
+    
 }
 
 module.exports.get = async userID => {
@@ -54,18 +103,19 @@ module.exports.get = async userID => {
     if(!cartModel){
         return null;
     }
+    console.log(cartModel);
     //put item to array
     var arrayItems = {};
-    for (i=0;i<cartModel.items.length; i++){
-        const proID = cartModel.items[i].productID;
-        const product = await ProductModel.getProductByID(proID);
+    for (const index in cartModel.items){
+        const productID = cartModel.items[index].productID;
+        const product = await ProductModel.getProductByID(productID);
         const newItem = {
             title: product.title,
-            quantity: cartModel.items[i].quantity,
+            quantity: cartModel.items[index].quantity,
             price: product.price,
             img: product.img[0]
         };
-        arrayItems[proID] = newItem;
+        arrayItems[productID] = newItem;
     }
     const cartSession = {
         items: arrayItems,

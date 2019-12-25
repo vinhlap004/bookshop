@@ -1,107 +1,128 @@
 <!-- breadcrumb -->
-	<div class="container">
-		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-			<a href="index" class="stext-109 cl8 hov-cl1 trans-04">
-				Trang chủ
-				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-			</a>
+<div class="container">
+	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+		<a href="index" class="stext-109 cl8 hov-cl1 trans-04">
+			Trang chủ
+			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+		</a>
 
-			<span class="stext-109 cl4">
-				Giỏ hàng
-			</span>
-		</div>
+		<span class="stext-109 cl4">
+			Giỏ hàng
+		</span>
 	</div>
+</div>
 
 
-	<!-- Shoping Cart -->
+<!-- Shoping Cart -->
 
-	<div class="container shop">
-		<div class="row">
-			<div class="cart-info col-md-8">
-				<ul class="header-shopping-cart row">
-					<li class="col-md-2">Sản phẩm</li>
-					<li class="col-md-2">Tên</li>
-					<li class="col-md-2">Giá</li>
-					<li class="col-md-2">Số lượng</li>
-					<li class="col-md-2">Tổng cộng</li>
-					<li class="col-md-2">Thao tác</li>
-				</ul>
-				<!--each item in cart-->
-				{{#each session.cart.items}}
-				<ul class="row-shopping-cart row">
-					<li class="col-md-2">
-						<div class="how-itemcart1">
-							<img src="{{this.im}}" alt="IMG">
+<div class="container shop">
+	<div class="row">
+		<div class="cart-info col-md-8">
+			<ul class="header-shopping-cart row">
+				<li class="col-md-2">Sản phẩm</li>
+				<li class="col-md-2">Tên</li>
+				<li class="col-md-2">Giá</li>
+				<li class="col-md-2">Số lượng</li>
+				<li class="col-md-2">Tổng cộng</li>
+				<li class="col-md-2">Thao tác</li>
+			</ul>
+			<!--each item in cart-->
+			{{#each session.cart.items}}
+			<ul class="row-shopping-cart row" id="{{@key}}">
+				<li class="col-md-2">
+					<div class="how-itemcart1">
+						<img src="{{this.im}}" alt="IMG">
+					</div>
+				</li>
+				<li class="col-md-2">{{title}}</li>
+				<li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
+				<li class="col-md-2">
+					<div class="wrap-num-product flex-w">
+						<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+							<i class="fs-16 zmdi zmdi-minus"></i>
 						</div>
-					</li>
-					<li class="col-md-2">{{title}}</li>
-					<li class="col-md-2">{{price}}₫</li>
-					<li class="col-md-2">
-						<div class="wrap-num-product flex-w">
-							<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-								<i class="fs-16 zmdi zmdi-minus"></i>
-							</div>
-							<input class="mtext-104 cl3 txt-center num-product" type="number" name="num-product1"
-								value="{{quantity}}">
-							<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-								<i class="fs-16 zmdi zmdi-plus"></i>
-							</div>
+						<input class="mtext-104 cl3 txt-center num-product {{@key}}" type="number" name="num-product"
+							value="{{quantity}}">
+						<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+							<i class="fs-16 zmdi zmdi-plus"></i>
 						</div>
-					</li>
-					<li class="col-md-2 totalPriceOfProduct">₫</li>
-					<li class="col-md-2">
-						<a href="#" class="del-product">
-							Xóa
-						</a>
-					</li>
-				</ul>
-				{{/each}}
-			</div>
-			<!--info payment!-->
-			<div class="shipping-info col-md-4">
-				<h4>Thông tin thanh toán</h4>
-				<form>
-					<div class="form-group">
-						<input id="so1" type="text" class="form-control" placeholder="Tên" autocomplete="off" value="{{user.name}}">
 					</div>
-					<div class="form-group">
-						<input id="so2" type="text" class="form-control" placeholder="Điện thoại" autocomplete="off" value="{{user.phonenumber}}">
-					</div>
-					<div class="form-group">
-						<select class="form-control" id="exampleFormControlSelect1">
-							<option>Hà Nội</option>
-							<option>Tp Hồ Chí Minh</option>
-							<option>Hải Phòng</option>
-							<option>Khánh Hòa</option>
-							<option>Đà Nẵng</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<input id="address" type="text" class="form-control" placeholder="Địa chỉ" autocomplete="off" value="{{user.address}}">
-					</div>
-				</form>
-				<div class="row form-group coupon">
-					<div class="col-md-6">
-						<input id="" type="text" class="form-control" placeholder="Mã giảm giá" autocomplete="off">
-					</div>
-					<div class="col-md-6">
-						<a href="#" class="btn-coupon">
-							Áp dụng
-						</a>
-					</div>
-
+				</li>
+				<li class="col-md-2 totalPriceOfProduct {{@key}}">Tổng </li>
+				<li class="col-md-2">
+					<a href="#" class="del-product">
+						Xóa
+					</a>
+				</li>
+			</ul>
+			{{/each}}
+		</div>
+		<!--info payment!-->
+		<div class="shipping-info col-md-4">
+			<h4>Thông tin thanh toán</h4>
+			<form>
+				<div class="form-group">
+					<input id="so1" type="text" class="form-control" placeholder="Tên" autocomplete="off"
+						value="{{user.name}}">
 				</div>
-				<div class="row">
-					<span class="total">Tổng:</span>
-					<span class="price" id="totalPrice"><b>₫</b></span>
+				<div class="form-group">
+					<input id="so2" type="text" class="form-control" placeholder="Điện thoại" autocomplete="off"
+						value="{{user.phonenumber}}">
 				</div>
-				<div class="row">
-					<a href="#" class="col">
-						<div class="btn-purchase">
-							Thanh toán
-						</div>
+				<div class="form-group">
+					<select class="form-control" id="exampleFormControlSelect1">
+						<option>Hà Nội</option>
+						<option>Tp Hồ Chí Minh</option>
+						<option>Hải Phòng</option>
+						<option>Khánh Hòa</option>
+						<option>Đà Nẵng</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<input id="address" type="text" class="form-control" placeholder="Địa chỉ" autocomplete="off"
+						value="{{user.address}}">
+				</div>
+			</form>
+			<div class="row form-group coupon">
+				<div class="col-md-6">
+					<input id="" type="text" class="form-control" placeholder="Mã giảm giá" autocomplete="off">
+				</div>
+				<div class="col-md-6">
+					<a href="#" class="btn-coupon">
+						Áp dụng
 					</a>
 				</div>
+
+			</div>
+			<div class="row">
+				<span class="total">Tổng:</span>
+				<span class="price" id="totalPrice"><b>₫</b></span>
+			</div>
+			<div class="row">
+				<a href="#" class="col">
+					<div class="btn-purchase">
+						Thanh toán
+					</div>
+				</a>
 			</div>
 		</div>
 	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		const listProduct = $('ul.row-shopping-cart');
+		let totalPrice = 0;
+		$.each(listProduct, function(index, value){
+			const id = listProduct.eq(index).attr('id');
+			const numProduct = $('input.num-product.' + id).attr('value');
+			const price = $('.priceOfProduct.' + id).text().slice(0, -2);
+			totalPrice += numProduct*price;
+			$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
+		})
+		$('#totalPrice').text(totalPrice + ' ₫');
+		
+
+
+	})
+</script>
