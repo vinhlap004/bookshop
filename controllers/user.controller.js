@@ -16,18 +16,16 @@ module.exports.login = function(req, res, next) {
       if (!user) { return res.render('login', {message: info.message}); }
       req.logIn(user, async function(err) {
         if (err) { return next(err); }
+        
+        
         if (req.session.cart){
           //replace cart in user's database
-          
           req.session.cart = await carts.update(req.session.cart, user.id);
-          
           }else{
           //move add from database to session
           req.session.cart = await carts.get(user.id);
-          res.locals.session = req.session;
-          console.log(req.session.cart);
-          }
-        return res.redirect('/');
+          } 
+        return res.redirect('/'); 
       });
     })(req, res, next);
   }
@@ -39,8 +37,7 @@ module.exports.logout = async function(req, res, next) {
   req.logout();
   req.session.cart = null;
   res.locals.session.cart = null;
-  req.flash('success_msg', 'Bạn đã đăng xuất');
-  res.redirect('/login');
+  res.render('login', {message: 'Bạn đã đăng xuất'});
 }
 
 module.exports.getRegister = function(req, res, next){

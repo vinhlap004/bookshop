@@ -42,12 +42,12 @@ module.exports.update = async function(cart, userID){
     
     const cartModel = await carts.findOne({userID: userID});
     if (cartModel){
-        for(const index in cartModel.items){
+        await Promise.all(cartModel.items.map(async item => {
             let isExistProduct = false;
-            const productID = cartModel.items[index].productID;
+            const productID = item.productID;
             for (const itemKey in cart.items){
                 if(productID==itemKey){
-                    cart.items[itemKey].quantity += parseInt(cartModel.items[index].quantity);
+                    cart.items[itemKey].quantity += parseInt(item.quantity);
                     isExistProduct = true;
                     break;
                 }
@@ -58,10 +58,13 @@ module.exports.update = async function(cart, userID){
                     title: product.title,
                     img: product.img[0],
                     price: product.price,
-                    quantity: cartModel.items[index].quantity
+                    quantity: item.quantity
                 }
             }
-        }
+        })
+
+        )
+
         
         //edit total quantity + total price
         cart.totalQuantity = 0;
@@ -99,24 +102,24 @@ module.exports.update = async function(cart, userID){
 }
 
 module.exports.get = async userID => {
-    const cartModel = await carts.findOne({userID: userID});
+    const cartModel = await carts.findOne({userID: userID}).exec();
     if(!cartModel){
         return null;
     }
-    console.log(cartModel);
     //put item to array
     var arrayItems = {};
-    for (const index in cartModel.items){
-        const productID = cartModel.items[index].productID;
-        const product = await ProductModel.getProductByID(productID);
+
+    await Promise.all(cartModel.items.map(async item => {
+        const product = await ProductModel.getProductByID(item.productID);
         const newItem = {
             title: product.title,
-            quantity: cartModel.items[index].quantity,
+            quantity: item.quantity,
             price: product.price,
             img: product.img[0]
         };
-        arrayItems[productID] = newItem;
-    }
+        arrayItems[item.productID] = newItem;
+    }))
+
     const cartSession = {
         items: arrayItems,
         totalQuantity: cartModel.totalQuantity,
@@ -124,4 +127,5 @@ module.exports.get = async userID => {
     };
     return cartSession;
 };
+
 

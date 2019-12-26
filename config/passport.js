@@ -8,13 +8,13 @@ const carts = require('../model/cart.model');
 passport.use('login', new LocalTrategy({ usernameField: 'email' }, async (email, password, done) => {
     const user = await users.findEmail(email);
     if (!user)
-        return done(null, false, req.flash('message', 'Tài khoản chưa được đăng kí!!'));
+        return done(null, false, {'message': 'Tài khoản chưa được đăng kí!!'});
     bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
             return done(null, user);
         } else {
-            return done(null, false, req.flash('message', 'Mật khẩu không đúng!!'));
+            return done(null, false, {'message': 'Mật khẩu không đúng!!'});
         }
     })
 })

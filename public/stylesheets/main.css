@@ -3399,3 +3399,8 @@ div.sort-active{
 .zmdi{
   color: #000;
 }
+.how-itemcart img{
+  max-height: 80px;
+  max-width: 60px;
+  object-fit: cover;
+}

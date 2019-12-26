@@ -46,7 +46,7 @@ module.exports.getProductAtPage = function(productObject, page, products_per_pag
   return productObject.skip(page*products_per_page).limit(products_per_page);
 }
 module.exports.getProductByID = function(id){
-  return products.findById(id);
+  return products.findById(id).exec();
 }
 
 
