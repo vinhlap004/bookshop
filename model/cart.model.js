@@ -128,4 +128,37 @@ module.exports.get = async userID => {
     return cartSession;
 };
 
+module.exports.removeProduct = async (idProduct, idUser) => {
+    const cart = await carts.findOne({userID: idUser});
+    if (cart.totalQuantity == 1){
+        cart.remove();
+        return;
+    }
+    for (const index in cart.items){
+        if (cart.items[index].productID == idProduct) {
+            const quantityProductDel = cart.items[index].quantity;
+            const product = await ProductModel.getProductByID(idProduct);
+            const priceProductDel = product.price;
+            const totalQuantity = cart.totalQuantity - 1;
+            const totalPrice = cart.totalPrice - quantityProductDel*priceProductDel;
+            await cart.updateOne({totalPrice: totalPrice, totalQuantity: totalQuantity});
+            await cart.updateOne({$pull: {items: {productID: idProduct}}});
+            return;
+        }
+    }
+
+}
+
+module.exports.changeProductQuantity = async (productID, userID, isIncrease, price, quantity) => {
+    const cart = await carts.findOne({userID: userID});
+    var totalPrice = 0;
+    if (isIncrease) {
+        totalPrice = parseInt(cart.totalPrice) + parseInt(price);
+    } else {
+        totalPrice = cart.totalPrice - price;
+    }
+    await carts.findOneAndUpdate({userID: userID}, {$set: {totalPrice: totalPrice, "items.$[elem].quantity": quantity}}, {arrayFilters: [{"elem.productID": {$in: [productID]}}]});
+}
+
+
 

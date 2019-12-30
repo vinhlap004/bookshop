@@ -26,6 +26,14 @@ router.get('/page-comment', controllerComment.get_comment);
 //add to cart
 router.post('/add-to-cart', controllerCart.add_to_cart);
 
+//remove item from cart
+router.delete('/remove-product', controllerCart.remove_item);
+
+//increase number item
+router.put('/increase-product', controllerCart.increase_item);
+
+router.put('/descrease-product', controllerCart.descrease_item);
+
 router.get('/contact',function(req, res, next) {
   res.render('contact');
 });

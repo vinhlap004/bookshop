@@ -222,8 +222,21 @@
        
         const price = $(this).parent().parent().prev().text().slice(0, -2);
         $(this).parent().parent().next().text(total-price + ' ₫');
-        const totalPrice = $('#totalPrice').text().slice(0, -2);
-        $('#totalPrice').text(totalPrice-price + ' ₫');
+        const totalPrice = $('#totalPrice').children().text().slice(0, -2);
+        const tempTotalPrice = totalPrice - price;
+
+        $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
+        const idProduct = $(this).parent().parent().parent().attr('id');
+        $.ajax({
+            url: '/descrease-product',
+            method: 'PUT',
+            data: {
+                id: idProduct
+            },
+            success: function(data, status){
+                console.log(status);
+            }
+        })
     });
 
     $('.btn-num-product-up').on('click', function(){
@@ -232,8 +245,21 @@
         const total = parseInt($(this).parent().parent().next().text().slice(0, -2));
         const price = parseInt($(this).parent().parent().prev().text().slice(0, -2));
         $(this).parent().parent().next().text(total+price + ' ₫');
-        const totalPrice = parseInt($('#totalPrice').text().slice(0, -2));
-        $('#totalPrice').text(totalPrice + price + ' ₫');
+        const totalPrice = parseInt($('#totalPrice').children().text().slice(0, -2));
+        const tempTotalPrice = totalPrice + price;
+        $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
+
+        const idProduct = $(this).parent().parent().parent().attr('id');
+        $.ajax({
+            url: '/increase-product',
+            method: 'PUT',
+            data: {
+                id: idProduct
+            },
+            success: function(data, status){
+                console.log(status);
+            }
+        })
     });
 
     /*==================================================================

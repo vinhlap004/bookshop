@@ -110,6 +110,7 @@
 </div>
 
 <script>
+	//Calculate total price and quantity
 	$(document).ready(function(){
 		const listProduct = $('ul.row-shopping-cart');
 		let totalPrice = 0;
@@ -120,9 +121,33 @@
 			totalPrice += numProduct*price;
 			$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
 		})
-		$('#totalPrice').text(totalPrice + ' ₫');
-		
+		$('#totalPrice').html('<b>' + totalPrice + ' ₫<b>');
+	})
+</script>
 
-
+<script>
+//Delete product
+	$(document).ready(function(){
+		$('a.del-product').on('click', function(){
+			const ulProduct = $(this).parent().parent();
+			const idProduct = ulProduct.attr('id');
+			
+			$.ajax({
+				url: '/remove-product',
+				type: 'DELETE',
+				data: {
+					id: idProduct
+				},
+				success: function (data, status) {
+					ulProduct.remove();
+					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
+					$('#totalQuantity').html(numberInCart);
+					
+					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
+					$('#totalPrice').html(totalPriceCart);
+				}
+			})
+		}
+	)
 	})
 </script>
