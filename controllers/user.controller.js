@@ -47,3 +47,34 @@ module.exports.getRegister = function(req, res, next){
 module.exports.getLogin = function(req, res, next){
   res.render('login');
 }
+
+//profile
+module.exports.profile = async function(req,res,next){
+  if(res.locals.user)
+  {
+    const currenUser=res.locals.user;
+    const {name, phone,address, password, newpassword, verifyPassword}=req.body;
+    //check requied fields 
+	  if (!name || !phone || !address) {
+		  err.push({msg: 'Bạn không thể cập nhật các thông tin về rỗng!'});
+		  console.log(err);
+	  } 
+	  //check phone number
+	  else if(parseInt(phone)<=0 || isNaN(parseInt(phone))){
+		  err.push({msg: 'Số điện thoại không hợp lệ!'});
+	  }
+	  if (err.length > 0) {
+		  res.render('profile', {name, phone,address, password, newpassword, verifyPassword});
+	  } 
+    const userUpdate = await users.getUserByID(currenUser.id);
+    userUpdate.name = name;
+    userUpdate.phonenumber =phone;
+    userUpdate.address=address;
+    userUpdate.save();
+    success_msg = 'Cập nhật tài khoản thành công';
+		error = '';
+    console.log(userUpdate);
+    
+  }
+  res.render('profile');
+}
