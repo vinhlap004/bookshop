@@ -18,6 +18,9 @@ router.get('/logout',controllerUser.logout);
 
 router.get('/register',controllerUser.getRegister);
 
+router.get('/profile',function(req,res,next){
+    res.render('profile');
+});
 
 //router.post('/register',controllerUser.register);
 
