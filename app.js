@@ -22,7 +22,6 @@ mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: t
 .then(()=>console.log('Connected to database\n'))
 .catch(err=>console.log(err));
 
-
 // passport
 require('./config/passport');
 

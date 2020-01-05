@@ -48,8 +48,5 @@ router.get('/shoping-cart',function(req, res, next) {
 router.get('/about',function(req, res, next) {
   res.render('about');
 });
-router.get('/forget-password',function(req, res, next) {
-  res.render('forget-password');
-});
 
 module.exports = router;
