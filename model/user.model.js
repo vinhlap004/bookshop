@@ -8,7 +8,9 @@ var usersSchema = new mongoose.Schema({
   password: String,
   name: String,
   address: String,
-  phonenumber: Number
+  phonenumber: Number,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 }, { collection: 'users' });
 
 //4.tạo model

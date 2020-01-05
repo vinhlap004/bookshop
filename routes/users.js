@@ -30,7 +30,7 @@ router.get('/reset-password',function(req,res,next){
   res.render('reset-password');
 });
 
-router.post('/reset-password',controllerUser.reserpassword);
+router.post('/reset-password',controllerUser.resetpassword);
 
 router.get('/profile',controllerUser.getprofile);
 

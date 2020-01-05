@@ -51,7 +51,7 @@ module.exports.getLogin = function(req, res, next){
 
 // fogetpassword
 
-module.exports.forgetPassword = function(req, res, next)
+module.exports.forgetPassword = async function(req, res, next)
 {
     var smtpTransport = nodemailer.createTransport({
       service: "Gmail",
@@ -60,32 +60,98 @@ module.exports.forgetPassword = function(req, res, next)
           pass: "bookshop123123"
       }
   });
-    var rand,mailOptions,host,link;
+    var rand,mailOptions,host,link,token;
 
-    rand=Math.floor((Math.random() * 20000) + 54);
-    host=req.get('host');
-    link="http://"+req.get('host')+"/reset-password?id="+rand+"&username="+req.body.email;
-    mailOptions={
-        to : req.body.email,
-        subject : "Please confirm your Email account",
-        html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+    const user = await users.findEmail(req.body.email);
+    if(!user)
+    {
+      res.render('forget-password',
+        {message: "Email này chưa được đăng kí tài khoản tại trang web này. Vui lòng nhập đúng tài khoản email!!"});
     }
-    console.log(mailOptions);
-    smtpTransport.sendMail(mailOptions, function(error, response){
-    if(error){
-            console.log(error);
-        res.end("error");
-    }else{
-            console.log("Message sent: " + response.message);
-        res.end("sent");
+    else{
+
+      rand=Math.floor((Math.random() * 20000) + 54);
+      rand = rand.toString();
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(rand, salt, async (err, hash) => {
+          if (err) throw err;
+          user.resetPasswordToken = hash;
+          console.log(user);
+        });
+      });
+      console.log("token",user);
+      host=req.get('host');
+      link="http://"+req.get('host')+"/reset-password?token="+user.resetPasswordToken+"&email="+req.body.email;
+      mailOptions={
+          to : req.body.email,
+          subject : "Reset your password",
+          html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
+      }
+      console.log(mailOptions);
+      smtpTransport.sendMail(mailOptions, function(error, response){
+      if(error){
+              console.log(error);
+          res.render('forget-password',{message: "Chúng tôi không thể gửi mail cho bạn. Vui lòng thử lại"});
+      }else{
+        
+        if(!user)
+        {
+          res.render('forget-password',
+          {message: "Email này chưa được đăng kí tài khoản tại trang web này. Vui lòng nhập đúng tài khoản email!!"});
+        }else{
+              console.log("Message sent: " + response.message);
+              user.resetPasswordExpires=Date.now() + 3600000; // ngày hiện tại + 1 giờ
+              user.save();
+          res.render('forget-password',
+          {message: "Chúng tôi đã gửi đường link để lấy lại mật khẩu vào mail bạn. Xin hãy vào mail kiểm tra"});
+          }
         }
-  });
+    });
+  }
+
 }
 
 // resetpassword
-module.exports.reserpassword = async function(req,res,next)
+module.exports.resetpassword = async function(req,res,next)
 {
-    console.log("ac",req.query.id,req.query.username);
+    const newpassword = req.body.password;
+    const verifynewpassword= req.body.verifypassword;
+    console.log(newpassword,verifynewpassword);
+    if(!newpassword || !verifynewpassword)
+    {
+      res.render('reset-password',{message: "Bạn chưa điền đầy đầy đủ thông tin!"});
+    }
+    else{
+      if(newpassword != verifynewpassword)
+      {
+        res.render('reset-password',{message: "Xác nhận mật khẩu không đúng"});
+      }
+      else{
+        //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+        const user = await users.findEmail(req.query.email);
+          if(!user)
+          {
+              console.log("not user");
+          }
+          else{
+            if(user.resetPasswordToken == req.query.token){
+            bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newpassword, salt, async (err, hash) => {
+              if (err) throw err;
+              user.password = hash;
+              await user.save();
+              console.log(user);
+            });
+          });
+          res.render('login',{message: "Đổi mật khẩu thành công đăng nhập ngay!"});
+          }
+          else
+          {
+            res.render('reset-password',{message: "Lỗi"});
+          }
+        }
+      }
+    }
 }
 
 module.exports.getprofile = function(req,res,next)
