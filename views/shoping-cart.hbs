@@ -57,11 +57,11 @@
 					<div class="row">
 						<div class="col-md-4">
 							<h6>Tạm tính:</h6>
-							<h6>VAT (10%):</h6>
+							<h6>Giảm giá:</h6>
 						</div>
 						<div class="col-md-8 txt-right">
-							<h6>1 300 000đ</h6>
-							<h6>130 000đ</h6>
+							<h6>{{session.cart.totalPrice}}</h6>
+							<h6>0đ</h6>
 						</div>
 					</div>
 					<hr>
@@ -70,7 +70,7 @@
 							<span>Thành tiền:</span>
 						</div>
 						<div class="col-md-6 txt-right">
-							<span class="price" id="totalPrice"><b>₫</b></span>
+							<span class="price" id="totalPrice"><b>{{session.cart.totalPrice}}₫</b></span>
 						</div>
 					</div>
 

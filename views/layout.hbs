@@ -61,9 +61,7 @@
 							Trợ giúp
 						</a>
 						{{#if isAuthenticated}}
-							<a href="/profile" class="flex-c-m trans-04 p-lr-25">
-								Chào {{user.name}}
-							</a>
+							<a href="/profile" id="usernameAuthenticated" class="flex-c-m trans-04 p-lr-25">Chào {{user.name}}</a>
 							<a href="/logout" class="flex-c-m trans-04 p-lr-25">
 								Đăng xuất
 							</a>
@@ -472,23 +470,46 @@
 	</script>
 	<!--===============================================================================================-->
 	<script src="js/main.js"></script>
-	<!--========= SHOW QUICKLY ========-->
+	
+	
+	<!--Sort====================================-->
 	<script>
 		$(document).ready(function () {
-			$('.btn-show-quickly').click(function () {
-				const id = $(this).parent().parent().parent().attr('id');
-				$.get("/show-quickly", { idValue: id }, function (data, status) {
-					$('#popUp').html(data);
-					//action for arrow
-					//run after render popup
-				});
-			});
-					
-		});
+			//check sort by
+			let searchParams = new URLSearchParams(window.location.search);
+			const sortBy = searchParams.get('sort');
+			if(sortBy=="asc-price")
+				$('#sort-by-asc-price').parent().addClass('sort-active');
+			else if(sortBy=="desc-price")
+				$("#sort-by-desc-price").parent().addClass('sort-active');
+			else
+				$('#sort-by-title').parent().addClass('sort-active');
 
+
+			$('#sort-by-title').on('click', sort);
+			$("#sort-by-asc-price").on('click', sort);
+			$("#sort-by-desc-price").on('click', sort);
+			//sort function
+			function sort() {
+				const param = $(this).attr("name");
+				let currentURL = window.location.href;
+				let url = updateQueryStringParameter(currentURL, 'sort', param);
+				window.location.href = url;
+			}
+			function updateQueryStringParameter(uri, key, value) {
+				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+				if (uri.match(re)) {
+					return uri.replace(re, '$1' + key + "=" + value + '$2');
+				}
+				else {
+					return uri + separator + key + "=" + value;
+				}
+			}
+		})		
 	</script>
-	<!--Pagination=============================-->
 	<script>
+	//pagination
 		$(document).ready(function () {
 			//number products
 			const products_per_page = 8;
@@ -580,44 +601,6 @@
 				}
 			}
 		})
-			
-		
-	</script>
-	<!--Sort====================================-->
-	<script>
-		$(document).ready(function () {
-			//check sort by
-			let searchParams = new URLSearchParams(window.location.search);
-			const sortBy = searchParams.get('sort');
-			if(sortBy=="asc-price")
-				$('#sort-by-asc-price').parent().addClass('sort-active');
-			else if(sortBy=="desc-price")
-				$("#sort-by-desc-price").parent().addClass('sort-active');
-			else
-				$('#sort-by-title').parent().addClass('sort-active');
-
-
-			$('#sort-by-title').on('click', sort);
-			$("#sort-by-asc-price").on('click', sort);
-			$("#sort-by-desc-price").on('click', sort);
-			//sort function
-			function sort() {
-				const param = $(this).attr("name");
-				let currentURL = window.location.href;
-				let url = updateQueryStringParameter(currentURL, 'sort', param);
-				window.location.href = url;
-			}
-			function updateQueryStringParameter(uri, key, value) {
-				var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
-				var separator = uri.indexOf('?') !== -1 ? "&" : "?";
-				if (uri.match(re)) {
-					return uri.replace(re, '$1' + key + "=" + value + '$2');
-				}
-				else {
-					return uri + separator + key + "=" + value;
-				}
-			}
-		})		
 	</script>
 	<!--Filter=========================-->
 	<script>
@@ -712,6 +695,7 @@
 			}
 		})
 	</script>
+<<<<<<< Updated upstream
 	<!--========== ADD TO CART ==========-->
 	<script>
 		$(document).ready(function(){
@@ -740,6 +724,8 @@
 	gtag('config', 'UA-155390942-1');
 	</script>
 
+=======
+>>>>>>> Stashed changes
 	
 </body>
 

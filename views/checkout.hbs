@@ -6,9 +6,9 @@
                 <h5 class="name-label">{{user.orderAddress.name}}</h5>
                 <h5 class="phone-label">{{user.orderAddress.phone}}</h5>
             </div> 
-            <h5 class="col-md-8 address-label">{{user.orderAddress.address}}</h5>
-            <button class="col-md-2"><a href="#model-form-address" rel="modal:open">Thay đổi</a></button>
-            <button class="col-md-2"><a href="#">Tiếp tục</a></button>
+            <h5 class="col-md-9 address-label">{{user.orderAddress.address}}</h5>
+            <button class="col-md-3"><a href="#model-form-address" rel="modal:open">Thay đổi</a></button>
+            
         </div>
         <div class="row wrapper-list-product">
             <!--each item in cart-->
@@ -55,7 +55,7 @@
             <div class="paymentBy row col-md-12 row-line flex-m">
                 <h5>Phương thức thanh toán</h5>
                 <button class="button-select button-selected button-payment">Thanh toán khi nhận hàng</button>
-                <button class="button-select" button-payment>Thẻ ngân hàng</button>
+                <button class="button-select button-payment" button-payment>Thẻ ngân hàng</button>
             </div>
             <div class="total-Cart row col-md-12 row-line flex-m">
                 <h5 class="col-md-12 flex-r">
@@ -78,13 +78,13 @@
         <h1>Địa chỉ mới</h1>
         <form class="form-checkout">
             <div class="form-group">
-                <input id="name" type="text" class="form-control" placeholder="Người nhận hàng">
+                <input id="name-order" type="text" class="form-control" placeholder="Người nhận hàng">
             </div>
             <div class="form-group">
-                <input id="phone" type="text" class="form-control" placeholder="Số điện thoại">
+                <input id="phone-order" type="text" class="form-control" placeholder="Số điện thoại">
             </div>
             <div class="form-group">
-                <input id="address" type="text" class="form-control" placeholder="Địa chỉ cụ thể">
+                <input id="address-order" type="text" class="form-control" placeholder="Địa chỉ cụ thể">
             </div>
             <h5 class="txt-err txt-left"></h5>
             <div class="form-group">
@@ -93,84 +93,3 @@
         </form>
     </div>
 </div>
-
-
-<script>
-    $(document).ready(function(){
-        let name = $('#name');
-        let phone = $('#phone');
-        let address = $('#address');
-        let error = $('.txt-err');
-        
-        //rel="modal:close" 
-        $('.update-address').click(function(e){
-        //validate input
-        //error.removeClass('.show-err');
-        e.preventDefault();
-        
-        if (!name.val() || !phone.val() || !address.val()){
-            error.text('*Nhập đầy đủ thông tin');
-            if (!error.hasClass('show-err'))
-                error.addClass('show-err');
-            return false;
-        }
-        
-        if (isNaN(phone.val()) || phone.val().length != 10){
-            error.text('*Số điện thoại không hợp lệ');
-            if (!error.hasClass('show-err'))
-                error.addClass('show-err');
-            return false;
-        }
-
-        //update address
-       $.post({
-            url: '/update-order-address',
-            data: {
-                name: name.val(),
-                phone: phone.val(),
-                address: address.val()
-            },
-            success: function(data, status){
-                $('.name-label').text(data.name);
-                $('.phone-label').text(data.phone);
-                $('.address-label').text(data.address);
-                location.reload();
-            }
-        })
-       
-    })
-    })
-
-    
-</script>
-
-<script>
-    $(document).ready(function(){
-        const name = $('.name-label').text();
-        const phone = $('.phone-label').text();
-        const address = $('.address-label').text();
-        const feeShipping = $('#fee-shipping').text().slice(0, -1);
-        const shipping = $('.button-selected.button-shipping').text();
-        const payment = $('.button-payment.button-selected').text();
-        $('button#checkout').click(function(){
-          
-             $.post({
-                url: '/checkout',
-                data: {
-                    name: name,
-                    phone: phone,
-                    address: address,
-                    payment: payment,
-                    shipping: shipping,
-                    feeShipping, feeShipping
-                },
-                success: function (data, status) {
-                    window.location.href = '/';
-                }
-            })
-        })
-        
-    })
-
-
-</script>

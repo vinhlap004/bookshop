@@ -12,7 +12,7 @@ module.exports.add_to_cart = async function(req, res){
     if(req.user){
         CartModel.update(idProduct, req.user.id);
     }
-    console.log(req.session.cart);
+    
     res.json({totalQuantity: cart.totalQuantity});
 }
 

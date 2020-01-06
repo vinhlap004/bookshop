@@ -43,6 +43,7 @@ module.exports.logout = async function(req, res, next) {
   req.logout();
   req.session.cart = null;
   res.locals.session.cart = null;
+  req.user = null;
   res.render('login', {message: 'Bạn đã đăng xuất'});
 }
 
