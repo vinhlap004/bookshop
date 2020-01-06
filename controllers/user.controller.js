@@ -243,3 +243,12 @@ module.exports.profile = async function(req,res,next){
     res.render('login');
   }
 }
+module.exports.updateOrderAddress = async (req, res) => {
+  const userID = req.user.id;
+  const body = req.body;
+  const name = body.name,
+        phone = body.phone,
+        address = body.address;
+  const userUpdated = await users.updateOrderAddressByID(userID, name, phone, address);
+  res.send(userUpdated.orderAddress);
+}

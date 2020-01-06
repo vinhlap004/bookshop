@@ -82,3 +82,9 @@ module.exports.descrease_item = async function(req, res){
     res.send();
 }
 
+module.exports.fillCheckout = (req, res) => {
+    if (req.user)
+        res.render('checkout');
+    else
+        res.render('login');
+}

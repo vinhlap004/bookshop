@@ -16,3 +16,4 @@ module.exports.getAllCategories = function() {
   return categories.find();
 }
 
+module.exports.getListCategoriesByID = arrayID => categories.find().where('categoriesID').in(arrayID);

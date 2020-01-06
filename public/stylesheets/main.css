@@ -1789,6 +1789,10 @@ input.num-product::-webkit-inner-spin-button {
   background-color: #555;
   color: black;
 }
+.btn-purchase{
+  margin-top: 50px;
+  width: 100%;
+}
 /* BILL INFO */
 .bill-info{
   padding: 100px;
@@ -1798,7 +1802,7 @@ input.num-product::-webkit-inner-spin-button {
 }
 
 .total, .price{
-  margin-left: 10px;
+  
   font-size: 18px;
 }
 .price{
@@ -1807,11 +1811,8 @@ input.num-product::-webkit-inner-spin-button {
 
 .shipping-info{
   margin: 0px;
-  padding-top: 10px;
   padding-bottom: 30px;
-  margin-top: 30px;
-  border: 1px solid #e6e6e6;
-  background-color: #f3f3f3;
+
 }
 .form-control{
   border-radius: 0;
@@ -1939,13 +1940,18 @@ input.num-product::-webkit-inner-spin-button {
 .row-shopping-cart{
   list-style: none;
   margin: 0;
-  border: 1px solid #e6e6e6;
+  background-color: #fff;
   border-top: 0px;
   display: flex;
   align-items: center;
   padding-top: 20px;
   padding-bottom: 20px;
+  border-bottom: 0.5px solid #e6e6e6;
 }
+.row-shopping-cart:last-child{
+  border-bottom: 0px;
+}
+
 .row-shopping-cart li{
   display: inline-block;
   text-align: center;
@@ -3415,4 +3421,84 @@ div.sort-active{
   max-height: 80px;
   max-width: 60px;
   object-fit: cover;
+}
+
+.related-product{
+  width: 220px;
+  height: 390px;
+  object-fit: cover;
+}
+
+.wrapper-shopping-cart{
+  background-color: rgb(247, 247, 247);
+}
+
+.wrapper-shipping-info{
+  
+  background-color: #fff;
+  margin-top: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 15px;
+  padding-bottom: 50px;
+}
+
+.title-product{
+  text-align: left !important;
+  font-size: 13px;
+  font-weight: bold;
+
+}
+
+.wrapper-old-address{
+  background-color: #fff;
+  padding: 20px;
+}
+.wrapper-checkout{
+  background-color: #e7e7e7;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.wrapper-form-address{
+  padding: 60px;
+  background-color: #fff;
+  margin: 30px auto;
+  width: 100%;
+  text-align: center;
+}
+.form-checkout{
+  max-width: 450px;
+  margin: 50px auto;
+}
+.model-hide{
+  display: none;
+}
+.wrapper-checkout-info-show{
+  display: block;
+}
+
+
+
+.wrapper-info-payment, .wrapper-old-address, .wrapper-list-product{
+  background-color: #fff;
+  margin-bottom: 40px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.wrapper-list-product{
+  padding-top: 0;
+}
+.button-select{
+  border: 1px solid #e5e5e5;
+  padding: 10px;
+  margin-right: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.button-selected{
+  border: 1px solid #586eff;
+ 
+}
+.row-line{
+  margin-bottom: 30px;
 }

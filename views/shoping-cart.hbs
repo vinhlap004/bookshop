@@ -1,109 +1,109 @@
 <!-- breadcrumb -->
-<div class="container">
-	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-		<a href="index" class="stext-109 cl8 hov-cl1 trans-04">
-			Trang chủ
-			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-		</a>
+<div class="container-fluid wrapper-shopping-cart p-b-200">
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="index" class="stext-109 cl8 hov-cl1 trans-04">
+				Trang chủ
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
 
-		<span class="stext-109 cl4">
-			Giỏ hàng
-		</span>
-	</div>
-</div>
-
-
-<!-- Shoping Cart -->
-
-<div class="container shop">
-	<div class="row">
-		<div class="cart-info col-md-8">
-			<ul class="header-shopping-cart row">
-				<li class="col-md-2">Sản phẩm</li>
-				<li class="col-md-2">Tên</li>
-				<li class="col-md-2">Giá</li>
-				<li class="col-md-2">Số lượng</li>
-				<li class="col-md-2">Tổng cộng</li>
-				<li class="col-md-2">Thao tác</li>
-			</ul>
-			<!--each item in cart-->
-			{{#each session.cart.items}}
-			<ul class="row-shopping-cart row" id="{{@key}}">
-				<li class="col-md-2">
-					<div class="how-itemcart">
-						<img src="{{this.img}}" alt="IMG">
-					</div>
-				</li>
-				<li class="col-md-2">{{title}}</li>
-				<li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
-				<li class="col-md-2">
-					<div class="wrap-num-product flex-w">
-						<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-							<i class="fs-16 zmdi zmdi-minus"></i>
-						</div>
-						<input class="mtext-104 cl3 txt-center num-product {{@key}}" type="number" name="num-product"
-							value="{{quantity}}">
-						<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-							<i class="fs-16 zmdi zmdi-plus"></i>
-						</div>
-					</div>
-				</li>
-				<li class="col-md-2 totalPriceOfProduct {{@key}}">Tổng </li>
-				<li class="col-md-2">
-					<a href="#" class="del-product">
-						Xóa
-					</a>
-				</li>
-			</ul>
-			{{/each}}
+			<span class="stext-109 cl4">
+				Giỏ hàng
+			</span>
 		</div>
-		<!--info payment!-->
-		<div class="shipping-info col-md-4">
-			<h4>Thông tin thanh toán</h4>
-			<form>
-				<div class="form-group">
-					<input id="so1" type="text" class="form-control" placeholder="Tên" autocomplete="off"
-						value="{{user.name}}">
-				</div>
-				<div class="form-group">
-					<input id="so2" type="text" class="form-control" placeholder="Điện thoại" autocomplete="off"
-						value="{{user.phonenumber}}">
-				</div>
-				<div class="form-group">
-					<select class="form-control" id="exampleFormControlSelect1">
-						<option>Hà Nội</option>
-						<option>Tp Hồ Chí Minh</option>
-						<option>Hải Phòng</option>
-						<option>Khánh Hòa</option>
-						<option>Đà Nẵng</option>
-					</select>
-				</div>
-				<div class="form-group">
-					<input id="address" type="text" class="form-control" placeholder="Địa chỉ" autocomplete="off"
-						value="{{user.address}}">
-				</div>
-			</form>
-			<div class="row form-group coupon">
-				<div class="col-md-6">
-					<input id="" type="text" class="form-control" placeholder="Mã giảm giá" autocomplete="off">
-				</div>
-				<div class="col-md-6">
-					<a href="#" class="btn-coupon">
-						Áp dụng
-					</a>
+	</div>
+
+
+	<!-- Shoping Cart -->
+
+	<div class="container shop">
+		<div class="row">
+			<div class="cart-info col-md-9">
+				<!--each item in cart-->
+				{{#each session.cart.items}}
+				<ul class="row-shopping-cart row" id="{{@key}}">
+					<li class="col-md-2">
+						<div class="how-itemcart">
+							<img src="{{this.img}}" alt="IMG">
+						</div>
+					</li>
+					<li class="col-md-5 title-product">{{title}}</li>
+					<li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
+					<li class="col-md-2">
+						<div class="wrap-num-product flex-w">
+							<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+								<i class="fs-16 zmdi zmdi-minus"></i>
+							</div>
+							<input class="mtext-104 cl3 txt-center num-product {{@key}}" type="number"
+								name="num-product" value="{{quantity}}">
+							<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+								<i class="fs-16 zmdi zmdi-plus"></i>
+							</div>
+						</div>
+					</li>
+
+					<li class="col-md-1">
+						<a href="#" class="del-product">
+							<i class="far fa-trash-alt"></i>
+						</a>
+					</li>
+				</ul>
+				{{/each}}
+			</div>
+			<!--info payment!-->
+			<div class="shipping-info col-md-3">
+				<div class="wrapper-shipping-info">
+					<h4>Thông tin thanh toán</h4>
+					<div class="row">
+						<div class="col-md-4">
+							<h6>Tạm tính:</h6>
+							<h6>VAT (10%):</h6>
+						</div>
+						<div class="col-md-8 txt-right">
+							<h6>1 300 000đ</h6>
+							<h6>130 000đ</h6>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-md-6">
+							<span>Thành tiền:</span>
+						</div>
+						<div class="col-md-6 txt-right">
+							<span class="price" id="totalPrice"><b>₫</b></span>
+						</div>
+					</div>
+
+					<div class="row form-group coupon">
+						<div class="col-md-6">
+							<input id="" type="text" class="form-control" placeholder="Mã giảm giá" autocomplete="off">
+						</div>
+						<div class="col-md-6">
+							<a href="#" class="btn-coupon">
+								Áp dụng
+							</a>
+						</div>
+
+					</div>
+					
+					
+					<div class="row">
+						{{#if isAuthenticated}}
+						<a href="/checkout" class="col">
+							<div class="btn-purchase">
+								Thanh toán
+							</div>
+						</a>
+						{{else}}
+							<a href="/login" class="col">
+								<div class="btn-purchase">
+									Thanh toán
+								</div>
+							</a>
+						{{/if}}
+					</div>
 				</div>
 
-			</div>
-			<div class="row">
-				<span class="total">Tổng:</span>
-				<span class="price" id="totalPrice"><b>₫</b></span>
-			</div>
-			<div class="row">
-				<a href="#" class="col">
-					<div class="btn-purchase">
-						Thanh toán
-					</div>
-				</a>
 			</div>
 		</div>
 	</div>
@@ -111,27 +111,27 @@
 
 <script>
 	//Calculate total price and quantity
-	$(document).ready(function(){
+	$(document).ready(function () {
 		const listProduct = $('ul.row-shopping-cart');
 		let totalPrice = 0;
-		$.each(listProduct, function(index, value){
+		$.each(listProduct, function (index, value) {
 			const id = listProduct.eq(index).attr('id');
 			const numProduct = $('input.num-product.' + id).attr('value');
 			const price = $('.priceOfProduct.' + id).text().slice(0, -2);
-			totalPrice += numProduct*price;
-			$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
+			totalPrice += numProduct * price;
+			//$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
 		})
 		$('#totalPrice').html('<b>' + totalPrice + ' ₫<b>');
 	})
 </script>
 
 <script>
-//Delete product
-	$(document).ready(function(){
-		$('a.del-product').on('click', function(){
+	//Delete product
+	$(document).ready(function () {
+		$('a.del-product').on('click', function () {
 			const ulProduct = $(this).parent().parent();
 			const idProduct = ulProduct.attr('id');
-			
+
 			$.ajax({
 				url: '/remove-product',
 				type: 'DELETE',
@@ -142,12 +142,12 @@
 					ulProduct.remove();
 					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
 					$('#totalQuantity').html(numberInCart);
-					
+
 					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
 					$('#totalPrice').html(totalPriceCart);
 				}
 			})
 		}
-	)
+		)
 	})
 </script>

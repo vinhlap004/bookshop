@@ -1,10 +1,6 @@
 //1.require mongoose
 var mongoose = require('mongoose');
 
-//2.connect
-// if (mongoose.connect(process.env.DB_HOST,{useNewUrlParser:true,useUnifiedTopology: true })){
-// 	console.log('connected to database\n');
-// }
 
 //3.tạo Schema
 var productsSchema = new mongoose.Schema({
@@ -48,5 +44,7 @@ module.exports.getProductAtPage = function(productObject, page, products_per_pag
 module.exports.getProductByID = function(id){
   return products.findById(id).exec();
 }
+module.exports.getRelatedProduct = product => 
+  products.find({$or : [{author: product.author}, {categoriesID: product.categoriesID}]}).limit(16);
 
 

@@ -160,5 +160,8 @@ module.exports.changeProductQuantity = async (productID, userID, isIncrease, pri
     await carts.findOneAndUpdate({userID: userID}, {$set: {totalPrice: totalPrice, "items.$[elem].quantity": quantity}}, {arrayFilters: [{"elem.productID": {$in: [productID]}}]});
 }
 
+module.exports.getCartByUserID = userID => carts.findOne({userID: userID});
 
-
+module.exports.removeCart = function(cart){
+    cart.remove();
+}

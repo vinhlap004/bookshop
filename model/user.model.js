@@ -10,7 +10,8 @@ var usersSchema = new mongoose.Schema({
   address: String,
   phonenumber: Number,
   resetPasswordToken: String,
-  resetPasswordExpires: Date
+  resetPasswordExpires: Date,
+  orderAddress: Object
 }, { collection: 'users' });
 
 //4.tạo model
@@ -25,4 +26,13 @@ module.exports.createUser = function(email, password, name, phonenumber){
 
 module.exports.findEmail = function(email){
   return users.findOne({email: email});
+}
+
+module.exports.updateOrderAddressByID = (userID, name, phone, address) => {
+   const orderAddress = {
+     name: name,
+     phone: phone,
+     address: address
+   }
+   return users.findOneAndUpdate({_id: userID}, {orderAddress: orderAddress}, {new: true});
 }

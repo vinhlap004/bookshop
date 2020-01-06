@@ -4,6 +4,8 @@ var router = express.Router();
 const controllerProduct =require('../controllers/products.controller');
 const controllerComment = require('../controllers/comments.controller');
 const controllerCart = require('../controllers/cart.controller');
+const controllerOrder = require('../controllers/order.controller');
+const controllerUser = require('../controllers/user.controller');
 
 /* GET home page. */
 router.get('/', controllerProduct.index);
@@ -48,5 +50,10 @@ router.get('/shoping-cart',function(req, res, next) {
 router.get('/about',function(req, res, next) {
   res.render('about');
 });
+
+router.get('/checkout', controllerCart.fillCheckout);
+
+router.post('/checkout', controllerOrder.checkout);
+router.post('/update-order-address', controllerUser.updateOrderAddress);
 
 module.exports = router;

@@ -218,10 +218,10 @@
             return false;
         $(this).next().val(numProduct - 1);
         //change total of product
-        const total = $(this).parent().parent().next().text().slice(0, -2);
+        //const total = $(this).parent().parent().next().text().slice(0, -2);
        
         const price = $(this).parent().parent().prev().text().slice(0, -2);
-        $(this).parent().parent().next().text(total-price + ' ₫');
+        
         const totalPrice = $('#totalPrice').children().text().slice(0, -2);
         const tempTotalPrice = totalPrice - price;
 
@@ -242,9 +242,9 @@
     $('.btn-num-product-up').on('click', function(){
         var numProduct = Number($(this).prev().val());
         $(this).prev().val(numProduct + 1);
-        const total = parseInt($(this).parent().parent().next().text().slice(0, -2));
+        //const total = parseInt($(this).parent().parent().next().text().slice(0, -2));
         const price = parseInt($(this).parent().parent().prev().text().slice(0, -2));
-        $(this).parent().parent().next().text(total+price + ' ₫');
+        
         const totalPrice = parseInt($('#totalPrice').children().text().slice(0, -2));
         const tempTotalPrice = totalPrice + price;
         $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
