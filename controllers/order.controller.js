@@ -22,9 +22,10 @@ module.exports.checkout = async function(req, res){
     }
 
     const cart = await cartModel.getCartByUserID(userID);
-    console.log(cart);
-    await orderModel.addOrder(name, phone, address, cart, status, shipping, timeline, feeShipping, payment)
+    
+    await orderModel.addOrder(name, phone, address, cart, status, shipping, timeline, feeShipping, payment);
     cartModel.removeCart(cart);
+    req.session.cart = null;
     res.status(200);
     res.send();
 }

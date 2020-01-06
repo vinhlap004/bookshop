@@ -22,7 +22,7 @@ module.exports.login = function(req, res, next) {
         
         if (req.session.cart){
           //replace cart in user's database
-          req.session.cart = await carts.update(req.session.cart, user.id);
+          req.session.cart = await carts.syncCart(req.session.cart, user.id);
           }else{
           //move add from database to session
           req.session.cart = await carts.get(user.id);

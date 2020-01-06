@@ -34,12 +34,11 @@ module.exports.add = async function(Cart, idProduct){
         Cart.items[idProduct] = item;
         Cart.totalQuantity++;
     }
-    Cart.totalPrice += Cart.items[idProduct].price;
+    Cart.totalPrice += parseInt(Cart.items[idProduct].price);
     return Cart;
 }
 
-module.exports.update = async function(cart, userID){
-    
+module.exports.syncCart = async function(cart, userID){
     const cartModel = await carts.findOne({userID: userID});
     if (cartModel){
         await Promise.all(cartModel.items.map(async item => {
@@ -97,6 +96,38 @@ module.exports.update = async function(cart, userID){
             totalPrice: totalPrice
         })
         return newCart.save();
+    }
+    
+}
+
+module.exports.update = async (productID, userID) => {
+    const cartDB = await carts.findOne({userID: userID});
+    const product  = await ProductModel.getProductByID(productID);
+    if (!cartDB){
+        const newCart = new carts({
+            userID: userID,
+            items: {
+                productID: productID,
+                quantity: 1
+            },
+            totalPrice: product.price,
+            totalQuantity: 1
+        });
+        await newCart.save();
+    }else{
+        for (const item of cartDB.items){
+            if (item.productID == productID){
+                //const newQuantity = item.quantity + 1;
+                item.quantity++;
+                const newTotalPrice = cartDB.totalPrice+ product.price;
+                await carts.findOneAndUpdate({userID: userID}, {totalPrice: newTotalPrice, items: cartDB.items});
+                return;
+            }
+        }
+        cartDB.items.push({productID: productID, quantity: 1});
+        cartDB.totalPrice += product.price;
+        cartDB.totalQuantity += 1;
+        cartDB.save();
     }
     
 }
