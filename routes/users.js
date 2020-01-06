@@ -18,9 +18,24 @@ router.get('/logout',controllerUser.logout);
 
 router.get('/register',controllerUser.getRegister);
 
-router.get('/profile',function(req,res,next){
-    res.render('profile');
+// forget password
+router.get('/forget-password',function(req, res, next) {
+  res.render('forget-password');
 });
+
+router.post('/forget-password',controllerUser.forgetPassword);
+// reset password
+
+router.get('/reset-password',function(req,res,next){
+  console.log(req.query.email);
+  res.render('reset-password');
+});
+
+router.post('/reset-password',controllerUser.resetpassword);
+
+router.get('/profile',controllerUser.getprofile);
+
+router.post('/profile',controllerUser.profile);
 
 //router.post('/register',controllerUser.register);
 

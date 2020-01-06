@@ -7,7 +7,10 @@ var usersSchema = new mongoose.Schema({
   email: String,
   password: String,
   name: String,
-  phonenumber: Number
+  address: String,
+  phonenumber: Number,
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
 }, { collection: 'users' });
 
 //4.tạo model

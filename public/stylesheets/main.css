@@ -1773,6 +1773,18 @@ input.num-product::-webkit-inner-spin-button {
   margin: auto;
   width: 93%;
 }
+
+.mybtn-login{
+  background-color: #222;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  margin: auto;
+  margin-top: 20px;
+  width: 93%;
+}
+
 .btn-purchase:hover, .btn-login:hover, .btn-register:hover{
   background-color: #555;
   color: black;

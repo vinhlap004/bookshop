@@ -33,12 +33,6 @@
         <input type="file" class="text-center center-block file-upload">
       </div></hr><br>
 
-               
-          {{!-- <div class="panel panel-default">
-            <div class="panel-heading">Website <i class="fa fa-link fa-1x"></i></div>
-            <div class="panel-body"><a href="http://bootnipets.com">bootnipets.com</a></div>
-          </div> --}}
-          
           
           <ul class="list-group">
             <li class="list-group-item text-muted">Activity <i class="fa fa-dashboard fa-1x"></i></li>
@@ -61,66 +55,76 @@
                 <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
               </ul>
 
-              
+
           <div class="tab-content">
             <div class="tab-pane active" id="home">
                 <hr>
+
+            {{#if err}}
+            {{#each err}}
+              <!-- show err.msg -->
+              <div class="alert alert-warning alert-dismissible fade show err-server" role="alert">
+                <span>{{this.msg}}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {{/each}}
+            {{/if}}
+              {{!-- get error --}}
+		        {{#if message}}
+			        <div class="alert alert-warning alert-dismissible fade show err-server" role="alert">
+                <span>{{message}}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {{/if}}
                   <form class="form" action="/profile" method="post" id="registrationForm">
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                              <label for="first_name"><h4>First name</h4></label>
-                              <input type="text" class="form-control" name="first_name" id="first_name" placeholder="first name" title="enter your first name if any.">
+                              <label for="first_name"><h4>Name</h4></label>
+                              <input type="text" class="form-control" name="name" id="name" value="{{name}}" placeholder="Name" title="enter your name if any.">
                           </div>
                       </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                            <label for="last_name"><h4>Last name</h4></label>
-                              <input type="text" class="form-control" name="last_name" id="last_name" placeholder="last name" title="enter your last name if any.">
-                          </div>
-                      </div>
-          
+
                       <div class="form-group">
                           
                           <div class="col-xs-6">
                               <label for="phone"><h4>Phone</h4></label>
-                              <input type="text" class="form-control" name="phone" id="phone" placeholder="enter phone" title="enter your phone number if any.">
+                              <input type="text" class="form-control" name="phone" id="phone" value="{{phone}}" placeholder="Enter phone" title="enter your phone number if any.">
                           </div>
                       </div>
-          
-                      <div class="form-group">
-                          <div class="col-xs-6">
-                             <label for="mobile"><h4>Mobile</h4></label>
-                              <input type="text" class="form-control" name="mobile" id="mobile" placeholder="enter mobile number" title="enter your mobile number if any.">
-                          </div>
-                      </div>
-                      <div class="form-group">
-                          
-                          <div class="col-xs-6">
-                              <label for="email"><h4>Email</h4></label>
-                              <input type="email" class="form-control" name="email" id="email" placeholder="you@email.com" title="enter your email.">
-                          </div>
-                      </div>
+                      
                       <div class="form-group">
                           
                           <div class="col-xs-6">
                               <label for="email"><h4>Location</h4></label>
-                              <input type="email" class="form-control" id="location" placeholder="somewhere" title="enter a location">
+                              <input type="text" class="form-control" name="address" id="address" value="{{address}}" placeholder="Somewhere" title="enter a location">
                           </div>
                       </div>
+
                       <div class="form-group">
                           
                           <div class="col-xs-6">
                               <label for="password"><h4>Password</h4></label>
-                              <input type="password" class="form-control" name="password" id="password" placeholder="password" title="enter your password.">
+                              <input type="password" class="form-control" name="password" id="password" placeholder="Password" title="enter your password.">
+                          </div>
+                      </div>
+
+                      <div class="form-group">
+                          
+                          <div class="col-xs-6">
+                              <label for="newpassword"><h4>New Password</h4></label>
+                              <input type="password" class="form-control" name="newpassword" id="newpassword" placeholder="New Password" title="enter your new password.">
                           </div>
                       </div>
                       <div class="form-group">
                           
                           <div class="col-xs-6">
-                            <label for="password2"><h4>Verify</h4></label>
-                              <input type="password" class="form-control" name="password2" id="password2" placeholder="password2" title="enter your password2.">
+                            <label for="verifypassword2"><h4>Verify Password</h4></label>
+                              <input type="password" class="form-control" name="verifyPassword" id="verifyPassword" placeholder="Verify Password" title="enter your verify password.">
                           </div>
                       </div>
                       <div class="form-group">
@@ -142,7 +146,7 @@
 
         </div><!--/col-9-->
     </div><!--/row-->
-                                       <script>
+<script>
                                            
 $(document).ready(function() {
 
@@ -164,4 +168,4 @@ $(document).ready(function() {
         readURL(this);
     });
 });
-                                       </script>               
+</script>               

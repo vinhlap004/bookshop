@@ -1,6 +1,8 @@
 const users = require('../model/user.model');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const nodemailer = require("nodemailer");
+const crypto = require('crypto');
 
 const carts = require('../model/cart.model');
 
@@ -46,4 +48,198 @@ module.exports.getRegister = function(req, res, next){
 
 module.exports.getLogin = function(req, res, next){
   res.render('login');
+}
+
+// fogetpassword
+
+module.exports.forgetPassword = async function(req, res, next)
+{
+    var smtpTransport = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+          user: "bookshop796@gmail.com",
+          pass: "bookshop123123"
+      }
+  });
+    var rand,mailOptions,host,link,token;
+    console.log("random",crypto.randomBytes(20).toString('hex'));
+    const user = await users.findEmail(req.body.email);
+    if(!user)
+    {
+      res.render('forget-password',
+        {message: "Email này chưa được đăng kí tài khoản tại trang web này. Vui lòng nhập đúng tài khoản email!!"});
+    }
+    else{
+
+      rand = crypto.randomBytes(20).toString('hex');
+      host=req.get('host');
+      link="http://"+req.get('host')+"/reset-password?token="+rand+"&email="+req.body.email;
+      mailOptions={
+          to : req.body.email,
+          subject : "Reset your password",
+          html : "Hello,<br> Please Click on the link to reset your password.<br><a href="+link+">Click here to verify</a>"
+      }
+      console.log(mailOptions);
+      smtpTransport.sendMail(mailOptions, function(error, response){
+      if(error){
+              console.log(error);
+          res.render('forget-password',{message: "Chúng tôi không thể gửi mail cho bạn. Vui lòng thử lại"});
+      }else{
+        
+        if(!user)
+        {
+          res.render('forget-password',
+          {message: "Email này chưa được đăng kí tài khoản tại trang web này. Vui lòng nhập đúng tài khoản email!!"});
+        }else{
+              console.log("Message sent: " + response.message);
+              user.resetPasswordToken = rand;
+              user.resetPasswordExpires=Date.now() + 3600000; // ngày hiện tại + 1 giờ
+              user.save();
+              console.log(user);
+              res.render('forget-password',
+              {message: "Chúng tôi đã gửi đường link để lấy lại mật khẩu vào mail bạn. Xin hãy vào mail kiểm tra"});
+            }
+        }
+    });
+  }
+
+}
+
+// resetpassword
+module.exports.resetpassword = async function(req,res,next)
+{
+    const newpassword = req.body.password;
+    const verifynewpassword= req.body.verifypassword;
+    console.log(newpassword,verifynewpassword);
+    if(!newpassword || !verifynewpassword)
+    {
+      res.render('reset-password',{message: "Bạn chưa điền đầy đầy đủ thông tin!"});
+    }
+    else{
+      if(newpassword != verifynewpassword)
+      {
+        res.render('reset-password',{message: "Xác nhận mật khẩu không đúng"});
+      }
+      else{
+        //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+        console.log(req.query.email);
+        const user = await users.findEmail(req.query.email);
+        console.log(user);
+          if(!user)
+          {
+              console.log("not user");
+              res.render('reset-password',{message: "Lỗi, Xin hãy gửi yêu cầu lấy lại mật khẩu mới cho chúng tôi!"});
+          }
+          else{
+            //console.log("asc",(user.resetPasswordToken == req.query.token && (user.resetPasswordExpires - Date.now()>0)));
+            if(user.resetPasswordToken == req.query.token && (user.resetPasswordExpires - Date.now()>0)){
+            bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newpassword, salt, async (err, hash) => {
+              if (err) throw err;
+              user.password = hash;
+              user.resetPasswordToken=null;
+              user.resetPasswordExpires=null;
+              await user.save();
+              console.log(user);
+            });
+          });
+          res.render('login',{message: "Đổi mật khẩu thành công đăng nhập ngay!"});
+          }
+          else
+          {
+            res.render('reset-password',{message: "Lỗi, Xin hãy gửi yêu cầu lấy lại mật khẩu mới cho chúng tôi!"});
+          }
+        }
+      }
+    }
+}
+
+module.exports.getprofile = function(req,res,next)
+{
+  if(res.locals.user)
+  {
+    const currenUser=res.locals.user;
+    console.log("abc",currenUser.name,currenUser.phonenumber,currenUser.address);
+    res.render('profile',{name: currenUser.name, phone: currenUser.phonenumber,address: currenUser.address});
+  }
+  else{
+    res.render('login');
+  }
+}
+
+//profile
+module.exports.profile = async function(req,res,next){
+  if(res.locals.user)
+  {
+    let err=[];
+    const currenUser=res.locals.user;
+    const {name, phone,address, password, newpassword, verifyPassword}=req.body;
+    //check requied fields 
+	  if (!name || !phone || !address) {
+		  err.push({msg: 'Bạn không thể cập nhật các thông tin về rỗng!'});
+	  } 
+	  //check phone number
+	  else if(parseInt(phone)<=0 || isNaN(parseInt(phone))){
+		  err.push({msg: 'Số điện thoại không hợp lệ!'});
+	  }
+	  if (err.length > 0) {
+		  res.render('profile', {err,name, phone,address});
+    }
+    else{
+      const userUpdate = await users.getUserByID(currenUser.id);
+      userUpdate.name = name;
+      userUpdate.phonenumber =phone;
+      userUpdate.address=address;
+      console.log(!password || !newpassword|| !verifyPassword);
+      if(password || newpassword|| verifyPassword){
+      if(!password || !newpassword|| !verifyPassword)
+      {
+        res.render('profile', {message: 'Bạn chưa nhập đầy đủ thông tin để đổi mật khẩu!',name, phone,address});
+      }
+      else{
+        console.log("password!='' && newpassword!='' && verifyPassword!=''");
+        if(password != newpassword)
+        {
+          console.log("password!= newpassword");
+        if(newpassword != verifyPassword)
+          {
+            err.push({msg: 'Mật khẩu mới và xác nhận mật khẩu không đúng!'});
+            res.render('profile',{err, name, phone, address, password, newpassword, verifyPassword});
+          }
+          else{
+            // Match password
+            bcrypt.compare(password, userUpdate.password, (err1, isMatch) => {
+              if(err1) throw err1;
+              if(!isMatch)
+              {
+                  //err.push({msg:'Mật khẩu không đúng!!'});
+                  res.render('profile',{message:"Mật khẩu không đúng!!",name, phone,address});
+              }
+              else {
+                console.log("asdasdasd");
+                bcrypt.genSalt(10, (err, salt) => {
+                  bcrypt.hash(newpassword, salt, async (err, hash) => {
+                    if (err) throw err;
+                    userUpdate.password = hash;
+                    await userUpdate.save();
+                    res.render('profile', {message: 'Cập nhật tài khoản thành công!',name, phone,address});
+                  });
+                });
+              }
+            });
+          }
+        }
+        else{
+          res.render('profile', {message: 'Mật khẩu mới không thể giống mật khẩu cũ!',name, phone,address});
+        }
+      }
+    }
+    else{
+      userUpdate.save();
+      res.render('profile', {message: 'Cập nhật tài khoản thành công!',name, phone,address});
+    }
+  }
+  }else{
+    res.render('login');
+  }
 }
