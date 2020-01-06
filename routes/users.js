@@ -27,6 +27,7 @@ router.post('/forget-password',controllerUser.forgetPassword);
 // reset password
 
 router.get('/reset-password',function(req,res,next){
+  console.log(req.query.email);
   res.render('reset-password');
 });
 

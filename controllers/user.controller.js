@@ -1,7 +1,8 @@
 const users = require('../model/user.model');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
-var nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer");
+const crypto = require('crypto');
 
 const carts = require('../model/cart.model');
 
@@ -61,7 +62,7 @@ module.exports.forgetPassword = async function(req, res, next)
       }
   });
     var rand,mailOptions,host,link,token;
-
+    console.log("random",crypto.randomBytes(20).toString('hex'));
     const user = await users.findEmail(req.body.email);
     if(!user)
     {
@@ -70,18 +71,9 @@ module.exports.forgetPassword = async function(req, res, next)
     }
     else{
 
-      rand=Math.floor((Math.random() * 20000) + 54);
-      rand = rand.toString();
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(rand, salt, async (err, hash) => {
-          if (err) throw err;
-          user.resetPasswordToken = hash;
-          console.log(user);
-        });
-      });
-      console.log("token",user);
+      rand = crypto.randomBytes(20).toString('hex');
       host=req.get('host');
-      link="http://"+req.get('host')+"/reset-password?token="+user.resetPasswordToken+"&email="+req.body.email;
+      link="http://"+req.get('host')+"/reset-password?token="+rand+"&email="+req.body.email;
       mailOptions={
           to : req.body.email,
           subject : "Reset your password",
@@ -100,11 +92,13 @@ module.exports.forgetPassword = async function(req, res, next)
           {message: "Email này chưa được đăng kí tài khoản tại trang web này. Vui lòng nhập đúng tài khoản email!!"});
         }else{
               console.log("Message sent: " + response.message);
+              user.resetPasswordToken = rand;
               user.resetPasswordExpires=Date.now() + 3600000; // ngày hiện tại + 1 giờ
               user.save();
-          res.render('forget-password',
-          {message: "Chúng tôi đã gửi đường link để lấy lại mật khẩu vào mail bạn. Xin hãy vào mail kiểm tra"});
-          }
+              console.log(user);
+              res.render('forget-password',
+              {message: "Chúng tôi đã gửi đường link để lấy lại mật khẩu vào mail bạn. Xin hãy vào mail kiểm tra"});
+            }
         }
     });
   }
@@ -128,17 +122,23 @@ module.exports.resetpassword = async function(req,res,next)
       }
       else{
         //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+        console.log(req.query.email);
         const user = await users.findEmail(req.query.email);
+        console.log(user);
           if(!user)
           {
               console.log("not user");
+              res.render('reset-password',{message: "Lỗi, Xin hãy gửi yêu cầu lấy lại mật khẩu mới cho chúng tôi!"});
           }
           else{
-            if(user.resetPasswordToken == req.query.token){
+            //console.log("asc",(user.resetPasswordToken == req.query.token && (user.resetPasswordExpires - Date.now()>0)));
+            if(user.resetPasswordToken == req.query.token && (user.resetPasswordExpires - Date.now()>0)){
             bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newpassword, salt, async (err, hash) => {
               if (err) throw err;
               user.password = hash;
+              user.resetPasswordToken=null;
+              user.resetPasswordExpires=null;
               await user.save();
               console.log(user);
             });
@@ -147,7 +147,7 @@ module.exports.resetpassword = async function(req,res,next)
           }
           else
           {
-            res.render('reset-password',{message: "Lỗi"});
+            res.render('reset-password',{message: "Lỗi, Xin hãy gửi yêu cầu lấy lại mật khẩu mới cho chúng tôi!"});
           }
         }
       }
@@ -197,7 +197,7 @@ module.exports.profile = async function(req,res,next){
       }
       else{
         console.log("password!='' && newpassword!=''&& verifyPassword!=''");
-        if(password!= newpassword)
+        if(password != newpassword)
         {
           console.log("password!= newpassword");
         if(newpassword != verifyPassword)
@@ -211,8 +211,8 @@ module.exports.profile = async function(req,res,next){
               if(err1) throw err1;
               if(!isMatch)
               {
-                  err.push({msg:'Mật khẩu không đúng!!'});
-                  res.render('profile',{err,name, phone,address, password, newpassword, verifyPassword});
+                  //err.push({msg:'Mật khẩu không đúng!!'});
+                  res.render('profile',{message:"Mật khẩu không đúng!!",name, phone,address, password, newpassword, verifyPassword});
               }
               else {
                 console.log("asdasdasd");
