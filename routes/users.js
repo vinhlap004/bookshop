@@ -33,6 +33,8 @@ router.get('/reset-password',function(req,res,next){
 
 router.post('/reset-password',controllerUser.resetpassword);
 
+router.get('/verify',controllerUser.verify);
+
 router.get('/profile',controllerUser.getprofile);
 
 router.post('/profile',controllerUser.profile);

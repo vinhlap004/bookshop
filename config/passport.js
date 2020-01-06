@@ -1,6 +1,8 @@
 const LocalTrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const nodemailer = require("nodemailer");
+const crypto = require('crypto');
 // load user model
 const users = require('../model/user.model');
 const carts = require('../model/cart.model');
@@ -33,16 +35,56 @@ passport.use('register', new LocalTrategy({
     if (user) {
         return done(null, false, req.flash('message', 'Tên đăng nhập đã tồn tại!!'))
     } else {
+
+        var rand,mailOptions,host,link;          
+      
+        rand = crypto.randomBytes(20).toString('hex');
+
+        // tạo mới user 
         const newuser = users.createUser(email, password, name, phonenumber);
         bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newuser.password, salt, async (err, hash) => {
                 if (err) throw err;
                 // set password to hash
                 newuser.password = hash;
-                const users = await newuser.save()
-                done(null, users);
+                newuser.resetPasswordToken=rand;
+                const users = await newuser.save();
+
+                // gửi mail kích hoạt tài khoản
+
+        var smtpTransport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: "bookshop796@gmail.com",
+                pass: "bookshop123123"
+            }
+        });
+          
+            host=req.get('host');
+            link="http://"+req.get('host')+"/verify?token="+rand+"&email="+email;
+            mailOptions={
+                to : email,
+                subject : "Verify your account",
+                html : "Hello,<br> Please Click on the link to verify your account.<br><a href="+link+">Click here to verify</a>"
+            }
+            console.log(mailOptions);
+            smtpTransport.sendMail(mailOptions, function(error, response){
+            if(error){
+                    console.log(error);
+                    return done(null, false, req.flash('message', 'Chúng tôi không thể gửi mail cho bạn. Vui lòng thử lại!!'));
+            }else{
+
+                    console.log("Message sent: " + response.message);
+                    req.flash('message', 'Chúng tôi đã gửi đường link để xác nhận tài khoản vào mail bạn. Xin hãy vào mail kiểm tra!!');
+                    
+                    console.log(user);
+                    done(null, users);
+                }
+            });
+            
             });
         });
+
     }
 }
 ))

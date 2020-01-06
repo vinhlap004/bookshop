@@ -154,6 +154,12 @@ module.exports.resetpassword = async function(req,res,next)
     }
 }
 
+//verify
+module.exports.verify = function(req,res,next)
+{
+  res.render('login');
+}
+
 module.exports.getprofile = function(req,res,next)
 {
   if(res.locals.user)
