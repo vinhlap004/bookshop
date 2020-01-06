@@ -38,7 +38,8 @@ passport.use('register', new LocalTrategy({
 
         var rand,mailOptions,host,link;          
       
-        rand = crypto.randomBytes(20).toString('hex');
+        rand=Math.floor((Math.random() * 20000) + 54);
+        rand = rand.toString();
 
         // tạo mới user 
         const newuser = users.createUser(email, password, name, phonenumber);
@@ -61,11 +62,11 @@ passport.use('register', new LocalTrategy({
         });
           
             host=req.get('host');
-            link="http://"+req.get('host')+"/verify?token="+rand+"&email="+email;
+            link="http://"+req.get('host')+"/verify?email="+email;
             mailOptions={
                 to : email,
                 subject : "Verify your account",
-                html : "Hello,<br> Please Click on the link to verify your account.<br><a href="+link+">Click here to verify</a>"
+                html : "Hello,<br> Please Click on the link and input verify code " + rand +" to verify your account.<br><a href="+link+">Click here to verify</a>"
             }
             console.log(mailOptions);
             smtpTransport.sendMail(mailOptions, function(error, response){
@@ -75,10 +76,10 @@ passport.use('register', new LocalTrategy({
             }else{
 
                     console.log("Message sent: " + response.message);
-                    req.flash('message', 'Chúng tôi đã gửi đường link để xác nhận tài khoản vào mail bạn. Xin hãy vào mail kiểm tra!!');
+                    req.flash('message', 'Tạo tài khoản thành công. Chúng tôi đã gửi đường link để xác nhận tài khoản vào mail bạn. Xin hãy vào mail kiểm tra!!');
                     
                     console.log(user);
-                    done(null, users);
+                    done(null, false);
                 }
             });
             

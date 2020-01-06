@@ -1,0 +1,36 @@
+
+	<!-- breadcrumb -->
+	<div class="container">
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="index" class="stext-109 cl8 hov-cl1 trans-04">
+				Trang chủ
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+
+			<span class="stext-109 cl4">
+				Verify Account
+			</span>
+		</div>
+	</div>
+
+
+	<!-- Shoping Cart -->
+
+    <form class="form-signin" method="POST">
+        <h4 class="txt-center">Verify Account</h4>
+
+            {{#if message}}
+			    <div class="alert alert-warning alert-dismissible fade show err-server" role="alert">
+                <span>{{message}}</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {{/if}}
+
+            <!-- end error -->
+        <input type="text" id="verify" name="verify" class="form-control" placeholder="Mã code" autocomplete="off">  
+        <div class="row">
+            <input type="submit" class="mybtn-login" value="Kích hoạt tài khoản">
+        </div>
+    </form>

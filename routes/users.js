@@ -27,13 +27,14 @@ router.post('/forget-password',controllerUser.forgetPassword);
 // reset password
 
 router.get('/reset-password',function(req,res,next){
-  console.log(req.query.email);
   res.render('reset-password');
 });
 
 router.post('/reset-password',controllerUser.resetpassword);
 
 router.get('/verify',controllerUser.verify);
+
+router.post('/verify',controllerUser.postverify);
 
 router.get('/profile',controllerUser.getprofile);
 
@@ -46,11 +47,11 @@ router.post('/register', passport.authenticate('register',{
   failureRedirect: 'register',
   failureFlash: true
 }))
-/*
-router.post('/register', function(req,res){
 
-  console.log('NAME: ' + req.body.name);
-  console.log('PHOEN: ' + req.body.phonenumber);
-})*/
+// router.post('/register', function(req,res){
+
+//   console.log('NAME: ' + req.body.name);
+//   console.log('PHOEN: ' + req.body.phonenumber);
+// })
 
 module.exports = router;
