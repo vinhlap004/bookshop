@@ -183,20 +183,21 @@ module.exports.profile = async function(req,res,next){
 		  err.push({msg: 'Số điện thoại không hợp lệ!'});
 	  }
 	  if (err.length > 0) {
-		  res.render('profile', {err,name, phone,address, password, newpassword, verifyPassword});
+		  res.render('profile', {err,name, phone,address});
     }
     else{
       const userUpdate = await users.getUserByID(currenUser.id);
       userUpdate.name = name;
       userUpdate.phonenumber =phone;
       userUpdate.address=address;
-
+      console.log(!password || !newpassword|| !verifyPassword);
+      if(password || newpassword|| verifyPassword){
       if(!password || !newpassword|| !verifyPassword)
       {
-
+        res.render('profile', {message: 'Bạn chưa nhập đầy đủ thông tin để đổi mật khẩu!',name, phone,address});
       }
       else{
-        console.log("password!='' && newpassword!=''&& verifyPassword!=''");
+        console.log("password!='' && newpassword!='' && verifyPassword!=''");
         if(password != newpassword)
         {
           console.log("password!= newpassword");
@@ -212,7 +213,7 @@ module.exports.profile = async function(req,res,next){
               if(!isMatch)
               {
                   //err.push({msg:'Mật khẩu không đúng!!'});
-                  res.render('profile',{message:"Mật khẩu không đúng!!",name, phone,address, password, newpassword, verifyPassword});
+                  res.render('profile',{message:"Mật khẩu không đúng!!",name, phone,address});
               }
               else {
                 console.log("asdasdasd");
@@ -221,17 +222,23 @@ module.exports.profile = async function(req,res,next){
                     if (err) throw err;
                     userUpdate.password = hash;
                     await userUpdate.save();
-                    res.render('profile', {message: 'Cập nhật tài khoản thành công!'});
+                    res.render('profile', {message: 'Cập nhật tài khoản thành công!',name, phone,address});
                   });
                 });
               }
             });
           }
         }
+        else{
+          res.render('profile', {message: 'Mật khẩu mới không thể giống mật khẩu cũ!',name, phone,address});
+        }
       }
+    }
+    else{
       userUpdate.save();
       res.render('profile', {message: 'Cập nhật tài khoản thành công!',name, phone,address});
     }
+  }
   }else{
     res.render('login');
   }

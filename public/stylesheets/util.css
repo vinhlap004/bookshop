@@ -3392,9 +3392,9 @@ iframe {border: none;}
 
 /* ------------------------------------ */
 .flex-c-m {
-	justify-content: center;
-	-ms-align-items: center;
-	align-items: center;
+	justify-content: center!important;
+	-ms-align-items: center!important;
+	align-items: center!important;
 }
 
 .flex-c-t {
