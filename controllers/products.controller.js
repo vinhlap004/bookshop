@@ -149,6 +149,11 @@ module.exports.product_detail = async function (req, res, next) {
   const commentsPerPage = 3;
 
   const dataProduct = await products.getProductByID(req.query.id);
+  if (!dataProduct.countView){
+	  dataProduct.countView = 1;
+  }else{
+	  dataProduct.countView++;
+  }
   const [dataPublisher, dataComment, relatedProduct, totalComment, listCategories] = await Promise.all([
 		publishers.getPublisherByName(dataProduct.publisherID),
 		comments.getCommentAtPage(
@@ -157,7 +162,8 @@ module.exports.product_detail = async function (req, res, next) {
 		),
 		products.getRelatedProduct(dataProduct),
 		comments.getTotalComment(dataProduct.comments),
-		categories.getListCategoriesByID(dataProduct.categoriesID)
+		categories.getListCategoriesByID(dataProduct.categoriesID),
+		dataProduct.save()
   ]);
  
   res.render('product-detail', {

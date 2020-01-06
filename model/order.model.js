@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
     totalPrice: Number,
     name: String,
     phone: String,
+    address: String,
     status: String,
     shipping: String,
     timeline:{
