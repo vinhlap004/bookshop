@@ -9,6 +9,7 @@ var usersSchema = new mongoose.Schema({
   name: String,
   address: String,
   phonenumber: Number,
+  isActive: {type: Boolean, default:'false'},
   resetPasswordToken: String,
   resetPasswordExpires: Date,
   orderAddress: Object

@@ -18,8 +18,8 @@ module.exports.login = function(req, res, next) {
       if (!user) { return res.render('login', {message: info.message}); }
       req.logIn(user, async function(err) {
         if (err) { return next(err); }
-        
-        
+        if(req.user.isActive)
+        {
         if (req.session.cart){
           //replace cart in user's database
           req.session.cart = await carts.syncCart(req.session.cart, user.id);
@@ -28,6 +28,10 @@ module.exports.login = function(req, res, next) {
           req.session.cart = await carts.get(user.id);
           } 
         return res.redirect('/'); 
+        }
+        else{
+          return res.render('login',{message: "Vui lòng xác thực tài khoản của bạn trước khi đăng nhập"}); 
+        }
       });
     })(req, res, next);
   }
@@ -153,6 +157,46 @@ module.exports.resetpassword = async function(req,res,next)
       }
     }
 }
+
+//verify
+module.exports.verify = function(req,res,next)
+{
+  console.log(req.query.email);
+  res.render('verify');
+}
+
+module.exports.postverify = async function(req,res,next)
+{
+  //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+  console.log(req.query.email);
+  const user = await users.findEmail(req.query.email);
+  console.log(user);
+    if(!user)
+    {
+        console.log("not user");
+        res.render('verify',{message: "Lỗi, Không tìn thấy tài khoản!"});
+    }
+    else{
+      if(!user.isActive){
+      //console.log("asc",(user.resetPasswordToken == req.query.token && (user.resetPasswordExpires - Date.now()>0)));
+        if(user.resetPasswordToken == req.body.verify){
+        
+          user.isActive = true;
+          user.resetPasswordToken=null;
+          user.save();
+      res.render('login',{message: "Kích hoạt tài khoản thành công đăng nhập ngay!"});
+      }
+      else{
+        res.render('verify',{message: "Lỗi, Mã xác thực không đúng!"});
+      }
+    }
+    else{
+      res.render('verify',{message: "Tài khoản này đã được kích hoạt. Bạn có thể đăng nhập!"});
+    }
+  }
+}
+
+// profile
 
 module.exports.getprofile = function(req,res,next)
 {
