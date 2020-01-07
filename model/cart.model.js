@@ -1,5 +1,4 @@
-const ProductModel = require('../model/products.model');
-const UserModel = require('../model/user.model');
+const ProductModel = require('./product.model');
 const mongoose = require('mongoose');
 
 const cartSchema = new mongoose.Schema({
@@ -14,7 +13,7 @@ const cartSchema = new mongoose.Schema({
     totalPrice: Number
 }, {collection: 'carts'});
 
-const carts = mongoose.model('carts', cartSchema);
+const cartModel = mongoose.model('carts', cartSchema);
 
 
 module.exports.init = function(Cart){
@@ -39,9 +38,9 @@ module.exports.add = async function(Cart, idProduct){
 }
 
 module.exports.syncCart = async function(cart, userID){
-    const cartModel = await carts.findOne({userID: userID});
-    if (cartModel){
-        await Promise.all(cartModel.items.map(async item => {
+    const cartObject = await cartModel.findOne({userID: userID});
+    if (cartObject){
+        await Promise.all(cartObject.items.map(async item => {
             let isExistProduct = false;
             const productID = item.productID;
             for (const itemKey in cart.items){
@@ -74,13 +73,13 @@ module.exports.syncCart = async function(cart, userID){
             cart.totalPrice += parseInt(cart.items[itemKey].price) * parseInt(cart.items[itemKey].quantity);
             arrayItems.push({productID: itemKey, quantity: cart.items[itemKey].quantity});
         }
-        const newCart = new carts({
+        const newCart = new cartModel({
             userID: userID,
             items: arrayItems,
             totalPrice: cart.totalPrice,
             totalQuantity: cart.totalQuantity
         })
-        await carts.remove({userID: userID})
+        await cartModel.remove({userID: userID})
         await newCart.save();
         return cart;
     }else{
@@ -89,22 +88,23 @@ module.exports.syncCart = async function(cart, userID){
         for (const proID in cart.items) {
             arrayItems.push({ productID: proID, quantity: cart.items[proID].quantity })
         }
-        const newCart = new carts({
+        const newCart = new cartModel({
             userID: userID,
             items: arrayItems,
             totalQuantity: totalQuantity,
             totalPrice: totalPrice
         })
-        return newCart.save();
+        newCart.save();
+        return cart;
     }
     
 }
 
 module.exports.update = async (productID, userID) => {
-    const cartDB = await carts.findOne({userID: userID});
+    const cartDB = await cartModel.findOne({userID: userID});
     const product  = await ProductModel.getProductByID(productID);
     if (!cartDB){
-        const newCart = new carts({
+        const newCart = new cartModel({
             userID: userID,
             items: {
                 productID: productID,
@@ -120,7 +120,7 @@ module.exports.update = async (productID, userID) => {
                 //const newQuantity = item.quantity + 1;
                 item.quantity++;
                 const newTotalPrice = cartDB.totalPrice+ product.price;
-                await carts.findOneAndUpdate({userID: userID}, {totalPrice: newTotalPrice, items: cartDB.items});
+                await cartModel.findOneAndUpdate({userID: userID}, {totalPrice: newTotalPrice, items: cartDB.items});
                 return;
             }
         }
@@ -133,14 +133,14 @@ module.exports.update = async (productID, userID) => {
 }
 
 module.exports.get = async userID => {
-    const cartModel = await carts.findOne({userID: userID}).exec();
-    if(!cartModel){
+    const cartObject = await cartModel.findOne({userID: userID}).exec();
+    if(!cartObject){
         return null;
     }
     //put item to array
     var arrayItems = {};
 
-    await Promise.all(cartModel.items.map(async item => {
+    await Promise.all(cartObject.items.map(async item => {
         const product = await ProductModel.getProductByID(item.productID);
         const newItem = {
             title: product.title,
@@ -153,14 +153,14 @@ module.exports.get = async userID => {
 
     const cartSession = {
         items: arrayItems,
-        totalQuantity: cartModel.totalQuantity,
-        totalPrice: cartModel.totalPrice
+        totalQuantity: cartObject.totalQuantity,
+        totalPrice: cartObject.totalPrice
     };
     return cartSession;
 };
 
 module.exports.removeProduct = async (idProduct, idUser) => {
-    const cart = await carts.findOne({userID: idUser});
+    const cart = await cartModel.findOne({userID: idUser});
     if (cart.totalQuantity == 1){
         cart.remove();
         return;
@@ -181,17 +181,17 @@ module.exports.removeProduct = async (idProduct, idUser) => {
 }
 
 module.exports.changeProductQuantity = async (productID, userID, isIncrease, price, quantity) => {
-    const cart = await carts.findOne({userID: userID});
+    const cart = await cartModel.findOne({userID: userID});
     var totalPrice = 0;
     if (isIncrease) {
         totalPrice = parseInt(cart.totalPrice) + parseInt(price);
     } else {
         totalPrice = cart.totalPrice - price;
     }
-    await carts.findOneAndUpdate({userID: userID}, {$set: {totalPrice: totalPrice, "items.$[elem].quantity": quantity}}, {arrayFilters: [{"elem.productID": {$in: [productID]}}]});
+    await cartModel.findOneAndUpdate({userID: userID}, {$set: {totalPrice: totalPrice, "items.$[elem].quantity": quantity}}, {arrayFilters: [{"elem.productID": {$in: [productID]}}]});
 }
 
-module.exports.getCartByUserID = userID => carts.findOne({userID: userID});
+module.exports.getCartByUserID = userID => cartModel.findOne({userID: userID});
 
 module.exports.removeCart = function(cart){
     cart.remove();

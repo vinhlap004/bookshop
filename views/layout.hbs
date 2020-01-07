@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Shoping Cart</title>
+	<title>Shopping Cart</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -62,9 +62,13 @@
 						</a>
 						{{#if isAuthenticated}}
 							<a href="/profile" id="usernameAuthenticated" class="flex-c-m trans-04 p-lr-25">Chào {{user.name}}</a>
-							<a href="/logout" class="flex-c-m trans-04 p-lr-25">
+							<a href = "/order" class="flex-c-m trans-04 p-lr-25">
+								Đơn hàng của tôi
+							</a>
+							<a href = "" class="logout flex-c-m trans-04 p-lr-25">
 								Đăng xuất
 							</a>
+							
 						{{else}}
 							<a href="login" class="flex-c-m trans-04 p-lr-25">
 							Đăng nhập
@@ -106,7 +110,7 @@
 					
 					<div id="totalQuantity" class="wrap-icon-header flex-w flex-r-m">
 						{{#if session.cart}}
-						<a href="/shoping-cart">
+						<a href="/shopping-cart">
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
 							data-notify={{session.cart.totalQuantity}}>
 							
@@ -117,7 +121,7 @@
 						{{else}}
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
 							data-notify="0">
-							<a href="/shoping-cart" class="zmdi zmdi-shopping-cart">
+							<a href="/shopping-cart" class="zmdi zmdi-shopping-cart">
 							</a>
 						</div>
 						{{/if}}
@@ -695,37 +699,211 @@
 			}
 		})
 	</script>
-<<<<<<< Updated upstream
 	<!--========== ADD TO CART ==========-->
-	<script>
-		$(document).ready(function(){
-			$('.addToCart').click(function(e){
-				e.preventDefault();
-				const id =  $(this).parent().parent().parent().parent().attr('id');
-				$.post(
-					'/add-to-cart',
-					{id: id},
-					function(data, status){
-						var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
-						$('#totalQuantity').html(html);
-					}
-				)
-			});
-
-		})
-	</script>
+	
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-155390942-1"></script>
 	<script>
 	window.dataLayer = window.dataLayer || [];
 	function gtag(){dataLayer.push(arguments);}
 	gtag('js', new Date());
-
 	gtag('config', 'UA-155390942-1');
 	</script>
+	<script>
+		$(document).ready(function(){
+			const totalPrice = parseInt($('.total-price-of-list').text().slice(0, -2));
+			const feeShipping = parseInt($('#fee-shipping').text().slice(0, -2));
+			$('.total-order').text((totalPrice+feeShipping) + ' đ');
+		})
+	</script>
+	
 
-=======
->>>>>>> Stashed changes
+	<script>
+		$(document).ready(function () {
+		$('#post-comment').on('click', postComment);
+		let username = $('#usernameAuthenticated').text();
+		
+		const searchParam = new URLSearchParams(window.location.search);
+		const productID = searchParam.get('id');
+		function postComment() {
+			if (!username) {
+				username = $('#name').val();
+			} else {
+				username = username.slice(5, username.length);
+			}
+			
+			//validate input
+			const content = $('#review').val();
+			if (username == "") {
+				alert("Vui lòng nhập tên");
+				return false;
+			}
+			if (content == "") {
+				alert("Vui lòng nhập bình luận trước khi gửi");
+				return false;
+			}
+
+			const fullDate = new Date()
+			const twoDigitMonth = (((fullDate.getMonth() + 1).length) === 1) ? '0' + (fullDate.getMonth() + 1) : (fullDate.getMonth() + 1);
+			const date = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
+			const url = window.location.href;
+
+			
+			$.post({
+				url: url,
+				data: {
+					productID: productID,
+					name: username,
+					content: content,
+					date: date
+				},
+				success: function(data, status){
+					window.location.reload();
+				}
+			});
+			
+		}
+	})
+	</script>
+
+
+
+<script>
+	$(document).ready(function () {
+		//number products
+		const comments_per_page = 3;
+		const total_comments = parseInt($('#total-comments').text());
+		let searchParam = new URLSearchParams(window.location.search)
+		const productID = searchParam.get('id');
+		if (total_comments == 0) {
+			$('#comment-page-number').css('display', 'none');
+			return;
+		}
+
+
+		//page number
+		let page = 1;
+		let max_page = parseInt(total_comments / comments_per_page);
+		if (total_comments % comments_per_page != 0)
+			max_page += 1;
+		if ((page - 2 >= 1) && (page + 2 <= max_page)) {
+			for (var i = page - 2; i <= page + 2; i++)
+				$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+		} else if ((page - 2 < 1) && (max_page >= 5)) {
+			for (var i = 1; i <= 5; i++)
+				$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+		} else if ((max_page >= 5) && (page + 2 > max_page)) {
+			for (var i = max_page - 4; i <= max_page; i++)
+				$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+		} else {
+			for (var i = 1; i <= max_page; i++)
+				$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
+		}
+
+		const arrayPageComment = $('.page-comment-number');
+		const firts_number = parseInt($('.page-comment-number').eq(0).text());
+		const index_active = page - firts_number;
+		$('.page-comment-number').eq(index_active).addClass("page-active");
+		$('.page-comment-number').on('click', function () {
+			if (page == parseInt($(this).text()))
+				return false;
+			//remove active page
+			$('li.page-active').removeClass('page-active');
+			page = parseInt($(this).text()) - 1;
+			$("html, body").animate({ scrollTop: 700 }, 300);
+			$.get("/page-comment", {
+				pageComment: page,
+				productID: productID
+			}, function (data, status) {
+				$('#comments').html(data);
+			});
+
+			if (max_page > 5) {
+				let j = 4;
+				if (page + 1 + 2 >= max_page) {
+					for (let i = max_page; i > max_page - 5; i--) {
+						$('.page-comment-number').eq(j).text(i);
+						j--;
+					}
+				} else if (page + 1 - 2 <= 1)
+					for (let i = 1; i <= 5; i++) {
+						$('.page-comment-number').eq(i - 1).text(i);
+					}
+				else {
+					for (let i = page + 1 - 2; i <= page + 1 + 2; i++) {
+						$('.page-comment-number').eq(i - 1).text(i);
+					}
+				}
+			}
+			//add active page
+
+			for (let i = 0; i < arrayPageComment.length; i++) {
+				if (parseInt(arrayPageComment.eq(i).text()) == page + 1) {
+					arrayPageComment.eq(i).addClass('page-active');
+					break;
+				}
+			}
+			page++;
+		});
+
+	})
+</script>
+
+<script>
+	$(document).ready(function () {
+		let text = $('.listCategories').last();
+		let subString = text.text().slice(0, -2);
+		text.text(subString);
+	})
+</script>
+
+<script>
+	//Delete product
+	$(document).ready(function () {
+		
+		$('.del-product').on('click', function () {
+			const ulProduct = $(this).parent().parent();
+			const idProduct = ulProduct.attr('id');
+			
+			$.ajax({
+				url: '/remove-product',
+				type: 'DELETE',
+				data: {
+					id: idProduct
+				},
+				success: function (data, status) {
+					ulProduct.remove();
+					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shopping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
+					$('#totalQuantity').html(numberInCart);
+
+					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
+					$('#totalPrice').html(totalPriceCart);
+					$('.total-price-of-list').html(data.totalPrice + ' ₫');
+					$('.priceTemp').html(data.totalPrice + ' ₫');
+
+					const totalPrice = parseInt($('.total-price-of-list').text().slice(0, -2));
+					const feeShipping = parseInt($('#fee-shipping').text().slice(0, -2));
+					$('.total-order').text((totalPrice+feeShipping) + ' đ');
+				}
+			})
+		})
+	})
+</script>
+<script>
+	$(document).ready(function(){
+		$('.logout').click(function(){
+			$.get({
+				url: '/logout',
+				success: function(data, status){
+					window.location.href = '/';
+				}
+			})
+
+		})
+
+
+	})
+</script>
 	
 </body>
 

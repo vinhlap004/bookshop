@@ -1,15 +1,16 @@
-const products =require('../model/products.model');
-const categories =require('../model/categories.model');
-const publishers = require('../model/publishers.model');
-const comments = require('../model/comment.model')
-const users = require('../model/user.model')
-var handlebars = require('hbs');
+const productModel =require('../model/product.model');
+const categoryModel =require('../model/category.model');
+const publisherModel = require('../model/publisher.model');
+const commentModel = require('../model/comment.model')
+
+const handlebars = require('hbs');
 handlebars.registerHelper("setVar", function(varName, varValue, options) {
   options.data.root[varName] = varValue;
 });
 
 // module to render index or /
 module.exports.index = async function(req, res, next) {
+	
 	const products_per_page = 8;
 	let page, sortBy;
 	//get page
@@ -46,14 +47,15 @@ module.exports.index = async function(req, res, next) {
 	if (categoriesID == null)
 		categoriesID = new RegExp("[a-z]", "gi");
 
+	
 	//query
 	const [category, publisher, totalProduct, product] =
-		await Promise.all([categories.getAllCategories(),
-		publishers.getAllPublishers(),
-		products.getTotalProduct(minPrice, maxPrice, publisherID, categoriesID),
-		products.getProductAtPage(
-			products.sortProduct(
-				products.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID),
+		await Promise.all([categoryModel.getAllCategories(),
+		publisherModel.getAllPublishers(),
+		productModel.getTotalProduct(minPrice, maxPrice, publisherID, categoriesID),
+		productModel.getProductAtPage(
+			productModel.sortProduct(
+				productModel.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID),
 				sortBy), page, products_per_page)]);
 
 	res.render('index', {
@@ -62,7 +64,6 @@ module.exports.index = async function(req, res, next) {
 		items: product,
 		total: totalProduct
 	});
-	     
 };
 
 // module to search by title
@@ -109,12 +110,12 @@ module.exports.search = async function (req, res) {
 	//query
 	
 	const [category, publisher, totalProduct, product] =
-		await Promise.all([categories.getAllCategories(),
-		publishers.getAllPublishers(),
-		products.getTotalProduct(minPrice, maxPrice, publisherID, categoriesID, regex),
-		products.getProductAtPage(
-			products.sortProduct(
-				products.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID, regex)
+		await Promise.all([categoryModel.getAllCategories(),
+		publisherModel.getAllPublishers(),
+		productModel.getTotalProduct(minPrice, maxPrice, publisherID, categoriesID, regex),
+		productModel.getProductAtPage(
+			productModel.sortProduct(
+				productModel.getProductByAttr(minPrice, maxPrice, publisherID, categoriesID, regex)
 				, sortBy
 			), page, products_per_page
 		)
@@ -140,7 +141,7 @@ module.exports.search = async function (req, res) {
 
 module.exports.show_quickly = async function(req, res, next){
 	//need add try catch
-	const product = await products.getProductByID(req.query.idValue);
+	const product = await productModel.getProductByID(req.query.idValue);
 	
 	res.render('popup-page', {model: product, layout: false});
 };
@@ -148,21 +149,21 @@ module.exports.show_quickly = async function(req, res, next){
 module.exports.product_detail = async function (req, res, next) {
   const commentsPerPage = 3;
 
-  const dataProduct = await products.getProductByID(req.query.id);
+  const dataProduct = await productModel.getProductByID(req.query.id);
   if (!dataProduct.countView){
 	  dataProduct.countView = 1;
   }else{
 	  dataProduct.countView++;
   }
   const [dataPublisher, dataComment, relatedProduct, totalComment, listCategories] = await Promise.all([
-		publishers.getPublisherByName(dataProduct.publisherID),
-		comments.getCommentAtPage(
-			comments.getCommentByIDInArray(dataProduct.comments),
+		publisherModel.getPublisherByName(dataProduct.publisherID),
+		commentModel.getCommentAtPage(
+			commentModel.getCommentByProductID(dataProduct._id),
 			0, commentsPerPage
 		),
-		products.getRelatedProduct(dataProduct),
-		comments.getTotalComment(dataProduct.comments),
-		categories.getListCategoriesByID(dataProduct.categoriesID),
+		productModel.getRelatedProduct(dataProduct),
+		commentModel.getTotalComment(dataProduct._id),
+		categoryModel.getListCategoriesByID(dataProduct.categoriesID),
 		dataProduct.save()
   ]);
  

@@ -1,17 +1,36 @@
 <div class="container-fluid wrapper-checkout">
     <div class="container">
         <div class="row wrapper-old-address">
-            <h3 class="col-md-12">Địa chỉ nhận hàng</h3>
-            <div class="col-md-12">
-                <h5 class="name-label">{{user.orderAddress.name}}</h5>
-                <h5 class="phone-label">{{user.orderAddress.phone}}</h5>
+            <h3 class="col-md-12 txt-err show-err m-b-20">Địa chỉ nhận hàng</h3>
+            <div class="col-md-12 m-b-10">
+                <h5 class="font-bold name-label dis-inline-block">{{user.orderAddress.name}}</h5>
+                <span class="m-l-15">(</span><h5 class="phone-label dis-inline-block">{{user.orderAddress.phone}}</h5><span>)</span>
             </div> 
-            <h5 class="col-md-9 address-label">{{user.orderAddress.address}}</h5>
+            <h5 class="fs-15 font-italic col-md-9 address-label">{{user.orderAddress.address}}</h5>
             <button class="col-md-3"><a href="#model-form-address" rel="modal:open">Thay đổi</a></button>
             
         </div>
         <div class="row wrapper-list-product">
             <!--each item in cart-->
+            <ul class="row-shopping-cart col-md-12 row-title-cart">
+                <h3 class="txt-err show-err m-l-30">Đơn hàng</h3>
+            </ul>
+            <ul class="row-shopping-cart col-md-12 row-header-cart">
+                <li class="col-md-2">
+                    <div class="how-itemcart">
+                        Hình ảnh
+                    </div>
+                </li>
+                <li class="col-md-5 title-product">Tựa sách</li>
+                <li class="col-md-2 priceOfProduct">Đơn giá</li>
+                <li class="col-md-2">
+                    Số lượng
+                </li>
+
+                <li class="col-md-1">
+                    
+                </li>
+            </ul>
             {{#each session.cart.items}}
             <ul class="row-shopping-cart col-md-12" id="{{@key}}">
                 <li class="col-md-2">
@@ -22,16 +41,7 @@
                 <li class="col-md-5 title-product">{{title}}</li>
                 <li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
                 <li class="col-md-2">
-                    <div class="wrap-num-product flex-w">
-                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-minus"></i>
-                        </div>
-                        <input class="mtext-104 cl3 txt-center num-product {{@key}}" type="number" name="num-product"
-                            value="{{quantity}}">
-                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                            <i class="fs-16 zmdi zmdi-plus"></i>
-                        </div>
-                    </div>
+                    {{quantity}}
                 </li>
 
                 <li class="col-md-1">
@@ -42,33 +52,40 @@
             </ul>
             {{/each}}
             <ul class="row-shopping-cart col-md-12 flex-r">
-                <span>Tổng tiền hàng</span> <span class="total-price-of-list price">{{session.cart.totalPrice}} ₫ </span>
+                <span>Tổng tiền hàng: </span> <span class="m-l-10 total-price-of-list price">{{session.cart.totalPrice}} ₫ </span>
             </ul>
         </div>
         <div class="row wrapper-info-payment">
-            <div class="row col-md-12 row-line flex-m">
-                <h5>Nhà vận chuyển</h5>
-                <button class="button-select button-selected button-shipping">Viettel post</button>
-                <button class="button-select button-shipping">Vietnam post</button>
-                <button class="button-select button-shipping">Giao hàng nhanh</button>
+            <div class="col-md-12 row-line flex-m m-b-20">
+                <h3 class="m-l-30 m-r-30 txt-err show-err">Nhà vận chuyển:</h3>
+                <button class="button-select button-selected button-shipping m-r-20">Viettel post</button>
+                <button class="button-select button-shipping m-r-20">Vietnam post</button>
+                <button class="button-select button-shipping m-r-20">Giao hàng nhanh</button>
                 </div>
-            <div class="paymentBy row col-md-12 row-line flex-m">
-                <h5>Phương thức thanh toán</h5>
-                <button class="button-select button-selected button-payment">Thanh toán khi nhận hàng</button>
-                <button class="button-select button-payment" button-payment>Thẻ ngân hàng</button>
+            <div class="paymentBy col-md-12 row-line flex-m p-b-20 border-b">
+                <h3 class="m-l-30 m-r-30 txt-err show-err">Phương thức thanh toán:</h3>
+                <button class="button-select button-selected button-payment m-r-20">Thanh toán khi nhận hàng</button>
+                <button class="button-select button-payment m-r-20 button-payment">Thẻ ngân hàng</button>
             </div>
-            <div class="total-Cart row col-md-12 row-line flex-m">
-                <h5 class="col-md-12 flex-r">
-                    Tiền hàng: <span>1 000 000 đ</span>
-                </h5>
-                <h5 class="col-md-12 flex-r">
-                    <span>Phí vận chuyển:</span> <span id="fee-shipping"> 23000đ</span>
-                </h5>
-                <h5 class="col-md-12 flex-r">
-                    Tổng hóa đơn: <span> 1 023 000đ</span>
-                </h5>
+            <div class="total-Cart col-md-12 row-line row flex-m m-b-20">
+                <div class="col-sm-12 flex-r m-b-10">
+                    <span>Tiền hàng:</span> <span class="m-l-10 total-price-of-list txt-err show-err">{{session.cart.totalPrice}} ₫ </span>
+                </div>
+                <div class="col-sm-12 flex-r m-b-10">
+                    <span>Phí vận chuyển:</span> <span id="fee-shipping" class="m-l-10 txt-err show-err"> 23000 đ</span>
+                </div>
+                <div class="col-sm-12 flex-r m-b-10">
+                    <span class="fs-25">Tổng hóa đơn:</span> <span class="fs-25 m-l-10 total-order txt-err show-err"> đ</span>
+                </div>
             </div>
-            <button id="checkout"><a>Thanh toán</a></button>
+            <div class="col-sm-12 flex-r p-r-30">
+                <a class="p-l-10 p-r-10">
+                    <button id="checkout" class="btn-purchase">
+                        Thanh toán
+                    </button>
+                </a>
+            </div>
+           
         </div>
     </div>
 </div>
@@ -76,20 +93,22 @@
 <div class="model model-hide row" id="model-form-address">
     <div class="wrapper-form-address">
         <h1>Địa chỉ mới</h1>
+        
         <form class="form-checkout">
             <div class="form-group">
-                <input id="name-order" type="text" class="form-control" placeholder="Người nhận hàng">
+                <input id="name-order" type="text" class="form-control" placeholder="Người nhận hàng" value="{{user.orderAddress.name}}">
             </div>
             <div class="form-group">
-                <input id="phone-order" type="text" class="form-control" placeholder="Số điện thoại">
+                <input id="phone-order" type="text" class="form-control" placeholder="Số điện thoại" value="{{user.orderAddress.phone}}">
             </div>
             <div class="form-group">
-                <input id="address-order" type="text" class="form-control" placeholder="Địa chỉ cụ thể">
+                <input id="address-order" type="text" class="form-control" placeholder="Địa chỉ cụ thể" value="{{user.orderAddress.address}}">
             </div>
             <h5 class="txt-err txt-left"></h5>
             <div class="form-group">
-                <input type="button" class="update-address" class="form-control" value="Cập nhật">
+                <input type="button" class="btn-purchase update-address" class="form-control" value="Cập nhật">
             </div>
         </form>
+   
     </div>
 </div>

@@ -1772,6 +1772,7 @@ input.num-product::-webkit-inner-spin-button {
   margin-top: 20px;
   margin: auto;
   width: 93%;
+  max-width: 500px;
 }
 
 .mybtn-login{
@@ -1832,6 +1833,10 @@ input.num-product::-webkit-inner-spin-button {
   height: 35.75px;
   font-size: 18px;
   line-height: 35.75px;
+  color: #fff;
+}
+a.btn-coupon:hover{
+  color: #e6e6e6
 }
 .shop{
   margin-top: 20px;
@@ -1937,7 +1942,7 @@ input.num-product::-webkit-inner-spin-button {
   display: inline-block;
   text-align: center;
 }
-.row-shopping-cart{
+.row-shopping-cart, .row-shopping-cart-line {
   list-style: none;
   margin: 0;
   background-color: #fff;
@@ -1948,11 +1953,11 @@ input.num-product::-webkit-inner-spin-button {
   padding-bottom: 20px;
   border-bottom: 0.5px solid #e6e6e6;
 }
-.row-shopping-cart:last-child{
+.row-shopping-cart:last-child, .row-shopping-cart-line:last-child {
   border-bottom: 0px;
 }
 
-.row-shopping-cart li{
+.row-shopping-cart li, .row-shopping-cart-line li{
   display: inline-block;
   text-align: center;
 }
@@ -3332,6 +3337,7 @@ a.active-tab{
 
 .wrapper-order{
   margin-top: 20px;
+  background-color: #fff;;
 }
 .row-total{
   margin-right: 0;
@@ -3345,9 +3351,10 @@ a.active-tab{
   padding-right: 0;
 }
 .header-order{
-  background-color: #f3f3f3;
+  
   margin: 10px 0;
   padding: 20px;
+  background-color: #fefff4;
 }
 #page-number a li, #comment-page-number a li{
   display: inline-block;
@@ -3455,7 +3462,7 @@ div.sort-active{
   padding: 20px;
 }
 .wrapper-checkout{
-  background-color: #e7e7e7;
+  background-color: #f2f2f2;
   padding-top: 100px;
   padding-bottom: 100px;
 }
@@ -3476,7 +3483,6 @@ div.sort-active{
 .wrapper-checkout-info-show{
   display: block;
 }
-
 
 
 .wrapper-info-payment, .wrapper-old-address, .wrapper-list-product{
@@ -3501,4 +3507,40 @@ div.sort-active{
 }
 .row-line{
   margin-bottom: 30px;
+}
+
+.img-view{
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+.wrapper-product-detail{
+  background-color: #f2f2f2;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.row-comment{
+  background-color: #fff;
+}
+
+.wrapper-comment{
+  
+  background-color: #fff;
+}
+
+.row-header-cart{
+  font-weight: bold;
+  background-color: #fafafa;
+}
+.row-title-cart{
+  border: 0;
+}
+a.logout:hover{
+  color: #fff;
+}
+.img-order{
+  width: 60px;
+  height: 80px;
+  object-fit: contain;
 }

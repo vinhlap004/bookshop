@@ -1,6 +1,6 @@
 const cartModel = require('../model/cart.model');
 const orderModel = require('../model/order.model');
-const userModel = require('../model/order.model');
+const productModel = require('../model/product.model')
 
 
 module.exports.checkout = async function(req, res){
@@ -9,7 +9,7 @@ module.exports.checkout = async function(req, res){
         name = body.name,
         phone = body.phone,
         address = body.address,
-        status = "ordering",
+        status = "Chưa giao",
         shipping = body.shipping,
         feeShipping = body.feeShipping,
         payment = body.payment;
@@ -23,9 +23,38 @@ module.exports.checkout = async function(req, res){
 
     const cart = await cartModel.getCartByUserID(userID);
     
-    await orderModel.addOrder(name, phone, address, cart, status, shipping, timeline, feeShipping, payment);
+    await Promise.all[(cart.items.map(async item => {
+        const product = await productModel.findAndUpdateCount(item.productID);
+    })),
+    orderModel.addOrder(name, phone, address, cart, status, shipping, timeline, feeShipping, payment)]
+
     cartModel.removeCart(cart);
     req.session.cart = null;
     res.status(200);
     res.send();
+}
+
+module.exports.view_order = async function (req, res) {
+    const userID = req.user._id;
+    
+    const orders = await orderModel.getOrderByUserID(userID);
+    
+   
+    await Promise.all(orders.map(async order => {
+        let i = 0;
+        await Promise.all(order.items.map(async item => {
+            const product = await productModel.getProductByID(item.productID);
+            item = {
+                productID: item.productID,
+                quantity: item.quantity,
+                title : product.title,
+                price: product.price,
+                img: product.img[0]
+            }
+            order.items[i] = item;
+            i++;
+        }))
+    }))
+    res.render('order', {order: orders});
+
 }

@@ -18,19 +18,38 @@
 
 	<div class="container shop">
 		<div class="row">
-			<div class="cart-info col-md-9">
-				<!--each item in cart-->
-				{{#each session.cart.items}}
-				<ul class="row-shopping-cart row" id="{{@key}}">
-					<li class="col-md-2">
-						<div class="how-itemcart">
-							<img src="{{this.img}}" alt="IMG">
-						</div>
-					</li>
-					<li class="col-md-5 title-product">{{title}}</li>
-					<li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
-					<li class="col-md-2">
-						<div class="wrap-num-product flex-w">
+			<div class="col-md-9 wrapper-list-product">
+            <!--each item in cart-->
+            <ul class="row-shopping-cart-line col-md-12 row-title-cart">
+                <h3 class="txt-err show-err m-l-30">Đơn hàng</h3>
+            </ul>
+            <ul class="row-shopping-cart-line col-md-12 row-header-cart">
+                <li class="col-md-2">
+                    <div class="how-itemcart">
+                        Hình ảnh
+                    </div>
+                </li>
+                <li class="col-md-5 title-product">Tựa sách</li>
+                <li class="col-md-2 priceOfProduct">Đơn giá</li>
+                <li class="col-md-2">
+                    Số lượng
+                </li>
+
+                <li class="col-md-1">
+                    
+                </li>
+            </ul>
+            {{#each session.cart.items}}
+            <ul class="row-shopping-cart col-md-12" id="{{@key}}">
+                <li class="col-md-2">
+                    <div class="how-itemcart">
+                        <img src="{{this.img}}" alt="IMG">
+                    </div>
+                </li>
+                <li class="col-md-5 title-product">{{title}}</li>
+                <li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
+                <li class="col-md-2">
+                    <div class="wrap-num-product flex-w">
 							<div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
 								<i class="fs-16 zmdi zmdi-minus"></i>
 							</div>
@@ -39,17 +58,20 @@
 							<div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
 								<i class="fs-16 zmdi zmdi-plus"></i>
 							</div>
-						</div>
-					</li>
+					</div>
+                </li>
 
-					<li class="col-md-1">
-						<a href="#" class="del-product">
-							<i class="far fa-trash-alt"></i>
-						</a>
-					</li>
-				</ul>
-				{{/each}}
-			</div>
+                <li class="col-md-1">
+                    <a href="#" class="del-product">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </li>
+            </ul>
+            {{/each}}
+            <ul class="row-shopping-cart-line col-md-12 flex-r">
+                <span>Tổng tiền hàng</span> <span class="m-l-10 total-price-of-list price">{{session.cart.totalPrice}}₫ </span>
+            </ul>
+        </div>
 			<!--info payment!-->
 			<div class="shipping-info col-md-3">
 				<div class="wrapper-shipping-info">
@@ -60,8 +82,8 @@
 							<h6>Giảm giá:</h6>
 						</div>
 						<div class="col-md-8 txt-right">
-							<h6>{{session.cart.totalPrice}}</h6>
-							<h6>0đ</h6>
+							<h6 class="priceTemp">{{session.cart.totalPrice}} đ</h6>
+							<h6 class="discount">0 đ</h6>
 						</div>
 					</div>
 					<hr>
@@ -112,6 +134,7 @@
 <script>
 	//Calculate total price and quantity
 	$(document).ready(function () {
+		
 		const listProduct = $('ul.row-shopping-cart');
 		let totalPrice = 0;
 		$.each(listProduct, function (index, value) {
@@ -119,35 +142,11 @@
 			const numProduct = $('input.num-product.' + id).attr('value');
 			const price = $('.priceOfProduct.' + id).text().slice(0, -2);
 			totalPrice += numProduct * price;
-			//$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
 		})
 		$('#totalPrice').html('<b>' + totalPrice + ' ₫<b>');
+		$('.total-price-of-list').html(totalPrice+ ' ₫');
+		$('.priceTemp').html(totalPrice+ ' ₫');
+	
 	})
 </script>
 
-<script>
-	//Delete product
-	$(document).ready(function () {
-		$('a.del-product').on('click', function () {
-			const ulProduct = $(this).parent().parent();
-			const idProduct = ulProduct.attr('id');
-
-			$.ajax({
-				url: '/remove-product',
-				type: 'DELETE',
-				data: {
-					id: idProduct
-				},
-				success: function (data, status) {
-					ulProduct.remove();
-					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
-					$('#totalQuantity').html(numberInCart);
-
-					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
-					$('#totalPrice').html(totalPriceCart);
-				}
-			})
-		}
-		)
-	})
-</script>

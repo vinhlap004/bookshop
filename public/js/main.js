@@ -222,11 +222,13 @@
         //const total = $(this).parent().parent().next().text().slice(0, -2);
 
         const price = $(this).parent().parent().prev().text().slice(0, -2);
-
         const totalPrice = $('#totalPrice').children().text().slice(0, -2);
+        
         const tempTotalPrice = totalPrice - price;
 
         $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
+        $('.total-price-of-list').html(tempTotalPrice + ' ₫');
+        $('.priceTemp').html(tempTotalPrice + ' ₫');
         const idProduct = $(this).parent().parent().parent().attr('id');
         $.ajax({
             url: '/descrease-product',
@@ -249,7 +251,9 @@
         const totalPrice = parseInt($('#totalPrice').children().text().slice(0, -2));
         const tempTotalPrice = totalPrice + price;
         $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
-
+        $('.total-price-of-list').html(tempTotalPrice + ' ₫');
+        $('.priceTemp').html(tempTotalPrice + ' ₫');
+        
         const idProduct = $(this).parent().parent().parent().attr('id');
         $.ajax({
             url: '/increase-product',
@@ -373,7 +377,7 @@
             const nameLabel = $('.name-label').text();
             const phoneLabel = $('.phone-label').text();
             const addressLabel = $('.address-label').text();
-            const feeShipping = $('#fee-shipping').text().slice(0, -1);
+            const feeShipping = $('#fee-shipping').text().slice(0, -2);
             const shipping = $('.button-selected.button-shipping').text();
             const payment = $('.button-payment.button-selected').text();
             
@@ -425,6 +429,7 @@
     $(document).ready(function () {
         $('.btn-show-quickly').click(function () {
             const id = $(this).parent().parent().parent().attr('id');
+            
             $.get("/show-quickly", { idValue: id }, function (data, status) {
                 $('#popUp').html(data);
                 //action for arrow
@@ -448,7 +453,7 @@
                 '/add-to-cart',
                 { id: id },
                 function (data, status) {
-                    var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
+                    var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shopping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
                     $('#totalQuantity').html(html);
                 }
             )
