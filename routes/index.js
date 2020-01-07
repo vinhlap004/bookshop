@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-const controllerProduct =require('../controllers/products.controller');
-const controllerComment = require('../controllers/comments.controller');
+const controllerProduct =require('../controllers/product.controller');
+const controllerComment = require('../controllers/comment.controller');
 const controllerCart = require('../controllers/cart.controller');
 const controllerOrder = require('../controllers/order.controller');
 const controllerUser = require('../controllers/user.controller');
@@ -44,9 +44,8 @@ router.get('/order',function(req, res, next) {
   res.render('order');
 });
 
-router.get('/shoping-cart',function(req, res, next) {
-  res.render('shoping-cart');
-});
+router.get('/shopping-cart', controllerCart.viewCart);
+
 router.get('/about',function(req, res, next) {
   res.render('about');
 });

@@ -69,7 +69,7 @@
             </ul>
             {{/each}}
             <ul class="row-shopping-cart-line col-md-12 flex-r">
-                <span>Tổng tiền hàng</span> <span class="total-price-of-list price">{{session.cart.totalPrice}}₫ </span>
+                <span>Tổng tiền hàng</span> <span class="m-l-10 total-price-of-list price">{{session.cart.totalPrice}}₫ </span>
             </ul>
         </div>
 			<!--info payment!-->
@@ -142,7 +142,6 @@
 			const numProduct = $('input.num-product.' + id).attr('value');
 			const price = $('.priceOfProduct.' + id).text().slice(0, -2);
 			totalPrice += numProduct * price;
-			//$('.totalPriceOfProduct.' + id).text(numProduct*price + ' ₫');
 		})
 		$('#totalPrice').html('<b>' + totalPrice + ' ₫<b>');
 		$('.total-price-of-list').html(totalPrice+ ' ₫');
@@ -151,31 +150,3 @@
 	})
 </script>
 
-<script>
-	//Delete product
-	$(document).ready(function () {
-		
-		$('.del-product').on('click', function () {
-			const ulProduct = $(this).parent().parent();
-			const idProduct = ulProduct.attr('id');
-			
-			$.ajax({
-				url: '/remove-product',
-				type: 'DELETE',
-				data: {
-					id: idProduct
-				},
-				success: function (data, status) {
-					ulProduct.remove();
-					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
-					$('#totalQuantity').html(numberInCart);
-
-					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
-					$('#totalPrice').html(totalPriceCart);
-					$('.total-price-of-list').html(data.totalPrice + ' ₫');
-					$('.priceTemp').html(data.totalPrice + ' ₫');
-				}
-			})
-		})
-	})
-</script>

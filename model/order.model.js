@@ -11,13 +11,14 @@ const orderSchema = new mongoose.Schema({
     name: String,
     phone: String,
     address: String,
-    status: String,
+    status: Number,
     shipping: String,
     timeline:{
         ordering: Number,
         waiting: Number,
         delivering: Number,
-        delivered: Number
+        delivered: Number,
+        canceled: Number
     },
     feeShipping: Number,
     payment: String

@@ -377,7 +377,7 @@
             const nameLabel = $('.name-label').text();
             const phoneLabel = $('.phone-label').text();
             const addressLabel = $('.address-label').text();
-            const feeShipping = $('#fee-shipping').text().slice(0, -1);
+            const feeShipping = $('#fee-shipping').text().slice(0, -2);
             const shipping = $('.button-selected.button-shipping').text();
             const payment = $('.button-payment.button-selected').text();
             

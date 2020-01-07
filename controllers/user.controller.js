@@ -1,10 +1,10 @@
-const users = require('../model/user.model');
+const userModel = require('../model/user.model');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const nodemailer = require("nodemailer");
 const crypto = require('crypto');
 
-const carts = require('../model/cart.model');
+const cartModel = require('../model/cart.model');
 
 var handlebars = require('hbs');
 handlebars.registerHelper("setVar", function(varName, varValue, options) {
@@ -23,10 +23,10 @@ module.exports.login = function(req, res, next) {
         
         if (req.session.cart){
           //replace cart in user's database
-          req.session.cart = await carts.syncCart(req.session.cart, user.id);
+          req.session.cart = await cartModel.syncCart(req.session.cart, user.id);
           }else{
           //move add from database to session
-          req.session.cart = await carts.get(user.id);
+          req.session.cart = await cartModel.get(user.id);
           } 
         return res.redirect('/'); 
         
@@ -42,11 +42,16 @@ module.exports.login = function(req, res, next) {
 // Logout
 
 module.exports.logout = async function(req, res, next) {
-  req.logout();
-  req.session.cart = null;
-  res.locals.session.cart = null;
-  req.user = null;
-  res.render('login', {message: 'Bạn đã đăng xuất'});
+  if (!req.user){
+    res.render('login');
+  }else{
+    req.logout();
+    req.session.cart = null;
+    //res.locals.session.cart = null;
+    req.user = null;
+    res.send();
+  }
+  
 }
 
 module.exports.getRegister = function(req, res, next){
@@ -70,7 +75,7 @@ module.exports.forgetPassword = async function(req, res, next)
   });
     var rand,mailOptions,host,link,token;
     console.log("random",crypto.randomBytes(20).toString('hex'));
-    const user = await users.findEmail(req.body.email);
+    const user = await userModel.findEmail(req.body.email);
     if(!user)
     {
       res.render('forget-password',
@@ -128,9 +133,9 @@ module.exports.resetpassword = async function(req,res,next)
         res.render('reset-password',{message: "Xác nhận mật khẩu không đúng"});
       }
       else{
-        //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+        //const user = await userModel.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
         console.log(req.query.email);
-        const user = await users.findEmail(req.query.email);
+        const user = await userModel.findEmail(req.query.email);
         console.log(user);
           if(!user)
           {
@@ -170,9 +175,9 @@ module.exports.verify = function(req,res,next)
 
 module.exports.postverify = async function(req,res,next)
 {
-  //const user = await users.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
+  //const user = await userModel.findOne({email: req.query.email,resetPasswordExpires: { $gt: Date.now() } });
   console.log(req.query.email);
-  const user = await users.findEmail(req.query.email);
+  const user = await userModel.findEmail(req.query.email);
   console.log(user);
     if(!user)
     {
@@ -233,7 +238,7 @@ module.exports.profile = async function(req,res,next){
 		  res.render('profile', {err,name, phone,address});
     }
     else{
-      const userUpdate = await users.getUserByID(currenUser.id);
+      const userUpdate = await userModel.getUserByID(currenUser.id);
       userUpdate.name = name;
       userUpdate.phonenumber =phone;
       userUpdate.address=address;
@@ -296,6 +301,6 @@ module.exports.updateOrderAddress = async (req, res) => {
   const name = body.name,
         phone = body.phone,
         address = body.address;
-  const userUpdated = await users.updateOrderAddressByID(userID, name, phone, address);
+  const userUpdated = await userModel.updateOrderAddressByID(userID, name, phone, address);
   res.send(userUpdated.orderAddress);
 }

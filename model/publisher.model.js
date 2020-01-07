@@ -8,15 +8,15 @@ const publisherSchema = new mongoose.Schema({
 }, { collection: 'publishers' });
 
 //4.tạo model
-const publishers = mongoose.model('publishers', publisherSchema);
-module.exports = publishers;
+const publisherModel = mongoose.model('publishers', publisherSchema);
+
 
 module.exports.getAllPublishers = function(){
-  return publishers.find();
+  return publisherModel.find();
 }
 module.exports.getPublisherByID = function(id){
-  return publishers.findById(id);
+  return publisherModel.findById(id);
 }
 module.exports.getPublisherByName = function(name){
-  return publishers.findOne({publisherID: name});
+  return publisherModel.findOne({publisherID: name});
 }

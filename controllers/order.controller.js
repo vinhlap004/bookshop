@@ -1,6 +1,6 @@
 const cartModel = require('../model/cart.model');
 const orderModel = require('../model/order.model');
-const userModel = require('../model/order.model');
+
 
 
 module.exports.checkout = async function(req, res){
@@ -9,7 +9,7 @@ module.exports.checkout = async function(req, res){
         name = body.name,
         phone = body.phone,
         address = body.address,
-        status = "ordering",
+        status = 0,
         shipping = body.shipping,
         feeShipping = body.feeShipping,
         payment = body.payment;
@@ -18,7 +18,8 @@ module.exports.checkout = async function(req, res){
         ordering: date,
         waiting: 0,
         delivering: 0,
-        delivered: 0
+        delivered: 0,
+        canceled: 0
     }
 
     const cart = await cartModel.getCartByUserID(userID);

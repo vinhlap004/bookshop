@@ -1772,6 +1772,7 @@ input.num-product::-webkit-inner-spin-button {
   margin-top: 20px;
   margin: auto;
   width: 93%;
+  max-width: 500px;
 }
 
 .mybtn-login{
@@ -1832,6 +1833,10 @@ input.num-product::-webkit-inner-spin-button {
   height: 35.75px;
   font-size: 18px;
   line-height: 35.75px;
+  color: #fff;
+}
+a.btn-coupon:hover{
+  color: #e6e6e6
 }
 .shop{
   margin-top: 20px;
@@ -3478,7 +3483,6 @@ div.sort-active{
 }
 
 
-
 .wrapper-info-payment, .wrapper-old-address, .wrapper-list-product{
   background-color: #fff;
   margin-bottom: 40px;
@@ -3529,4 +3533,7 @@ div.sort-active{
 }
 .row-title-cart{
   border: 0;
+}
+a.logout:hover{
+  color: #fff;
 }

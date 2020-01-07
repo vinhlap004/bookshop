@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Shoping Cart</title>
+	<title>Shopping Cart</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -62,7 +62,7 @@
 						</a>
 						{{#if isAuthenticated}}
 							<a href="/profile" id="usernameAuthenticated" class="flex-c-m trans-04 p-lr-25">Chào {{user.name}}</a>
-							<a href="/logout" class="flex-c-m trans-04 p-lr-25">
+							<a href = "" class="logout flex-c-m trans-04 p-lr-25">
 								Đăng xuất
 							</a>
 						{{else}}
@@ -106,7 +106,7 @@
 					
 					<div id="totalQuantity" class="wrap-icon-header flex-w flex-r-m">
 						{{#if session.cart}}
-						<a href="/shoping-cart">
+						<a href="/shopping-cart">
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
 							data-notify={{session.cart.totalQuantity}}>
 							
@@ -117,7 +117,7 @@
 						{{else}}
 						<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
 							data-notify="0">
-							<a href="/shoping-cart" class="zmdi zmdi-shopping-cart">
+							<a href="/shopping-cart" class="zmdi zmdi-shopping-cart">
 							</a>
 						</div>
 						{{/if}}
@@ -696,23 +696,7 @@
 		})
 	</script>
 	<!--========== ADD TO CART ==========-->
-	<script>
-		$(document).ready(function(){
-			$('.addToCart').click(function(e){
-				e.preventDefault();
-				const id =  $(this).parent().parent().parent().parent().attr('id');
-				$.post(
-					'/add-to-cart',
-					{id: id},
-					function(data, status){
-						var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
-						$('#totalQuantity').html(html);
-					}
-				)
-			});
-
-		})
-	</script>
+	
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-155390942-1"></script>
 	<script>
@@ -723,10 +707,9 @@
 	</script>
 	<script>
 		$(document).ready(function(){
-			const totalPrice = parseInt($('.total-price').text().slice(0, -1));
-			const feeShipping = parseInt($('#fee-shipping').text().slice(0, -1));
-			$('.total-order').text((totalPrice+feeShipping) + 'đ');
-
+			const totalPrice = parseInt($('.total-price-of-list').text().slice(0, -2));
+			const feeShipping = parseInt($('#fee-shipping').text().slice(0, -2));
+			$('.total-order').text((totalPrice+feeShipping) + ' đ');
 		})
 	</script>
 	
@@ -735,12 +718,16 @@
 		$(document).ready(function () {
 		$('#post-comment').on('click', postComment);
 		let username = $('#usernameAuthenticated').text();
+		
+		const searchParam = new URLSearchParams(window.location.search);
+		const productID = searchParam.get('id');
 		function postComment() {
 			if (!username) {
 				username = $('#name').val();
 			} else {
 				username = username.slice(5, username.length);
 			}
+			
 			//validate input
 			const content = $('#review').val();
 			if (username == "") {
@@ -757,14 +744,20 @@
 			const date = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
 			const url = window.location.href;
 
-
-			$.post(url,
-				{
+			
+			$.post({
+				url: url,
+				data: {
+					productID: productID,
 					name: username,
 					content: content,
 					date: date
-				});
-			window.location.reload();
+				},
+				success: function(data, status){
+					window.location.reload();
+				}
+			});
+			
 		}
 	})
 	</script>
@@ -857,6 +850,54 @@
 		let text = $('.listCategories').last();
 		let subString = text.text().slice(0, -2);
 		text.text(subString);
+	})
+</script>
+
+<script>
+	//Delete product
+	$(document).ready(function () {
+		
+		$('.del-product').on('click', function () {
+			const ulProduct = $(this).parent().parent();
+			const idProduct = ulProduct.attr('id');
+			
+			$.ajax({
+				url: '/remove-product',
+				type: 'DELETE',
+				data: {
+					id: idProduct
+				},
+				success: function (data, status) {
+					ulProduct.remove();
+					const numberInCart = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shopping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
+					$('#totalQuantity').html(numberInCart);
+
+					const totalPriceCart = '<b>' + data.totalPrice + ' ₫</b>';
+					$('#totalPrice').html(totalPriceCart);
+					$('.total-price-of-list').html(data.totalPrice + ' ₫');
+					$('.priceTemp').html(data.totalPrice + ' ₫');
+
+					const totalPrice = parseInt($('.total-price-of-list').text().slice(0, -2));
+					const feeShipping = parseInt($('#fee-shipping').text().slice(0, -2));
+					$('.total-order').text((totalPrice+feeShipping) + ' đ');
+				}
+			})
+		})
+	})
+</script>
+<script>
+	$(document).ready(function(){
+		$('.logout').click(function(){
+			$.get({
+				url: '/logout',
+				success: function(data, status){
+					window.location.href = '/';
+				}
+			})
+
+		})
+
+
 	})
 </script>
 	

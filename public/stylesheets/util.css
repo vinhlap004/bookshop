@@ -35,6 +35,7 @@ ul, li {
 }
 
 
+
 /*---------------------------------------------*/
 input, textarea, label {
 	display: block;
@@ -48,6 +49,15 @@ button {
 	border: none;
 	background: transparent;
 	cursor: pointer;
+}
+.border-b{
+	border: 0;
+	border-bottom: solid 0.5px #e2e2e2;
+	border-style: dashed;
+}
+
+.show-err-inline{
+	display: inline;
 }
 
 button:focus {outline: none;}
@@ -3262,6 +3272,14 @@ iframe {border: none;}
 .dis-block {display: block;}
 .dis-inline {display: inline;}
 .dis-inline-block {display: inline-block;}
+
+.font-bold {
+	font-weight: bold;
+}
+
+.font-italic{
+	font-style: italic;
+}
 
 .flex-w,
 .flex-l,
