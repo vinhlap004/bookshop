@@ -62,9 +62,13 @@
 						</a>
 						{{#if isAuthenticated}}
 							<a href="/profile" id="usernameAuthenticated" class="flex-c-m trans-04 p-lr-25">Chào {{user.name}}</a>
+							<a href = "/order" class="flex-c-m trans-04 p-lr-25">
+								Đơn hàng của tôi
+							</a>
 							<a href = "" class="logout flex-c-m trans-04 p-lr-25">
 								Đăng xuất
 							</a>
+							
 						{{else}}
 							<a href="login" class="flex-c-m trans-04 p-lr-25">
 							Đăng nhập
