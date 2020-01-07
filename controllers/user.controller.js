@@ -23,7 +23,7 @@ module.exports.login = function(req, res, next) {
         
         if (req.session.cart){
           //replace cart in user's database
-          req.session.cart = await carts.update(req.session.cart, user.id);
+          req.session.cart = await carts.syncCart(req.session.cart, user.id);
           }else{
           //move add from database to session
           req.session.cart = await carts.get(user.id);
@@ -45,6 +45,7 @@ module.exports.logout = async function(req, res, next) {
   req.logout();
   req.session.cart = null;
   res.locals.session.cart = null;
+  req.user = null;
   res.render('login', {message: 'Bạn đã đăng xuất'});
 }
 
@@ -288,4 +289,13 @@ module.exports.profile = async function(req,res,next){
   }else{
     res.render('login');
   }
+}
+module.exports.updateOrderAddress = async (req, res) => {
+  const userID = req.user.id;
+  const body = req.body;
+  const name = body.name,
+        phone = body.phone,
+        address = body.address;
+  const userUpdated = await users.updateOrderAddressByID(userID, name, phone, address);
+  res.send(userUpdated.orderAddress);
 }

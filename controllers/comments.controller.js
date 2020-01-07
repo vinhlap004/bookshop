@@ -13,15 +13,15 @@ module.exports.post_comment = async function(req, res, next){
 	//get info
 	const content = req.body.content;
 	const date = req.body.date;
-	const user = await users.getUserByID(req.user._id);
-	const email = user.email;
+	const name = req.body.name;
 
 	//create new comment
-	const newComment = await comments.createComment(email, date, content);
+	const newComment = await comments.createComment(name, date, content);
 	const product = await products.getProductByID(req.query.id);
 	const commentID = newComment._id;
 	await comments.saveComment(product, commentID);
 	res.status(200);
+	res.send();
 }
 
 module.exports.get_comment = async function(req, res, next){

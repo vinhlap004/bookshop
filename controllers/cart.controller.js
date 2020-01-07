@@ -5,15 +5,14 @@ module.exports.add_to_cart = async function(req, res){
     const idProduct = req.body.id;
     
     let idCart = req.session.cart;
-    let cart = await CartModel.init(idCart)
+    let cart = await CartModel.init(idCart);
     //add product to cart
     cart = await CartModel.add(cart, idProduct);
     req.session.cart = cart;
     if(req.user){
-        CartModel.update(cart, req.user.id);
-        
+        CartModel.update(idProduct, req.user.id);
     }
-    console.log(req.session.cart);
+    
     res.json({totalQuantity: cart.totalQuantity});
 }
 
@@ -82,3 +81,9 @@ module.exports.descrease_item = async function(req, res){
     res.send();
 }
 
+module.exports.fillCheckout = (req, res) => {
+    if (req.user)
+        res.render('checkout');
+    else
+        res.render('login');
+}

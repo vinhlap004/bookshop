@@ -149,16 +149,30 @@ module.exports.product_detail = async function (req, res, next) {
   const commentsPerPage = 3;
 
   const dataProduct = await products.getProductByID(req.query.id);
-  const [dataPublisher, dataComment] = await Promise.all([
+  if (!dataProduct.countView){
+	  dataProduct.countView = 1;
+  }else{
+	  dataProduct.countView++;
+  }
+  const [dataPublisher, dataComment, relatedProduct, totalComment, listCategories] = await Promise.all([
 		publishers.getPublisherByName(dataProduct.publisherID),
 		comments.getCommentAtPage(
 			comments.getCommentByIDInArray(dataProduct.comments),
 			0, commentsPerPage
-		)
+		),
+		products.getRelatedProduct(dataProduct),
+		comments.getTotalComment(dataProduct.comments),
+		categories.getListCategoriesByID(dataProduct.categoriesID),
+		dataProduct.save()
   ]);
-  const totalComment = await comments.getTotalComment(dataProduct.comments);
  
-  res.render('product-detail', {item: dataProduct, publisher: dataPublisher.publisher, comment: dataComment, totalComment: totalComment});
+  res.render('product-detail', {
+	item: dataProduct, 
+	publisher: dataPublisher.publisher, 
+	comment: dataComment, 
+	totalComment: totalComment, 
+	related_product: relatedProduct,
+	listCategories: listCategories});
 };
 
 

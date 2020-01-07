@@ -3717,3 +3717,8 @@ iframe {border: none;}
 	pointer-events: none;
 }
 .thumbnail-image{ width: 100%; object-fit: cover;};
+
+a:link .fa-trash-alt{
+	text-decoration: none;
+	color: #8a4b02;
+}

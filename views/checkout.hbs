@@ -1,0 +1,95 @@
+<div class="container-fluid wrapper-checkout">
+    <div class="container">
+        <div class="row wrapper-old-address">
+            <h3 class="col-md-12">Địa chỉ nhận hàng</h3>
+            <div class="col-md-12">
+                <h5 class="name-label">{{user.orderAddress.name}}</h5>
+                <h5 class="phone-label">{{user.orderAddress.phone}}</h5>
+            </div> 
+            <h5 class="col-md-9 address-label">{{user.orderAddress.address}}</h5>
+            <button class="col-md-3"><a href="#model-form-address" rel="modal:open">Thay đổi</a></button>
+            
+        </div>
+        <div class="row wrapper-list-product">
+            <!--each item in cart-->
+            {{#each session.cart.items}}
+            <ul class="row-shopping-cart col-md-12" id="{{@key}}">
+                <li class="col-md-2">
+                    <div class="how-itemcart">
+                        <img src="{{this.img}}" alt="IMG">
+                    </div>
+                </li>
+                <li class="col-md-5 title-product">{{title}}</li>
+                <li class="col-md-2 priceOfProduct {{@key}}">{{price}} ₫</li>
+                <li class="col-md-2">
+                    <div class="wrap-num-product flex-w">
+                        <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                            <i class="fs-16 zmdi zmdi-minus"></i>
+                        </div>
+                        <input class="mtext-104 cl3 txt-center num-product {{@key}}" type="number" name="num-product"
+                            value="{{quantity}}">
+                        <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                            <i class="fs-16 zmdi zmdi-plus"></i>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="col-md-1">
+                    <a href="#" class="del-product">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </li>
+            </ul>
+            {{/each}}
+            <ul class="row-shopping-cart col-md-12 flex-r">
+                <span>Tổng tiền hàng</span> <span class="total-price-of-list price">{{session.cart.totalPrice}} ₫ </span>
+            </ul>
+        </div>
+        <div class="row wrapper-info-payment">
+            <div class="row col-md-12 row-line flex-m">
+                <h5>Nhà vận chuyển</h5>
+                <button class="button-select button-selected button-shipping">Viettel post</button>
+                <button class="button-select button-shipping">Vietnam post</button>
+                <button class="button-select button-shipping">Giao hàng nhanh</button>
+                </div>
+            <div class="paymentBy row col-md-12 row-line flex-m">
+                <h5>Phương thức thanh toán</h5>
+                <button class="button-select button-selected button-payment">Thanh toán khi nhận hàng</button>
+                <button class="button-select button-payment" button-payment>Thẻ ngân hàng</button>
+            </div>
+            <div class="total-Cart row col-md-12 row-line flex-m">
+                <h5 class="col-md-12 flex-r">
+                    Tiền hàng: <span>1 000 000 đ</span>
+                </h5>
+                <h5 class="col-md-12 flex-r">
+                    <span>Phí vận chuyển:</span> <span id="fee-shipping"> 23000đ</span>
+                </h5>
+                <h5 class="col-md-12 flex-r">
+                    Tổng hóa đơn: <span> 1 023 000đ</span>
+                </h5>
+            </div>
+            <button id="checkout"><a>Thanh toán</a></button>
+        </div>
+    </div>
+</div>
+
+<div class="model model-hide row" id="model-form-address">
+    <div class="wrapper-form-address">
+        <h1>Địa chỉ mới</h1>
+        <form class="form-checkout">
+            <div class="form-group">
+                <input id="name-order" type="text" class="form-control" placeholder="Người nhận hàng">
+            </div>
+            <div class="form-group">
+                <input id="phone-order" type="text" class="form-control" placeholder="Số điện thoại">
+            </div>
+            <div class="form-group">
+                <input id="address-order" type="text" class="form-control" placeholder="Địa chỉ cụ thể">
+            </div>
+            <h5 class="txt-err txt-left"></h5>
+            <div class="form-group">
+                <input type="button" class="update-address" class="form-control" value="Cập nhật">
+            </div>
+        </form>
+    </div>
+</div>

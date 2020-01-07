@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const commentSchema = mongoose.Schema({
-    email: String,
+    name: String,
     date: String,
     content: String
 }, {colection: 'comments'});
@@ -16,9 +16,9 @@ module.exports.getCommentAtPage = function(commentObject, page, commentsPerPage)
 module.exports.getTotalComment = function(commentArray){
     return comments.count({'_id': { $in: commentArray}});
 }
-module.exports.createComment = async function(email, date, content){
+module.exports.createComment = async function(name, date, content){
     const newComment = new comments({
-		email: email,
+		name: name,
 		date: date,
 		content: content
     });
