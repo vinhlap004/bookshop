@@ -1,270 +1,166 @@
-
-<div class="container">
-	<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
-		<a href="/" class="stext-109 cl8 hov-cl1 trans-04">
-			Trang chủ
-			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-		</a>
-		<a href="#" class="stext-109 cl8 hov-cl1 trans-04">
-
-			{{publisher}}
-			<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
-		</a>
-		{{#with item }}
-		<span class="stext-109 cl4">
-			{{title}}
-		</span>
-	</div>
-</div>
-
-
-
-<!-- Product Detail -->
-<section class="sec-product-detail bg0 p-t-65 p-b-60">
+<div class="container-fluid wrapper-product-detail">
 	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-lg-7 p-b-30">
-				<div class="p-l-25 p-r-30 p-lr-0-lg">
-					<div class="wrap-slick3 flex-sb flex-w">
-						<div class="wrap-slick3-dots"></div>
-						<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
-						
-						
-						<div class="slick3 gallery-lb">
-							<!-- image for product-->
-							{{#each img}}
-							<div class="item-slick3" data-thumb="{{this}}">
-								<div class="wrap-pic-w pos-relative">
-									<img src="{{this}}" alt="IMG-PRODUCT">
-									<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
-										href="{{this}}">
-										<i class="fa fa-expand"></i>
-									</a>
-								</div>
-							</div>
-							{{/each}}
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-md-6 col-lg-5 p-b-30">
-				<div class="p-r-50 p-t-5 p-lr-0-lg">
-					<h4 class="mtext-105 cl2 js-name-detail p-b-14">
-						{{title}}
-					</h4>
+		<div class="bread-crumb flex-w p-l-25 p-r-15 p-t-30 p-lr-0-lg">
+			<a href="/" class="stext-109 cl8 hov-cl1 trans-04">
+				Trang chủ
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			<a href="#" class="stext-109 cl8 hov-cl1 trans-04">
 
-					<span class="mtext-106 cl2">
-						{{price}}₫
-					</span>
-
-					<p class="stext-102 cl3 p-t-23">
-						{{{info}}}
-					</p>
-
-					<!--  -->
-					<div class="p-t-33">
-
-						<div class="flex-w flex-l-m p-b-10">
-							<div class="size-204 flex-w flex-m respon6-next">
-								<div class="flex-w m-r-30 m-tb-10 m-l-0">Số lượt xem: {{countView}}</div>
-								<button
-									class="addToCart flex-c-m stext-101 m-tb-10 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-									Thêm vào giỏ
-								</button>
-							</div>
-						</div>
-					</div>
-
-					<!--  -->
-					<div class="flex-w flex-m p-l-100 p-t-40 respon7">
-						<div class="flex-m bor9 p-r-10 m-r-11">
-							<a href="#"
-								class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
-								data-tooltip="Add to Wishlist">
-								<i class="zmdi zmdi-favorite"></i>
-							</a>
-						</div>
-
-						<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-							data-tooltip="Facebook">
-							<i class="fa fa-facebook"></i>
-						</a>
-
-						<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-							data-tooltip="Twitter">
-							<i class="fa fa-twitter"></i>
-						</a>
-
-						<a href="#" class="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
-							data-tooltip="Google Plus">
-							<i class="fa fa-google-plus"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-			{{/with}}
-		</div>
-
-		<div class="bor10 m-t-50 p-t-43 p-b-40">
-			<!-- Tab01 -->
-			<div class="tab01">
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="nav-item p-b-10">
-						<a class="nav-link active" data-toggle="tab" href="#description" role="tab">Mô tả</a>
-					</li>
-
-					<li class="nav-item p-b-10">
-						<a class="nav-link" data-toggle="tab" href="#information" role="tab">Thông tin thêm</a>
-					</li>
-
-					<li class="nav-item p-b-10">
-						<a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Đánh giá (<span id="total-comments">{{totalComment}}</span>)</a>
-					</li>
-				</ul>
-
-				<!-- Tab panes -->
-				<div class="tab-content p-t-43">
-					<!-- - -->
-					<div class="tab-pane fade show active" id="description" role="tabpanel">
-						<div class="how-pos2 p-lr-15-md">
-							<p class="stext-102 cl6">
-								Còn gì tuyệt vời hơn khi đi ngoài đường giữa trời gió rét nhưng không còn sợ phải khoác
-								trên mình những chiếc áo dày cộm mà vẫn đảm bảo giữ ấm. Cùng check ngay bộ tứ quyền lực
-								- denim jacket đã đổ bộ tại ROUTINE nhé.
-								Với 4 màu huyền thoại, bạn không cần phải lo về việc mix gì cho hợp nữa ^^
-							</p>
-						</div>
-					</div>
-
-					<!-- - -->
-					<div class="tab-pane fade" id="information" role="tabpanel">
-						<div class="row">
-							<div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-								<ul class="p-lr-28 p-lr-15-sm">
-									<li class="flex-w flex-t p-b-7">
-										<span class="stext-102 cl3 size-205">
-											Nặng
-										</span>
-
-										<span class="stext-102 cl6 size-206">
-											0.79 kg
-										</span>
-									</li>
-
-									<li class="flex-w flex-t p-b-7">
-										<span class="stext-102 cl3 size-205">
-											Kích thước
-										</span>
-
-										<span class="stext-102 cl6 size-206">
-											110 x 33 x 100 cm
-										</span>
-									</li>
-
-									<li class="flex-w flex-t p-b-7">
-										<span class="stext-102 cl3 size-205">
-											Chất liệu
-										</span>
-
-										<span class="stext-102 cl6 size-206">
-											60% cotton
-										</span>
-									</li>
-
-									<li class="flex-w flex-t p-b-7">
-										<span class="stext-102 cl3 size-205">
-											Màu sắc
-										</span>
-
-										<span class="stext-102 cl6 size-206">
-											Đỏ, xanh, trắng, xám
-										</span>
-									</li>
-
-									<li class="flex-w flex-t p-b-7">
-										<span class="stext-102 cl3 size-205">
-											Size
-										</span>
-
-										<span class="stext-102 cl6 size-206">
-											XL, L, M, S
-										</span>
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-					<!--Comment -->
-					<div class="tab-pane fade" id="reviews" role="tabpanel">
-						<div class="row">
-							<div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
-								<div class="p-b-30 m-lr-15-sm">
-									<!-- Each comment -->
-									<div id="comments">
-									{{#each comment}}
-									<div class="flex-w flex-t p-b-68">
-										<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
-											<img src="images/avatar-01.jpg" alt="AVATAR">
-										</div>
-
-										<div class="size-207">
-											<div class="flex-w flex-sb-m p-b-17">
-												<span class="mtext-107 cl2 p-r-20">
-													{{this.name}}
-												</span>
-
-												<span class="fs-18 cl11">
-													{{this.date}}
-												</span>
-											</div>
-
-											<p class="stext-102 cl6">
-												{{this.content}}
-											</p>
-										</div>
-									</div>
-									{{/each}}
-									</div>
-
-									<!-- Add review -->
-									<h5 class="mtext-108 cl2 p-b-7">
-										Thêm đánh giá
-									</h5>
-									{{#if isAuthenticated}}
-									<form class="w-full" id="form-comment">
-									<div class="row p-b-25">
-									{{else}}
-										<div class="col-sm-6 p-b-5">
-											<label class="stext-102 cl3" for="name">Tên</label>
-											<input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name" autocomplete="on" >
-										</div>
-									{{/if}}
-									<div class="col-12 p-b-5">
-										<label class="stext-102 cl3" for="review">Nội dung đánh giá</label>
-										<textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"
-											placeholder="Nhập đánh giá của bạn..."></textarea>
-									</div>
-									</div>
-										<input id="post-comment" type="button" value="Gửi" class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
-									</form>
-									<div class="flex-c-m flex-w w-full p-t-45">
-										<ul id="comment-page-number">
-										</ul>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+				{{publisher}}
+				<i class="fa fa-angle-right m-l-9 m-r-10" aria-hidden="true"></i>
+			</a>
+			{{#with item }}
+			<span class="stext-109 cl4">
+				{{title}}
+			</span>
 		</div>
 	</div>
 
-	
-	<div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
+
+
+	<!-- Product Detail -->
+	<section class="sec-product-detail bg0 p-t-65 p-b-60">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-lg-7 p-b-30">
+					<div class="p-l-25 p-r-30 p-lr-0-lg">
+						<div class="wrap-slick3 flex-sb flex-w">
+							<div class="wrap-slick3-dots"></div>
+							<div class="wrap-slick3-arrows flex-sb-m flex-w"></div>
+
+
+							<div class="slick3 gallery-lb">
+								<!-- image for product-->
+								{{#each img}}
+								<div class="item-slick3" data-thumb="{{this}}">
+									<div class="wrap-pic-w pos-relative">
+										<img src="{{this}}" alt="IMG-PRODUCT">
+										<a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+											href="{{this}}">
+											<i class="fa fa-expand"></i>
+										</a>
+									</div>
+								</div>
+								{{/each}}
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-6 col-lg-5 p-b-30">
+					<div class="p-r-50 p-t-5 p-lr-0-lg">
+						<h4 class="mtext-105 cl2 js-name-detail p-b-14">
+							{{title}}
+						</h4>
+
+						<span class="mtext-106 cl2">
+							{{price}}₫
+						</span>
+
+						<p class="stext-102 cl3 p-t-23">
+							{{{info}}}
+						</p>
+
+						<!--  -->
+						<div class="p-t-33">
+
+							<div class="flex-w flex-l-m p-b-10">
+								<div class="size-204 flex-w flex-m respon6-next">
+									<img src="images/icons/star.png" alt="" class="img-view">
+									<div class="flex-w m-r-30 m-tb-10 m-l-0">Số lượt xem: {{countView}}</div>
+									<button
+										class="addToCart flex-c-m stext-101 m-tb-10 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+										Thêm vào giỏ
+									</button>
+								</div>
+							</div>
+						</div>
+
+						<!--  -->
+
+					</div>
+				</div>
+				{{/with}}
+			</div>
+	</section>
+	<div class="bg6 flex-c-m flex-w size-302 p-tb-15">
+
+	</div>
+	<section class="sec-product-detail bg0 p-b-60">
+		<div class="m-t-30 p-t-30 p-b-40 wrapper-comment container">
+			<div class="row row-title-comment col-sm-12">
+				<h3 class="title-comment m-lr-30 m-b-50 txt-err show-err">Đánh giá</h3> (<span
+					id="total-comments">{{totalComment}}</span>)
+			</div>
+
+			<div id="reviews" role="tabpanel" class="row">
+
+				<div class="p-b-30 m-lr-30 col-sm-11">
+					<!-- Each comment -->
+					<div id="comments">
+						{{#each comment}}
+						<div class="flex-w flex-t p-b-68 row-comment">
+							<div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+								<img src="images/avatar-01.jpg" alt="AVATAR">
+							</div>
+
+							<div class="size-207">
+								<div class="flex-w flex-sb-m p-b-17">
+									<span class="mtext-107 cl2 p-r-20">
+										{{this.name}}
+									</span>
+
+									<span class="fs-18 cl11">
+										{{this.date}}
+									</span>
+								</div>
+
+								<p class="stext-102 cl6">
+									{{this.content}}
+								</p>
+							</div>
+							<hr class="col-sm-12">
+						</div>
+
+						{{/each}}
+					</div>
+
+					<!-- Add review -->
+					<h5 class="mtext-108 cl2 p-b-7">
+						Thêm đánh giá
+					</h5>
+
+					<form class="w-full" id="form-comment">
+						<div class="row p-b-25">
+							{{#if isAuthenticated}}
+							{{else}}
+							<div class="col-sm-6 p-b-5">
+								<label class="stext-102 cl3" for="name">Tên</label>
+								<input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name"
+									autocomplete="on">
+							</div>
+							{{/if}}
+							<div class="col-12 p-b-5">
+								<label class="stext-102 cl3" for="review">Nội dung đánh giá</label>
+								<textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"
+									placeholder="Nhập đánh giá của bạn..."></textarea>
+							</div>
+						</div>
+						<input id="post-comment" type="button" value="Gửi"
+							class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
+					</form>
+					<div class="flex-c-m flex-w w-full p-t-45">
+						<ul id="comment-page-number">
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<div class="bg6 flex-c-m flex-w size-302 p-tb-15">
 		<span class="stext-107 cl6 p-lr-25">
 			Thể loại: {{#each listCategories}} <span class="listCategories">{{this.categories}}, </span> {{/each}}
 		</span>
@@ -272,185 +168,75 @@
 			Nhà xuất bản: {{publisher}}
 		</span>
 	</div>
-	
-</section>
 
 
-<!-- Related Products -->
-<section class="sec-relate-product bg0 p-t-45 p-b-105">
-	<div class="container">
-		<div class="p-b-45">
-			<h3 class="ltext-106 cl5 txt-center">
-				Sản phẩm liên quan
-			</h3>
-		</div>
 
-		<!-- Slide2 -->
-		<div class="wrap-slick2">
-			<div class="slick2">
-				{{#each related_product}}
-				<div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15">
-					<!-- Block2 -->
-					<div class="block2">
-						<div class="block2-pic hov-img0">
-							<img src="{{this.img.[0]}}" alt="IMG-PRODUCT" class="related-product">
-							<a href="#"
-								class="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
-								Xem nhanh
-							</a>
-						</div>
 
-						<div class="block2-txt flex-w flex-t p-t-14">
-							<div class="block2-txt-child1 flex-col-l ">
-								<a href="product-detail" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
-									{{this.title}}
+	<!-- Related Products -->
+	<section class="sec-relate-product bg0 p-t-45 p-b-105">
+		<div class="container">
+			<div class="p-b-45">
+				<h3 class="ltext-106 cl5 txt-center">
+					Sản phẩm liên quan
+				</h3>
+			</div>
+
+			<!-- Slide2 -->
+			<div class="wrap-slick2">
+				<div class="slick2">
+					{{#each related_product}}
+					<div class="item-slick2 p-l-15 p-r-15 p-t-15 p-b-15" id="{{_id}}">
+						<!-- Block2 -->
+						<div class="block2">
+							<div class="block2-pic hov-img0">
+								<img src={{this.img.[0]}} alt="IMG-PRODUCT" width="270" height="360">
+								<a href=""
+									class="btn-show-quickly block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1">
+									Xem nhanh
 								</a>
-
-								<span class="stext-105 cl3">
-									{{this.price}} ₫
-								</span>
 							</div>
 
-							<div class="block2-txt-child2 flex-r p-t-3">
-								<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
-									<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
-										alt="ICON">
-									<img class="icon-heart2 dis-block trans-04 ab-t-l"
-										src="images/icons/icon-heart-02.png" alt="ICON">
-								</a>
+							<div class="block2-txt flex-w flex-t p-t-14">
+								<div class="block2-txt-child1 flex-col-l ">
+									<a href="/product-detail?id={{this.id}}"
+										class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+										{{this.title}}
+									</a>
+
+									<span class="stext-105 cl3">
+										{{this.price}} ₫
+									</span>
+								</div>
+
+								<div class="block2-txt-child2 flex-r p-t-3">
+									<a href="#" class="btn-addwish-b2 dis-block pos-relative js-addwish-b2">
+										<img class="icon-heart1 dis-block trans-04" src="images/icons/icon-heart-01.png"
+											alt="ICON">
+										<img class="icon-heart2 dis-block trans-04 ab-t-l"
+											src="images/icons/icon-heart-02.png" alt="ICON">
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
+					{{/each}}
 				</div>
-				{{/each}}
 			</div>
 		</div>
+	</section>
+</div>
+
+<!--Pop up model-->
+<div class="wrap-modal1 js-modal1 p-t-60 p-b-20">
+	<div class="overlay-modal1 js-hide-modal1"></div>
+	<div class="container">
+		<div class="bg0 p-t-60 p-b-30 p-lr-15-lg how-pos3-parent">
+			<button class="how-pos3 hov3 trans-04 js-hide-modal1">
+				<img src="images/icons/icon-close.png" alt="CLOSE">
+			</button>
+			<div id="popUp" class="row"></div>
+		</div>
 	</div>
-</section>
-<script>
-	$(document).ready(function(){
-		
-		$('#post-comment').on('click', postComment);
-		let username = $('#usernameAuthenticated').text();
-		function postComment(){
-			if (!username) {
-				username = $('#name').val();
-			} else {
-				username = username.slice(5, username.length);
-			}
-			//validate input
-			const content = $('#review').val();
-			if(username==""){
-				alert("Vui lòng nhập tên");
-				return false;
-			}
-			if(content==""){
-				alert("Vui lòng nhập bình luận trước khi gửi");
-				return false;
-			}
-			
-			const fullDate = new Date()
-			const twoDigitMonth = (((fullDate.getMonth()+1).length) === 1)? '0' + (fullDate.getMonth()+1) : (fullDate.getMonth()+1);
-			const date = fullDate.getDate() + "/" + twoDigitMonth + "/" + fullDate.getFullYear();
-			const url = window.location.href;
-			
-			
-			$.post(url,
-			{
-				name: username,
-				content: content,
-				date: date
-			});
-			window.location.reload();
-		}
-	})
-</script>
-
-<script>
-	$(document).ready(function () {
-			//number products
-			const comments_per_page = 3;
-			const total_comments = parseInt($('#total-comments').text());
-			let searchParam = new URLSearchParams(window.location.search)
-			const productID = searchParam.get('id');
-			if(total_comments==0){
-				$('#comment-page-number').css('display', 'none');
-				return;
-			}
+</div>
 
 
-			//page number
-			let page = 1;
-			let max_page = parseInt(total_comments / comments_per_page);
-			if (total_comments % comments_per_page != 0)
-				max_page += 1;
-			if ((page - 2 >= 1) && (page + 2 <= max_page)) {
-				for (var i = page - 2; i <= page + 2; i++)
-					$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
-			} else if ((page - 2 < 1) && (max_page >= 5)) {
-				for (var i = 1; i <= 5; i++)
-					$('#comment-page-number').append("<a  class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
-			} else if ((max_page >= 5) && (page + 2 > max_page)) {
-				for (var i = max_page - 4; i <= max_page; i++)
-					$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
-			} else {
-				for (var i = 1; i <= max_page; i++)
-					$('#comment-page-number').append("<a class='page-link-number'><li class='page-comment-number'>" + i + "</li></a>");
-			}
-
-			const arrayPageComment = $('.page-comment-number');
-			const firts_number = parseInt($('.page-comment-number').eq(0).text());
-			const index_active = page - firts_number;
-			$('.page-comment-number').eq(index_active).addClass("page-active");
-			$('.page-comment-number').on('click', function () {
-				if (page == parseInt($(this).text()))
-					return false;
-				//remove active page
-				$('li.page-active').removeClass('page-active');
-				page = parseInt($(this).text()) - 1;
-				$("html, body").animate({ scrollTop: 700 }, 300);
-				$.get("/page-comment", {
-					pageComment: page,
-					productID: productID
-					}, function(data, status){
-						$('#comments').html(data);
-				});	
-				
-				if (max_page > 5){
-					let j = 4;
-					if(page + 1 + 2 >= max_page){
-						for(let i = max_page; i>max_page-5; i--){
-							$('.page-comment-number').eq(j).text(i);
-							j--;
-						}
-					}else if (page + 1 - 2 <= 1)
-						for(let i = 1; i<=5; i++){
-							$('.page-comment-number').eq(i-1).text(i);
-						}
-					else {
-						for(let i = page + 1 - 2; i <= page + 1 + 2; i++){
-							$('.page-comment-number').eq(i-1).text(i);
-						}
-					}
-				}
-				//add active page
-				
-				for(let i = 0; i<arrayPageComment.length; i++){
-					if(parseInt(arrayPageComment.eq(i).text())==page+1){
-						arrayPageComment.eq(i).addClass('page-active');
-						break;
-					}
-				}
-				page++;
-			});
-
-		})
-</script>
-
-<script>
-	$(document).ready(function(){
-		let text = $('.listCategories').last();
-		let subString = text.text().slice(0, -2);
-		text.text(subString);
-	})
-</script>

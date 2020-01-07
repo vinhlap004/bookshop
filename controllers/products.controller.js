@@ -10,6 +10,7 @@ handlebars.registerHelper("setVar", function(varName, varValue, options) {
 
 // module to render index or /
 module.exports.index = async function(req, res, next) {
+	
 	const products_per_page = 8;
 	let page, sortBy;
 	//get page
@@ -46,6 +47,7 @@ module.exports.index = async function(req, res, next) {
 	if (categoriesID == null)
 		categoriesID = new RegExp("[a-z]", "gi");
 
+	
 	//query
 	const [category, publisher, totalProduct, product] =
 		await Promise.all([categories.getAllCategories(),
@@ -62,7 +64,6 @@ module.exports.index = async function(req, res, next) {
 		items: product,
 		total: totalProduct
 	});
-	     
 };
 
 // module to search by title

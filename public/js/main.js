@@ -222,11 +222,13 @@
         //const total = $(this).parent().parent().next().text().slice(0, -2);
 
         const price = $(this).parent().parent().prev().text().slice(0, -2);
-
         const totalPrice = $('#totalPrice').children().text().slice(0, -2);
+        
         const tempTotalPrice = totalPrice - price;
 
         $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
+        $('.total-price-of-list').html(tempTotalPrice + ' ₫');
+        $('.priceTemp').html(tempTotalPrice + ' ₫');
         const idProduct = $(this).parent().parent().parent().attr('id');
         $.ajax({
             url: '/descrease-product',
@@ -249,7 +251,9 @@
         const totalPrice = parseInt($('#totalPrice').children().text().slice(0, -2));
         const tempTotalPrice = totalPrice + price;
         $('#totalPrice').html('<b>' + tempTotalPrice + ' ₫<b>');
-
+        $('.total-price-of-list').html(tempTotalPrice + ' ₫');
+        $('.priceTemp').html(tempTotalPrice + ' ₫');
+        
         const idProduct = $(this).parent().parent().parent().attr('id');
         $.ajax({
             url: '/increase-product',
@@ -425,6 +429,7 @@
     $(document).ready(function () {
         $('.btn-show-quickly').click(function () {
             const id = $(this).parent().parent().parent().attr('id');
+            
             $.get("/show-quickly", { idValue: id }, function (data, status) {
                 $('#popUp').html(data);
                 //action for arrow

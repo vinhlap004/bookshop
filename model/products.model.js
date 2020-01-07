@@ -48,4 +48,6 @@ module.exports.getProductByID = function(id){
 module.exports.getRelatedProduct = product => 
   products.find({$or : [{author: product.author}, {categoriesID: product.categoriesID}]}).limit(16);
 
+module.exports.getAllProduct = () => products.find();
+
 
