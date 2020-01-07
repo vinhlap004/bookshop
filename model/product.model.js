@@ -11,7 +11,8 @@ var productsSchema = new mongoose.Schema({
   publisherID: String,
   info: String,
   img: [String],
-  countView: Number
+  countView: Number,
+  count: Number
 }, { collection: 'products' });
 
 //4.tạo model
