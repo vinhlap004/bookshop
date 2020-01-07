@@ -3337,6 +3337,7 @@ a.active-tab{
 
 .wrapper-order{
   margin-top: 20px;
+  background-color: #fff;;
 }
 .row-total{
   margin-right: 0;
@@ -3350,9 +3351,10 @@ a.active-tab{
   padding-right: 0;
 }
 .header-order{
-  background-color: #f3f3f3;
+  
   margin: 10px 0;
   padding: 20px;
+  background-color: #fefff4;
 }
 #page-number a li, #comment-page-number a li{
   display: inline-block;
@@ -3536,4 +3538,9 @@ div.sort-active{
 }
 a.logout:hover{
   color: #fff;
+}
+.img-order{
+  width: 60px;
+  height: 80px;
+  object-fit: contain;
 }

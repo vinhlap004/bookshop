@@ -453,7 +453,7 @@
                 '/add-to-cart',
                 { id: id },
                 function (data, status) {
-                    var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shoping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
+                    var html = '<div class="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart" data-notify="' + data.totalQuantity + '"><a href="/shopping-cart" class="zmdi zmdi-shopping-cart"></a></div>';
                     $('#totalQuantity').html(html);
                 }
             )

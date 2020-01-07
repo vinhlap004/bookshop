@@ -11,7 +11,7 @@ const orderSchema = new mongoose.Schema({
     name: String,
     phone: String,
     address: String,
-    status: Number,
+    status: String,
     shipping: String,
     timeline:{
         ordering: Number,
@@ -44,3 +44,5 @@ module.exports.addOrder = async function(name, phone, address, cart, status, shi
     await newOrder.save();
     return newOrder;
 }
+
+module.exports.getOrderByUserID = userID => orderModel.find({userID: userID});

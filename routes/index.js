@@ -40,9 +40,7 @@ router.get('/contact',function(req, res, next) {
   res.render('contact');
 });
 
-router.get('/order',function(req, res, next) {
-  res.render('order');
-});
+router.get('/order',controllerOrder.view_order);
 
 router.get('/shopping-cart', controllerCart.viewCart);
 
