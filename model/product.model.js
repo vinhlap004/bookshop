@@ -50,4 +50,12 @@ module.exports.getRelatedProduct = product =>
 
 module.exports.getAllProduct = () => productModel.find();
 
-
+module.exports.findAndUpdateCount = async (id) => {
+  const product = await productModel.findById(id);
+  if (!product.count){
+    product.count = 1;
+  }else{
+    product.count++;
+  }
+  product.save();
+}
