@@ -16,10 +16,11 @@ module.exports.login = function(req, res, next) {
     passport.authenticate('login', function(err, user, info) {
       if (err) { return next(err); }
       if (!user) { return res.render('login', {message: info.message}); }
+      if(user.isActive)
+      {
       req.logIn(user, async function(err) {
         if (err) { return next(err); }
-        if(req.user.isActive)
-        {
+        
         if (req.session.cart){
           //replace cart in user's database
           req.session.cart = await carts.syncCart(req.session.cart, user.id);
@@ -28,11 +29,12 @@ module.exports.login = function(req, res, next) {
           req.session.cart = await carts.get(user.id);
           } 
         return res.redirect('/'); 
-        }
-        else{
-          return res.render('login',{message: "Vui lòng xác thực tài khoản của bạn trước khi đăng nhập"}); 
-        }
+        
       });
+    }
+    else{
+      return res.render('login',{message: "Vui lòng xác thực tài khoản của bạn trước khi đăng nhập"}); 
+    }
     })(req, res, next);
   }
  
